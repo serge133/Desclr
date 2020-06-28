@@ -57,7 +57,8 @@ export type HabitActions =
   | {
       type: typeof COMPLETE_HABIT_TODO;
       habitId: string;
-      newTodos: TodoInterface[];
+      todoIndex: number;
+      value: boolean;
     }
   | {
       type: typeof COMPLETE_HABIT;

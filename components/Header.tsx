@@ -37,7 +37,7 @@ const Header: React.FC<Props> = (props) => {
               <RenderIcon
                 type={props.headerLeft!.type}
                 name={props.headerLeft!.name}
-                size={23}
+                size={30}
                 color={Colors.primary1}
               />
             </TouchableOpacity>
@@ -53,8 +53,11 @@ const Header: React.FC<Props> = (props) => {
               <RenderIcon
                 type={props.headerRight!.type}
                 name={props.headerRight!.name}
-                size={23}
+                size={30}
                 color={Colors.primary1}
+                style={{
+                  alignSelf: 'flex-end',
+                }}
               />
             </TouchableOpacity>
           )}
@@ -67,10 +70,11 @@ const Header: React.FC<Props> = (props) => {
 const styles = StyleSheet.create({
   header: {
     width: '100%',
-    height: 100,
-    alignItems: 'center',
+    height: 90,
+    alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
+    // borderWidth: 1,
   },
   headerBar: {
     flex: 1,
@@ -81,15 +85,13 @@ const styles = StyleSheet.create({
   },
   title: {
     flexDirection: 'row',
-    // marginTop: 68,
+    flex: 1,
   },
   headerRight: {
-    width: 23,
-    height: 23,
+    flex: 1,
   },
   headerLeft: {
-    width: 23,
-    height: 23,
+    flex: 1,
   },
 });
 

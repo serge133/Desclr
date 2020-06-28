@@ -143,7 +143,6 @@ export const getHabits = () => {
 export const completeHabitTodo = (
   habitId: string,
   todoIndex: number,
-  todos: TodoInterface[],
   value: boolean
 ) => {
   return async (
@@ -151,7 +150,7 @@ export const completeHabitTodo = (
     getState: () => RootState
   ) => {
     const auth = getState().auth;
-    const response = await Axios({
+    await Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}/todos/${todoIndex}.json?auth=${auth.token}`,
       method: 'PATCH',
       data: {
@@ -159,16 +158,12 @@ export const completeHabitTodo = (
       },
     });
 
-    const newTodos = [...todos];
-    newTodos[todoIndex].completed = value;
-
-    if (response.status === 200) {
-      dispatch({
-        type: COMPLETE_HABIT_TODO,
-        habitId: habitId,
-        newTodos: newTodos,
-      });
-    }
+    dispatch({
+      type: COMPLETE_HABIT_TODO,
+      habitId: habitId,
+      todoIndex: todoIndex,
+      value: value,
+    });
   };
 };
 

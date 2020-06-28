@@ -16,7 +16,8 @@ import { defaultStyles } from '../constants/default-styles';
 
 interface Props {
   navigation: {
-    navigate: Function;
+    navigate: (screen: string) => void;
+    goBack: Function;
   };
 }
 
@@ -63,7 +64,15 @@ const SignInScreen: React.FC<Props> = (props) => {
   return (
     <View style={styles.screen}>
       <Form>
-        <Header>Desclr</Header>
+        <Header
+          headerLeft={{
+            type: 'AntDesign',
+            name: 'arrowleft',
+            onPress: () => props.navigation.goBack(),
+          }}
+        >
+          Desclr
+        </Header>
         <CustomInput
           containerStyle={defaultStyles.inputContainer}
           label='Email'

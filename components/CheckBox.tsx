@@ -19,7 +19,7 @@ const CheckBox: React.FC<Props> = (props) => {
         <RenderIcon
           type='Ionicons'
           name='ios-checkmark'
-          size={23}
+          size={30}
           color={props.value ? Colors.primary1 : 'white'}
         />
       </View>
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary1,
     borderWidth: 1,
     borderRadius: 3,
-    height: 20,
-    width: 20,
+    height: 30,
+    width: 30,
     backgroundColor: 'white',
   },
 });

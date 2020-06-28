@@ -40,14 +40,14 @@ const Habit: React.FC<Props> = (props) => {
         </View>
         <Text.Body3 style={styles.description}>{props.description}</Text.Body3>
         {props.todos.map((todo, index) => (
-          <View style={styles.task} key={todo.id}>
+          <View style={styles.todo} key={todo.id}>
             <CheckBox
               value={todo.completed}
               onCheck={(value) =>
-                dispatch(completeHabitTodo(props.id, index, props.todos, value))
+                dispatch(completeHabitTodo(props.id, index, value))
               }
             />
-            <Text.Body1 style={styles.taskText}>{todo.value}</Text.Body1>
+            <Text.Body1 style={styles.todoText}>{todo.value}</Text.Body1>
           </View>
         ))}
         {props.todos.every((todo) => todo.completed) && props.isActive && (
@@ -147,11 +147,11 @@ const styles = StyleSheet.create({
   description: {
     marginTop: 10,
   },
-  task: {
+  todo: {
     flexDirection: 'row',
     marginTop: 14,
   },
-  taskText: {
+  todoText: {
     marginLeft: 8,
   },
   buttonContainer: {

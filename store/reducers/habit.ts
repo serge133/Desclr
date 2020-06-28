@@ -44,10 +44,16 @@ export default (state: HabitState = initialState, action: HabitActions) => {
     case GET_HABITS:
       return { ...state, habits: action.habits };
     case COMPLETE_HABIT_TODO:
+      const habitIndex = state.habits.findIndex(
+        (habit) => habit.id === action.habitId
+      );
+
+      let copyTodos = [...state.habits[habitIndex].todos];
+      copyTodos[action.todoIndex].completed = action.value;
       return {
         ...state,
         habits: editHabitById(action.habitId, {
-          todos: action.newTodos,
+          todos: copyTodos,
         }),
       };
     case COMPLETE_HABIT:

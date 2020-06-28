@@ -25,20 +25,20 @@ const DesclrNavigator: React.FC = () => {
         <Drawer.Navigator
           drawerType='back'
           overlayColor='transparent'
-          sceneContainerStyle={{
-            backgroundColor: Colors.primary1,
-          }}
+          // sceneContainerStyle={{
+          //   backgroundColor: 'white',
+          // }}
           drawerStyle={{
             width: 150,
-            backgroundColor: Colors.primary1,
+            backgroundColor: '#efefef',
           }}
           drawerContentOptions={{
-            activeBackgroundColor: 'transparent',
-            activeTintColor: Colors.semanticYellow1,
-            inactiveTintColor: 'white',
+            activeBackgroundColor: Colors.primary1,
+            activeTintColor: 'white',
+            inactiveTintColor: Colors.text,
             labelStyle: {
               fontFamily: 'montserrat-bold',
-              fontSize: 14,
+              fontSize: 16,
             },
           }}
         >

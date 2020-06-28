@@ -19,27 +19,55 @@ interface Props {
   name: string;
   size: number;
   color: string;
+  style?: object;
 }
 
 const RenderIcon: React.FC<Props> = (props) => {
   switch (props.type) {
     case 'Ionicons':
       return (
-        <Ionicons name={props.name} color={props.color} size={props.size} />
+        <Ionicons
+          style={props.style}
+          name={props.name}
+          color={props.color}
+          size={props.size}
+        />
       );
     case 'AntDesign':
       return (
-        <AntDesign name={props.name} color={props.color} size={props.size} />
+        <AntDesign
+          style={props.style}
+          name={props.name}
+          color={props.color}
+          size={props.size}
+        />
       );
     case 'Entypo':
-      return <Entypo name={props.name} color={props.color} size={props.size} />;
+      return (
+        <Entypo
+          style={props.style}
+          name={props.name}
+          color={props.color}
+          size={props.size}
+        />
+      );
     case 'EvilIcons':
       return (
-        <EvilIcons name={props.name} color={props.color} size={props.size} />
+        <EvilIcons
+          style={props.style}
+          name={props.name}
+          color={props.color}
+          size={props.size}
+        />
       );
     case 'FontAwesome':
       return (
-        <FontAwesome name={props.name} color={props.color} size={props.size} />
+        <FontAwesome
+          style={props.style}
+          name={props.name}
+          color={props.color}
+          size={props.size}
+        />
       );
     default:
       return <></>;
