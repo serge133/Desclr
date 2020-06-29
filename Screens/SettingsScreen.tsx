@@ -6,16 +6,13 @@ import Button from '../components/Button';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/actions/auth';
 
-// import { useSelector } from "react-redux";
-// import { RootState } from "../store/types";
-
 interface Props {
   navigation: {
     dispatch: (action: DrawerActionType) => void;
   };
 }
 
-const SettingsScreen: React.FC<Props> = (props) => {
+const SettingsScreen: React.FC<Props> = props => {
   const dispatch = useDispatch();
 
   return (
@@ -28,7 +25,7 @@ const SettingsScreen: React.FC<Props> = (props) => {
             props.navigation.dispatch(DrawerActions.toggleDrawer()),
         }}
       >
-        Settings
+        Setting
       </Header>
       <View style={styles.content}></View>
       <Button style={styles.button} onPress={() => dispatch(logout())}>

@@ -20,7 +20,7 @@ interface Props extends HabitInterface {
   deletionBarProgress: number;
 }
 
-const Habit: React.FC<Props> = (props) => {
+const Habit: React.FC<Props> = props => {
   const dispatch = useDispatch();
 
   return (
@@ -35,7 +35,7 @@ const Habit: React.FC<Props> = (props) => {
                   type='Entypo'
                   name='edit'
                   color={Colors.primary1}
-                  size={23}
+                  size={30}
                 />
               </View>
             </TouchableOpacity>
@@ -47,14 +47,14 @@ const Habit: React.FC<Props> = (props) => {
             <View style={styles.todo} key={todo.id}>
               <CheckBox
                 value={todo.completed}
-                onCheck={(value) =>
+                onCheck={value =>
                   dispatch(completeHabitTodo(props.id, index, value))
                 }
               />
               <Text.Body1 style={styles.todoText}>{todo.value}</Text.Body1>
             </View>
           ))}
-          {props.todos.every((todo) => todo.completed) && props.isActive && (
+          {props.todos.every(todo => todo.completed) && props.isActive && (
             <View style={styles.buttonContainer}>
               <Button
                 onPress={() =>
@@ -134,9 +134,9 @@ const styles = StyleSheet.create({
   habit: {
     width: '90%',
     backgroundColor: 'white',
-    borderRadius: 20,
-    ...Shadow,
+    borderRadius: 5,
     padding: 10,
+    ...Shadow,
   },
   habitHeader: {
     flexDirection: 'row',
@@ -146,8 +146,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   editButton: {
-    height: 23,
-    width: 23,
+    height: 30,
+    width: 100,
+    alignItems: 'flex-end',
   },
   description: {
     marginTop: 10,

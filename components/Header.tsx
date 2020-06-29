@@ -24,7 +24,7 @@ interface Props {
   };
 }
 
-const Header: React.FC<Props> = (props) => {
+const Header: React.FC<Props> = props => {
   const text = props.children;
   const firstLetter = text[0];
 

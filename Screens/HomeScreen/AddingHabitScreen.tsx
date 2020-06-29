@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
 import Header from '../../components/Header';
 import CustomInput from '../../components/Input';
 import Form from '../../components/Form';
@@ -10,6 +10,7 @@ import { defaultStyles } from '../../constants/default-styles';
 import { useDispatch } from 'react-redux';
 import { addHabit } from '../../store/actions/habit';
 import * as Text from '../../components/Text';
+import KeyboardAvoidingComponent from '../../components/Form';
 
 interface Props {
   navigation: {
@@ -17,11 +18,11 @@ interface Props {
   };
 }
 
-const AddingHabitScreen: React.FC<Props> = (props) => {
+const AddingHabitScreen: React.FC<Props> = props => {
   const [form, setForm] = useState({
     value: { value: '', isError: false, errorMessage: '' },
     description: { value: '', isError: false, errorMessage: '' },
-    interval: { value: 1, isError: false, errorMessage: '' },
+    interval: { value: 1, displayedVal: 1, isError: false, errorMessage: '' },
     todos: [{ id: '3434q2', value: '', completed: false }],
   });
 
@@ -62,8 +63,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
   };
 
   const handleTodo = (id: string, value: string) => {
-    const editIndex = form.todos.findIndex((todo) => todo.id === id);
-    setForm((prevState) => {
+    const editIndex = form.todos.findIndex(todo => todo.id === id);
+    setForm(prevState => {
       const copyTodos = [...prevState.todos];
       copyTodos[editIndex].value = value;
       // If last element is not empty than add a new empty todo
@@ -91,7 +92,12 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
       setForm({
         value: { value: '', isError: false, errorMessage: '' },
         description: { value: '', isError: false, errorMessage: '' },
-        interval: { value: 1, isError: false, errorMessage: '' },
+        interval: {
+          value: 1,
+          displayedVal: 1,
+          isError: false,
+          errorMessage: '',
+        },
         todos: [],
       });
       props.navigation.goBack();
@@ -136,8 +142,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
           label='Name'
           placeholder='Habit Name'
           value={form.value.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               value: {
                 ...prevState.value,
@@ -152,8 +158,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
           label='Description'
           placeholder='Habit Description'
           value={form.description.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               description: {
                 ...prevState.description,
@@ -164,19 +170,20 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
         />
         <CustomSlider
           label='Interval'
-          value={form.interval.value}
+          value={form.interval.displayedVal}
           visibleSliderInformation={`Every ${form.interval.value} ${
             form.interval.value > 1 ? 'days' : 'day'
           }`}
           minimumValue={1}
           maximumValue={7}
-          step={1}
-          onValueChange={(value) =>
-            setForm((prevState) => ({
+          // step={1}
+          onValueChange={value =>
+            setForm(prevState => ({
               ...prevState,
               interval: {
                 ...prevState.interval,
-                value: value,
+                value: +value.toFixed(0),
+                displayedVal: value,
               },
             }))
           }
@@ -196,17 +203,18 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
                 }}
                 placeholder='Your to-do action'
                 value={todo.value}
-                onChangeText={(value) => handleTodo(todo.id, value)}
+                onChangeText={value => handleTodo(todo.id, value)}
               />
             </View>
           </View>
         ))}
+
+        {error.isError && (
+          <View style={styles.formError}>
+            <Text.Error>{error.errorMessage}</Text.Error>
+          </View>
+        )}
       </Form>
-      {error.isError && (
-        <View style={styles.formError}>
-          <Text.Error>{error.errorMessage}</Text.Error>
-        </View>
-      )}
     </View>
   );
 };
