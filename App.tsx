@@ -4,11 +4,9 @@ import DesclrNavigator from './Navigation/DesclrNavigator';
 import { useFonts } from '@use-expo/font';
 import { AppLoading } from 'expo';
 import { createStore, applyMiddleware } from 'redux';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import Thunk from 'redux-thunk';
 import rootReducer from './store/index';
-import { logout } from './store/actions/auth';
-import { isUserValid } from './store/utility';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
