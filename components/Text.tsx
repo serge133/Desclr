@@ -72,7 +72,7 @@ export const Body1: React.FC<Props> = (props) => {
     <Text
       style={{
         fontFamily: 'montserrat',
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.text,
         ...props.style,
       }}
@@ -87,7 +87,7 @@ export const Body2: React.FC<Props> = (props) => {
     <Text
       style={{
         fontFamily: 'montserrat-light',
-        fontSize: 13,
+        fontSize: 14,
         color: Colors.text,
         ...props.style,
       }}

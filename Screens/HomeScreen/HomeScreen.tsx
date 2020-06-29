@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/types';
 import { getHabits, archiveHabit } from '../../store/actions/habit';
 import { getHoursTillExpire } from '../../functions/date';
-import * as Text from '../../components/Text';
 import { isUserValid } from '../../store/utility';
 import { logout } from '../../store/actions/auth';
 
