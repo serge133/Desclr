@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     alignItems: 'center',
+    marginTop: 12,
   },
   habitList: {
     width: '100%',

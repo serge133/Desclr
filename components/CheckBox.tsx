@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     padding: 0,
     borderColor: Colors.primary1,
     borderWidth: 1,
-    borderRadius: 3,
+    borderRadius: 15,
     height: 30,
     width: 30,
     backgroundColor: 'white',

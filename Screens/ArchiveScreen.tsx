@@ -91,17 +91,18 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     alignItems: 'center',
+    marginTop: 12,
   },
   habitList: {
     width: '100%',
     // borderWidth: 1,
   },
-  noHabitsDialog: {
-    width: '70%',
-  },
-  noHabitsDialogText: {
-    textAlign: 'center',
-  },
+  // noHabitsDialog: {
+  //   width: '70%',
+  // },
+  // noHabitsDialogText: {
+  //   textAlign: 'center',
+  // },
 });
 
 export default HomeScreen;

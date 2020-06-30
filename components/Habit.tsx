@@ -20,25 +20,34 @@ interface Props extends HabitInterface {
   deletionBarProgress: number;
 }
 
-const Habit: React.FC<Props> = props => {
+const Habit: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.habitContainer}>
-      <View style={styles.habit}>
-        <Fade fadeType='in' duration={1000}>
+    <Fade fadeType='in' duration={1000}>
+      <View style={styles.habitContainer}>
+        <View
+          style={{
+            ...styles.habit,
+            borderColor: props.isActive
+              ? Colors.primary1
+              : Colors.semanticYellow1,
+          }}
+        >
           <View style={styles.habitHeader}>
             <Text.H3 style={styles.habitTitle}>{props.value}</Text.H3>
-            <TouchableOpacity onPress={props.onEdit}>
-              <View style={styles.editButton}>
-                <RenderIcon
-                  type='Entypo'
-                  name='edit'
-                  color={Colors.primary1}
-                  size={30}
-                />
-              </View>
-            </TouchableOpacity>
+            {props.isActive && (
+              <TouchableOpacity onPress={props.onEdit}>
+                <View style={styles.editButton}>
+                  <RenderIcon
+                    type='Entypo'
+                    name='edit'
+                    color={Colors.primary1}
+                    size={30}
+                  />
+                </View>
+              </TouchableOpacity>
+            )}
           </View>
           <Text.Body3 style={styles.description}>
             {props.description}
@@ -47,14 +56,14 @@ const Habit: React.FC<Props> = props => {
             <View style={styles.todo} key={todo.id}>
               <CheckBox
                 value={todo.completed}
-                onCheck={value =>
+                onCheck={(value) =>
                   dispatch(completeHabitTodo(props.id, index, value))
                 }
               />
               <Text.Body1 style={styles.todoText}>{todo.value}</Text.Body1>
             </View>
           ))}
-          {props.todos.every(todo => todo.completed) && props.isActive && (
+          {props.todos.every((todo) => todo.completed) && props.isActive && (
             <View style={styles.buttonContainer}>
               <Button
                 onPress={() =>
@@ -118,9 +127,9 @@ const Habit: React.FC<Props> = props => {
               }}
             />
           </View>
-        </Fade>
+        </View>
       </View>
-    </View>
+    </Fade>
   );
 };
 
@@ -129,14 +138,15 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     // marginBottom: 24,
-    paddingVertical: 12,
+    paddingBottom: 24,
   },
   habit: {
     width: '90%',
     backgroundColor: 'white',
-    borderRadius: 5,
+    borderRadius: 20,
     padding: 10,
-    ...Shadow,
+    borderWidth: 1,
+    // ...Shadow,
   },
   habitHeader: {
     flexDirection: 'row',
