@@ -1,30 +1,27 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { HabitInterface } from '../types';
-import { Shadow, Colors } from '../constants/default-styles';
+import { Colors } from '../constants/default-styles';
 import * as Text from './Text';
 import CheckBox from './CheckBox';
 import RenderIcon from './RenderIcon';
 import { useDispatch } from 'react-redux';
-import {
-  completeHabitTodo,
-  completeHabit,
-  repostHabit,
-  deleteHabit,
-} from '../store/actions/habit';
-import Button from './Button';
+import { completeHabitTodo } from '../store/actions/habit';
+import Button, { Button as ButtonInterface } from './Button';
 import Fade from '../Animations/Fade';
 
 interface Props extends HabitInterface {
   onEdit: () => void;
   deletionBarProgress: number;
+  completedTodosButtons?: ButtonInterface[];
+  inactiveHabitButtons?: ButtonInterface[];
 }
 
-const Habit: React.FC<Props> = (props) => {
+const Habit: React.FC<Props> = props => {
   const dispatch = useDispatch();
 
   return (
-    <Fade fadeType='in' duration={1000}>
+    <Fade fadeType="in" duration={1000}>
       <View style={styles.habitContainer}>
         <View
           style={{
@@ -40,8 +37,8 @@ const Habit: React.FC<Props> = (props) => {
               <TouchableOpacity onPress={props.onEdit}>
                 <View style={styles.editButton}>
                   <RenderIcon
-                    type='Entypo'
-                    name='edit'
+                    type="Entypo"
+                    name="edit"
                     color={Colors.primary1}
                     size={30}
                   />
@@ -56,61 +53,43 @@ const Habit: React.FC<Props> = (props) => {
             <View style={styles.todo} key={todo.id}>
               <CheckBox
                 value={todo.completed}
-                onCheck={(value) =>
+                onCheck={value =>
                   dispatch(completeHabitTodo(props.id, index, value))
                 }
               />
               <Text.Body1 style={styles.todoText}>{todo.value}</Text.Body1>
             </View>
           ))}
-          {props.todos.every((todo) => todo.completed) && props.isActive && (
+          {props.todos.every(todo => todo.completed) && (
             <View style={styles.buttonContainer}>
-              <Button
-                onPress={() =>
-                  dispatch(
-                    completeHabit(
-                      props.id,
-                      props.streak,
-                      props.interval,
-                      props.todos
-                    )
-                  )
-                }
-                type='colorful'
-                icon={{
-                  type: 'Ionicons',
-                  name: 'ios-checkmark',
-                  size: 30,
-                }}
-              >
-                Complete
-              </Button>
+              {props.completedTodosButtons &&
+                props.completedTodosButtons.map(btn => (
+                  <Button
+                    key={btn.name}
+                    onPress={btn.onPress}
+                    type={btn.type}
+                    icon={btn.icon}
+                    style={styles.button}
+                  >
+                    {btn.name}
+                  </Button>
+                ))}
             </View>
           )}
           {!props.isActive && (
             <View style={styles.buttonContainer}>
-              <Button
-                onPress={() => dispatch(repostHabit(props.id, props.interval))}
-                type='colorful'
-                icon={{
-                  type: 'EvilIcons',
-                  name: 'refresh',
-                  size: 30,
-                }}
-              >
-                Repost
-              </Button>
-              <Button
-                onPress={() => dispatch(deleteHabit(props.id))}
-                icon={{
-                  type: 'AntDesign',
-                  name: 'delete',
-                  size: 30,
-                }}
-                style={{ marginTop: 24 }}
-              >
-                Delete
-              </Button>
+              {props.inactiveHabitButtons &&
+                props.inactiveHabitButtons.map(btn => (
+                  <Button
+                    key={btn.name}
+                    onPress={btn.onPress}
+                    type={btn.type}
+                    icon={btn.icon}
+                    style={styles.button}
+                  >
+                    {btn.name}
+                  </Button>
+                ))}
             </View>
           )}
           <View style={styles.expirationBar}>
@@ -172,9 +151,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
-    marginTop: 24,
     width: '100%',
     alignItems: 'center',
+  },
+  button: {
+    marginTop: 24,
   },
   expirationBar: {
     width: '100%',

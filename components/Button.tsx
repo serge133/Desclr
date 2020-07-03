@@ -10,6 +10,17 @@ import * as Text from './Text';
 import { Shadow, Colors } from '../constants/default-styles';
 import RenderIcon, { IconTypes } from './RenderIcon';
 
+export interface Button {
+  name: string;
+  onPress: () => void;
+  type?: 'colorful';
+  icon?: {
+    type: IconTypes;
+    name: string;
+    size: number;
+  };
+}
+
 interface Props {
   onPress: (event: GestureResponderEvent) => void;
   children: string;
@@ -24,7 +35,7 @@ interface Props {
   extra?: ReactNode;
 }
 
-const Button: React.FC<Props> = (props) => {
+const Button: React.FC<Props> = props => {
   if (props.type === 'colorful') {
     return (
       <TouchableOpacity
@@ -51,7 +62,7 @@ const Button: React.FC<Props> = (props) => {
                 type={props.icon?.type}
                 name={props.icon?.name}
                 size={props.icon?.size}
-                color='white'
+                color="white"
               />
             )}
           </View>

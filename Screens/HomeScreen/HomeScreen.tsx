@@ -5,7 +5,11 @@ import { DrawerActions, DrawerActionType } from '@react-navigation/native';
 import Habit from '../../components/Habit';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/types';
-import { getHabits, archiveHabit } from '../../store/actions/habit';
+import {
+  getHabits,
+  archiveHabit,
+  completeHabit,
+} from '../../store/actions/habit';
 import { getHoursTillExpire } from '../../functions/date';
 import { isUserValid } from '../../store/utility';
 import { logout } from '../../store/actions/auth';
@@ -18,20 +22,20 @@ interface Props {
   };
 }
 
-const HomeScreen: React.FC<Props> = (props) => {
+const HomeScreen: React.FC<Props> = props => {
   const [refreshing, setRefreshing] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const authExpirationDate = useSelector(
     (state: RootState) => state.auth.expirationDate
   );
   const habits = useSelector((state: RootState) => state.habit.habits);
-  const activeHabits = habits.filter((habit) => habit.isActive);
+  const activeHabits = habits.filter(habit => habit.isActive);
   const dispatch = useDispatch();
 
   // Refresh every minute for the update of get hours until expire progress bar
   useEffect(() => {
     const interval = setInterval(() => {
-      setRefresh((prev) => !prev);
+      setRefresh(prev => !prev);
     }, 60000);
 
     return () => clearInterval(interval);
@@ -42,11 +46,12 @@ const HomeScreen: React.FC<Props> = (props) => {
     dispatch(logout());
   }
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      dispatch(getHabits());
-    }, 1000);
+    // setTimeout(() => {
+    //   dispatch(getHabits());
+    // }, 1000);
+    await dispatch(getHabits());
     setRefreshing(false);
   }, [refreshing]);
 
@@ -75,11 +80,11 @@ const HomeScreen: React.FC<Props> = (props) => {
         <FlatList
           style={styles.habitList}
           data={activeHabits}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          renderItem={(itemData) => {
+          renderItem={itemData => {
             const hoursTillExpire = getHoursTillExpire(
               itemData.item.expirationDate
             );
@@ -112,6 +117,31 @@ const HomeScreen: React.FC<Props> = (props) => {
                   })
                 }
                 isActive
+                completedTodosButtons={[
+                  {
+                    name: 'Quick Complete',
+                    type: 'colorful',
+                    onPress: () =>
+                      dispatch(
+                        completeHabit(
+                          itemData.item.id,
+                          itemData.item.streak,
+                          itemData.item.interval,
+                          itemData.item.todos
+                        )
+                      ),
+                    icon: {
+                      type: 'Ionicons',
+                      name: 'ios-checkmark',
+                      size: 30,
+                    },
+                  },
+                  {
+                    name: 'Journal Complete',
+                    onPress: () => {},
+                    icon: { type: 'AntDesign', name: 'arrowright', size: 16 },
+                  },
+                ]}
               />
             );
           }}

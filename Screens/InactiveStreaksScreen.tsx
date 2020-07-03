@@ -13,19 +13,20 @@ interface Props {
   };
 }
 
-const InactiveStreaksScreen: React.FC<Props> = (props) => {
+const InactiveStreaksScreen: React.FC<Props> = props => {
   const [sort, setSort] = useState('descending');
   const [refreshing, setRefreshing] = useState(false);
   const habits = useSelector((state: RootState) => state.habit.habits);
-  const filteredHabits = habits.filter((habit) => !habit.isActive);
+  const filteredHabits = habits.filter(habit => !habit.isActive);
 
   const dispatch = useDispatch();
 
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    setTimeout(() => {
-      dispatch(getHabits());
-    }, 1000);
+    // setTimeout(() => {
+    //   dispatch(getHabits());
+    // }, 1000);
+    await dispatch(getHabits());
     setRefreshing(false);
   }, [refreshing]);
 
@@ -68,13 +69,13 @@ const InactiveStreaksScreen: React.FC<Props> = (props) => {
       <View style={styles.content}>
         <FlatList
           data={filteredHabits}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          renderItem={(itemData) => (
+          renderItem={itemData => (
             <Streak
-              type='inactive'
+              type="inactive"
               value={itemData.item.value}
               streak={itemData.item.streak}
               onPress={() => {}}

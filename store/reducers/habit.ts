@@ -21,7 +21,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
     updatedHabit: object
   ): HabitInterface[] => {
     let copyHabits = [...state.habits];
-    const habitIndex = state.habits.findIndex((habit) => habit.id === habitId);
+    const habitIndex = state.habits.findIndex(habit => habit.id === habitId);
     if (habitIndex < 0) return copyHabits;
     copyHabits[habitIndex] = { ...copyHabits[habitIndex], ...updatedHabit };
     return copyHabits;
@@ -45,7 +45,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
       return { ...state, habits: action.habits };
     case COMPLETE_HABIT_TODO:
       const habitIndex = state.habits.findIndex(
-        (habit) => habit.id === action.habitId
+        habit => habit.id === action.habitId
       );
 
       let copyTodos = [...state.habits[habitIndex].todos];
@@ -84,7 +84,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
     case DELETE_HABIT:
       const copyHabits = [...state.habits];
       const deleteIndex = copyHabits.findIndex(
-        (habit) => habit.id === action.habitId
+        habit => habit.id === action.habitId
       );
       copyHabits.splice(deleteIndex, 1);
       return {
