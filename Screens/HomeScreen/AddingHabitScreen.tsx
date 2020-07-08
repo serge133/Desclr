@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import Header from '../../components/Header';
 import CustomInput from '../../components/Input';
 import Form from '../../components/Form';
@@ -10,7 +10,6 @@ import { defaultStyles } from '../../constants/default-styles';
 import { useDispatch } from 'react-redux';
 import { addHabit } from '../../store/actions/habit';
 import * as Text from '../../components/Text';
-import KeyboardAvoidingComponent from '../../components/Form';
 
 interface Props {
   navigation: {
