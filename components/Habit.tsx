@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  GestureResponderEvent,
+} from 'react-native';
 import { HabitInterface } from '../types';
 import { Colors } from '../constants/default-styles';
 import * as Text from './Text';
@@ -17,12 +22,31 @@ interface HabitProps extends HabitInterface {
   inactiveHabitButtons?: ButtonInterface[];
 }
 
-interface HabitHiddenRowButtonProps {}
+interface HabitHiddenRowButtonProps {
+  canComplete: boolean;
+  onComplete: (event: GestureResponderEvent) => void;
+}
+
+interface ArchivedHabitHiddenRowButtonsProps {
+  onDelete: (event: GestureResponderEvent) => void;
+  onRepost: (event: GestureResponderEvent) => void;
+}
 
 export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props => (
   <View style={styles.rowBack}>
-    <TouchableOpacity style={styles.rowBackButtonContainer}>
-      <View style={styles.rowBackButton}>
+    <TouchableOpacity
+      style={styles.rowBackButtonContainer}
+      disabled={!props.canComplete}
+      onPress={props.onComplete}
+    >
+      <View
+        style={[
+          styles.rowBackButton,
+          props.canComplete
+            ? { backgroundColor: Colors.primary1 }
+            : { backgroundColor: Colors.grey4 },
+        ]}
+      >
         <RenderIcon
           type='Ionicons'
           name='ios-checkmark'
@@ -32,13 +56,49 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
       </View>
     </TouchableOpacity>
     <TouchableOpacity style={styles.rowBackButtonContainer}>
-      <View style={styles.rowBackButton}>
+      <View
+        style={[
+          styles.rowBackButton,
+          { backgroundColor: Colors.primary1, borderRadius: 20 },
+        ]}
+      >
         <RenderIcon
           type='AntDesign'
           name='closecircleo'
           size={50}
           color='white'
         />
+      </View>
+    </TouchableOpacity>
+  </View>
+);
+
+export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButtonsProps> = props => (
+  <View style={styles.rowBack}>
+    <TouchableOpacity
+      style={styles.rowBackButtonContainer}
+      onPress={props.onRepost}
+    >
+      <View
+        style={[
+          styles.rowBackButton,
+          { backgroundColor: Colors.semanticYellow1 },
+        ]}
+      >
+        <RenderIcon type='EvilIcons' name='refresh' size={70} color='white' />
+      </View>
+    </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.rowBackButtonContainer}
+      onPress={props.onDelete}
+    >
+      <View
+        style={[
+          styles.rowBackButton,
+          { backgroundColor: Colors.semanticYellow1 },
+        ]}
+      >
+        <RenderIcon type='AntDesign' name='delete' size={50} color='white' />
       </View>
     </TouchableOpacity>
   </View>
@@ -84,7 +144,7 @@ const Habit: React.FC<HabitProps> = props => {
             <Text.Body1 style={styles.todoText}>{todo.value}</Text.Body1>
           </View>
         ))}
-        {props.todos.every(todo => todo.completed) && (
+        {/* {props.todos.every(todo => todo.completed) && (
           <View style={styles.buttonContainer}>
             {props.completedTodosButtons &&
               props.completedTodosButtons.map(btn => (
@@ -99,8 +159,8 @@ const Habit: React.FC<HabitProps> = props => {
                 </Button>
               ))}
           </View>
-        )}
-        {!props.isActive && (
+        )} */}
+        {/* {!props.isActive && (
           <View style={styles.buttonContainer}>
             {props.inactiveHabitButtons &&
               props.inactiveHabitButtons.map(btn => (
@@ -115,7 +175,7 @@ const Habit: React.FC<HabitProps> = props => {
                 </Button>
               ))}
           </View>
-        )}
+        )} */}
         <View style={styles.expirationBar}>
           <View
             style={{
@@ -209,10 +269,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.primary1,
   },
-  rowBackRight: {},
-  rowBackLeft: {},
 });
 
 export default Habit;

@@ -127,53 +127,67 @@ const HomeScreen: React.FC<Props> = props => {
                   })
                 }
                 isActive
-                completedTodosButtons={[
-                  {
-                    name: 'Quick Complete',
-                    type: 'colorful',
-                    onPress: () =>
-                      dispatch(
-                        completeHabit(
-                          itemData.item.id,
-                          itemData.item.streak,
-                          itemData.item.interval,
-                          itemData.item.todos
-                        )
-                      ),
-                    icon: {
-                      type: 'Ionicons',
-                      name: 'ios-checkmark',
-                      size: 30,
-                    },
-                  },
-                  {
-                    name: 'Journal Complete',
-                    onPress: () => {},
-                    icon: { type: 'AntDesign', name: 'arrowright', size: 16 },
-                  },
-                ]}
+                // completedTodosButtons={[
+                //   {
+                //     name: 'Quick Complete',
+                //     type: 'colorful',
+                //     onPress: () =>
+                //       dispatch(
+                //         completeHabit(
+                //           itemData.item.id,
+                //           itemData.item.streak,
+                //           itemData.item.interval,
+                //           itemData.item.todos
+                //         )
+                //       ),
+                //     icon: {
+                //       type: 'Ionicons',
+                //       name: 'ios-checkmark',
+                //       size: 30,
+                //     },
+                //   },
+                //   {
+                //     name: 'Journal Complete',
+                //     onPress: () => {},
+                //     icon: { type: 'AntDesign', name: 'arrowright', size: 16 },
+                //   },
+                // ]}
               />
             );
           }}
           //! Make this a seperate component
-          renderHiddenItem={(data, rowMap) => <HabitHiddenRowButtons />}
-            // <View style={styles.rowBack}>
-            //   <TouchableOpacity style={styles.rowBackButtonContainer}>
-            //     <View style={styles.rowBackButton}>
-            //       <RenderIcon
-            //         type='Ionicons'
-            //         name='ios-checkmark'
-            //         size={50}
-            //         color='white'
-            //       />
-            //     </View>
-            //   </TouchableOpacity>
-            //   <View style={styles.rowBackButtonContainer}>
-            //     <View style={styles.rowBackButton}>
-            //       <Text>Right</Text>
-            //     </View>
-            //   </View>
-            // </View>}
+          renderHiddenItem={(itemData, rowMap) => (
+            <HabitHiddenRowButtons
+              canComplete={itemData.item.todos.every(todo => todo.completed)}
+              onComplete={() =>
+                dispatch(
+                  completeHabit(
+                    itemData.item.id,
+                    itemData.item.streak,
+                    itemData.item.interval,
+                    itemData.item.todos
+                  )
+                )
+              }
+            />
+          )}
+          // <View style={styles.rowBack}>
+          //   <TouchableOpacity style={styles.rowBackButtonContainer}>
+          //     <View style={styles.rowBackButton}>
+          //       <RenderIcon
+          //         type='Ionicons'
+          //         name='ios-checkmark'
+          //         size={50}
+          //         color='white'
+          //       />
+          //     </View>
+          //   </TouchableOpacity>
+          //   <View style={styles.rowBackButtonContainer}>
+          //     <View style={styles.rowBackButton}>
+          //       <Text>Right</Text>
+          //     </View>
+          //   </View>
+          // </View>}
           rightOpenValue={-100}
           leftOpenValue={100}
         />

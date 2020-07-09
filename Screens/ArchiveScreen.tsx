@@ -2,11 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, RefreshControl, FlatList } from 'react-native';
 import Header from '../components/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
-import Habit from '../components/Habit';
+import Habit, { ArchivedHabitHiddenRowButtons } from '../components/Habit';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/types';
 import { getHabits, repostHabit, deleteHabit } from '../store/actions/habit';
 import * as Text from '../components/Text';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 interface Props {
   navigation: {
@@ -55,7 +56,7 @@ const HomeScreen: React.FC<Props> = props => {
             </Text.Body2>
           </View>
         )}
-        <FlatList
+        <SwipeListView
           style={styles.habitList}
           data={inactiveHabits}
           keyExtractor={item => item.id}
@@ -74,32 +75,42 @@ const HomeScreen: React.FC<Props> = props => {
               deletionBarProgress={100}
               onEdit={() => {}}
               isActive={false}
-              inactiveHabitButtons={[
-                {
-                  name: 'Repost',
-                  type: 'colorful',
-                  onPress: () =>
-                    dispatch(
-                      repostHabit(itemData.item.id, itemData.item.interval)
-                    ),
-                  icon: {
-                    type: 'EvilIcons',
-                    name: 'refresh',
-                    size: 30,
-                  },
-                },
-                {
-                  name: 'Delete',
-                  onPress: () => dispatch(deleteHabit(itemData.item.id)),
-                  icon: {
-                    type: 'AntDesign',
-                    name: 'delete',
-                    size: 30,
-                  },
-                },
-              ]}
+              // inactiveHabitButtons={[
+              //   {
+              //     name: 'Repost',
+              //     type: 'colorful',
+              //     onPress: () =>
+              //       dispatch(
+              //         repostHabit(itemData.item.id, itemData.item.interval)
+              //       ),
+              //     icon: {
+              //       type: 'EvilIcons',
+              //       name: 'refresh',
+              //       size: 30,
+              //     },
+              //   },
+              //   {
+              //     name: 'Delete',
+              //     onPress: () => dispatch(deleteHabit(itemData.item.id)),
+              //     icon: {
+              //       type: 'AntDesign',
+              //       name: 'delete',
+              //       size: 30,
+              //     },
+              //   },
+              // ]}
             />
           )}
+          renderHiddenItem={(itemData, rowMap) => (
+            <ArchivedHabitHiddenRowButtons
+              onRepost={() =>
+                dispatch(repostHabit(itemData.item.id, itemData.item.interval))
+              }
+              onDelete={() => dispatch(deleteHabit(itemData.item.id))}
+            />
+          )}
+          rightOpenValue={-100}
+          leftOpenValue={100}
         />
       </View>
     </View>
