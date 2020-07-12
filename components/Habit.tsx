@@ -12,19 +12,17 @@ import CheckBox from './CheckBox';
 import RenderIcon from './RenderIcon';
 import { useDispatch } from 'react-redux';
 import { completeHabitTodo } from '../store/actions/habit';
-import Button, { Button as ButtonInterface } from './Button';
 // import Fade from '../Animations/Fade';
 
 interface HabitProps extends HabitInterface {
   onEdit: () => void;
   deletionBarProgress: number;
-  completedTodosButtons?: ButtonInterface[];
-  inactiveHabitButtons?: ButtonInterface[];
 }
 
 interface HabitHiddenRowButtonProps {
   canComplete: boolean;
   onComplete: (event: GestureResponderEvent) => void;
+  fractionCompleted: string;
 }
 
 interface ArchivedHabitHiddenRowButtonsProps {
@@ -53,6 +51,7 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
           size={50}
           color='white'
         />
+      {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
       </View>
     </TouchableOpacity>
     <TouchableOpacity style={styles.rowBackButtonContainer}>
@@ -144,38 +143,6 @@ const Habit: React.FC<HabitProps> = props => {
             <Text.Body1 style={styles.todoText}>{todo.value}</Text.Body1>
           </View>
         ))}
-        {/* {props.todos.every(todo => todo.completed) && (
-          <View style={styles.buttonContainer}>
-            {props.completedTodosButtons &&
-              props.completedTodosButtons.map(btn => (
-                <Button
-                  key={btn.name}
-                  onPress={btn.onPress}
-                  type={btn.type}
-                  icon={btn.icon}
-                  style={styles.button}
-                >
-                  {btn.name}
-                </Button>
-              ))}
-          </View>
-        )} */}
-        {/* {!props.isActive && (
-          <View style={styles.buttonContainer}>
-            {props.inactiveHabitButtons &&
-              props.inactiveHabitButtons.map(btn => (
-                <Button
-                  key={btn.name}
-                  onPress={btn.onPress}
-                  type={btn.type}
-                  icon={btn.icon}
-                  style={styles.button}
-                >
-                  {btn.name}
-                </Button>
-              ))}
-          </View>
-        )} */}
         <View style={styles.expirationBar}>
           <View
             style={{

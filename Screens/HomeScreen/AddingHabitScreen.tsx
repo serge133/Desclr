@@ -10,6 +10,7 @@ import { defaultStyles } from '../../constants/default-styles';
 import { useDispatch } from 'react-redux';
 import { addHabit } from '../../store/actions/habit';
 import * as Text from '../../components/Text';
+import Dropdown from '../../components/Dropdown';
 
 interface Props {
   navigation: {
@@ -17,13 +18,16 @@ interface Props {
   };
 }
 
+const initialForm = {
+  value: { value: '', isError: false, errorMessage: '' },
+  description: { value: '', isError: false, errorMessage: '' },
+  habitType: 'Default',
+  interval: { value: 1, displayedVal: 1, isError: false, errorMessage: '' },
+  todos: [{ id: '3434q2', value: '', completed: false }],
+};
+
 const AddingHabitScreen: React.FC<Props> = props => {
-  const [form, setForm] = useState({
-    value: { value: '', isError: false, errorMessage: '' },
-    description: { value: '', isError: false, errorMessage: '' },
-    interval: { value: 1, displayedVal: 1, isError: false, errorMessage: '' },
-    todos: [{ id: '3434q2', value: '', completed: false }],
-  });
+  const [form, setForm] = useState(initialForm);
 
   const [error, setError] = useState({
     isError: false,
@@ -88,17 +92,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
 
   const handleCancel = () => {
     const clearFormAndGoBack = () => {
-      setForm({
-        value: { value: '', isError: false, errorMessage: '' },
-        description: { value: '', isError: false, errorMessage: '' },
-        interval: {
-          value: 1,
-          displayedVal: 1,
-          isError: false,
-          errorMessage: '',
-        },
-        todos: [],
-      });
+      setForm(initialForm);
       props.navigation.goBack();
     };
     Alert.alert('Cancel', "Are you sure you don't want to save your habit?", [
@@ -166,6 +160,18 @@ const AddingHabitScreen: React.FC<Props> = props => {
               },
             }))
           }
+        />
+        <Dropdown
+          label='Habit Type'
+          entries={[
+            { index: 0, label: 'Default' },
+            { index: 1, label: 'Exercise' },
+            { index: 2, label: 'Knowledge' },
+          ]}
+          onEntryPress={label =>
+            setForm(prevState => ({ ...prevState, habitType: label }))
+          }
+          chosenEntry={form.habitType}
         />
         <CustomSlider
           label='Interval'

@@ -1,11 +1,8 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback  } from 'react';
 import {
   View,
   StyleSheet,
   RefreshControl,
-  FlatList,
-  Text,
-  TouchableOpacity,
 } from 'react-native';
 import Header from '../../components/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
@@ -21,8 +18,6 @@ import { getHoursTillExpire } from '../../functions/date';
 import { isUserValid } from '../../store/utility';
 import { logout } from '../../store/actions/auth';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { Colors } from '../../constants/default-styles';
-import RenderIcon from '../../components/RenderIcon';
 
 interface Props {
   navigation: {
@@ -58,9 +53,6 @@ const HomeScreen: React.FC<Props> = props => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    // setTimeout(() => {
-    //   dispatch(getHabits());
-    // }, 1000);
     await dispatch(getHabits());
     setRefreshing(false);
   }, [refreshing]);
@@ -127,38 +119,13 @@ const HomeScreen: React.FC<Props> = props => {
                   })
                 }
                 isActive
-                // completedTodosButtons={[
-                //   {
-                //     name: 'Quick Complete',
-                //     type: 'colorful',
-                //     onPress: () =>
-                //       dispatch(
-                //         completeHabit(
-                //           itemData.item.id,
-                //           itemData.item.streak,
-                //           itemData.item.interval,
-                //           itemData.item.todos
-                //         )
-                //       ),
-                //     icon: {
-                //       type: 'Ionicons',
-                //       name: 'ios-checkmark',
-                //       size: 30,
-                //     },
-                //   },
-                //   {
-                //     name: 'Journal Complete',
-                //     onPress: () => {},
-                //     icon: { type: 'AntDesign', name: 'arrowright', size: 16 },
-                //   },
-                // ]}
               />
             );
           }}
-          //! Make this a seperate component
           renderHiddenItem={(itemData, rowMap) => (
             <HabitHiddenRowButtons
               canComplete={itemData.item.todos.every(todo => todo.completed)}
+              fractionCompleted={`${itemData.item.todos.filter(todo => todo.completed).length}/${itemData.item.todos.length}`}
               onComplete={() =>
                 dispatch(
                   completeHabit(
@@ -171,23 +138,6 @@ const HomeScreen: React.FC<Props> = props => {
               }
             />
           )}
-          // <View style={styles.rowBack}>
-          //   <TouchableOpacity style={styles.rowBackButtonContainer}>
-          //     <View style={styles.rowBackButton}>
-          //       <RenderIcon
-          //         type='Ionicons'
-          //         name='ios-checkmark'
-          //         size={50}
-          //         color='white'
-          //       />
-          //     </View>
-          //   </TouchableOpacity>
-          //   <View style={styles.rowBackButtonContainer}>
-          //     <View style={styles.rowBackButton}>
-          //       <Text>Right</Text>
-          //     </View>
-          //   </View>
-          // </View>}
           rightOpenValue={-100}
           leftOpenValue={100}
         />
@@ -210,29 +160,7 @@ const styles = StyleSheet.create({
   },
   habitList: {
     width: '100%',
-    // borderWidth: 1,
   },
-  // rowBack: {
-  //   display: 'flex',
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   paddingHorizontal: '5%',
-  //   flex: 1,
-  // },
-  // rowBackButtonContainer: {
-  //   height: '100%',
-  //   width: 90,
-  //   paddingBottom: 24,
-  // },
-  // rowBackButton: {
-  //   flex: 1,
-  //   borderRadius: 20,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   backgroundColor: Colors.primary1,
-  // },
-  // rowBackRight: {},
-  // rowBackLeft: {},
 });
 
 export default HomeScreen;

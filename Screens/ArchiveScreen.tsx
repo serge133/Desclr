@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, RefreshControl, FlatList } from 'react-native';
+import { View, StyleSheet, RefreshControl } from 'react-native';
 import Header from '../components/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
 import Habit, { ArchivedHabitHiddenRowButtons } from '../components/Habit';
@@ -25,9 +25,6 @@ const HomeScreen: React.FC<Props> = props => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    // setTimeout(() => {
-    //   dispatch(getHabits());
-    // }, 1000);
     await dispatch(getHabits());
     setRefreshing(false);
   }, [refreshing]);
@@ -75,30 +72,6 @@ const HomeScreen: React.FC<Props> = props => {
               deletionBarProgress={100}
               onEdit={() => {}}
               isActive={false}
-              // inactiveHabitButtons={[
-              //   {
-              //     name: 'Repost',
-              //     type: 'colorful',
-              //     onPress: () =>
-              //       dispatch(
-              //         repostHabit(itemData.item.id, itemData.item.interval)
-              //       ),
-              //     icon: {
-              //       type: 'EvilIcons',
-              //       name: 'refresh',
-              //       size: 30,
-              //     },
-              //   },
-              //   {
-              //     name: 'Delete',
-              //     onPress: () => dispatch(deleteHabit(itemData.item.id)),
-              //     icon: {
-              //       type: 'AntDesign',
-              //       name: 'delete',
-              //       size: 30,
-              //     },
-              //   },
-              // ]}
             />
           )}
           renderHiddenItem={(itemData, rowMap) => (
@@ -131,14 +104,7 @@ const styles = StyleSheet.create({
   },
   habitList: {
     width: '100%',
-    // borderWidth: 1,
   },
-  // noHabitsDialog: {
-  //   width: '70%',
-  // },
-  // noHabitsDialogText: {
-  //   textAlign: 'center',
-  // },
 });
 
 export default HomeScreen;

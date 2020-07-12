@@ -8,7 +8,6 @@ import { Provider } from 'react-redux';
 import Thunk from 'redux-thunk';
 import rootReducer from './store/index';
 
-// I am dev
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
@@ -18,7 +17,7 @@ const App: React.FC = () => {
   });
 
   if (!fontsLoaded) return <AppLoading />;
-
+  
   const store = createStore(rootReducer, applyMiddleware(Thunk));
 
   return (
