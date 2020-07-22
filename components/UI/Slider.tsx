@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Slider, SliderProps } from 'react-native';
 import * as Text from './Text';
-import { Colors } from '../constants/default-styles';
+import { Colors } from '../../constants/default-styles';
 
 interface Props extends SliderProps {
   label?: string;

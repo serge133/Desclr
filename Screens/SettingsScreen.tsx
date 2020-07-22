@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Header from '../components/Header';
+import Header from '../components/UI/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
-import Button from '../components/Button';
+import Button from '../components/UI/Button';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/actions/auth';
 

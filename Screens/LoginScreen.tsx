@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import Header from '../components/Header';
-import Button from '../components/Button';
-import CustomInput from '../components/Input';
-import * as Text from '../components/Text';
+import Header from '../components/UI/Header';
+import Button from '../components/UI/Button';
+import CustomInput from '../components/UI/Input';
+import * as Text from '../components/UI/Text';
 import {
   emailValidityFunction,
   passwordValidityFunction,
@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../store/actions/auth';
 import { RootState } from '../store/types';
-import Form from '../components/Form';
+import Form from '../components/UI/Form';
 import { defaultStyles } from '../constants/default-styles';
 
 interface Props {
@@ -21,7 +21,7 @@ interface Props {
   };
 }
 
-const SignInScreen: React.FC<Props> = (props) => {
+const SignInScreen: React.FC<Props> = props => {
   const [form, setForm] = useState({
     email: { value: '', isError: false, errorMessage: '' },
     password: { value: '', isError: false, errorMessage: '' },
@@ -49,7 +49,7 @@ const SignInScreen: React.FC<Props> = (props) => {
     const passwordValidity = passwordValidityFunction(form.password.value);
 
     if (passwordValidity !== 'No Error') {
-      return setForm((prevState) => ({
+      return setForm(prevState => ({
         ...prevState,
         password: {
           value: prevState.password.value,
@@ -83,8 +83,8 @@ const SignInScreen: React.FC<Props> = (props) => {
           isError={form.email.isError}
           errorMessage={form.email.errorMessage}
           value={form.email.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               email: {
                 value: value,
@@ -104,8 +104,8 @@ const SignInScreen: React.FC<Props> = (props) => {
           errorMessage={form.password.errorMessage}
           secureTextEntry={isPasswordHidden}
           value={form.password.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               password: {
                 value: value,

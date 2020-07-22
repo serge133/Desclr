@@ -1,4 +1,4 @@
-// * All these use Date().toLocaleString();
+// All these use Date().toLocaleString();
 
 export const getHoursTillExpire = (expirationDate: string): number => {
   return Math.round(
@@ -13,7 +13,7 @@ export const getMinutesTillExpire = (expirationDate: string): number => {
 };
 
 export const addDaysToTodaysDate = (days: number): string => {
-  const daysToMilliseconds = days * 86400000;
+  const milliseconds = days * 86400000;
 
-  return new Date(new Date().getTime() + daysToMilliseconds).toLocaleString();
+  return new Date(new Date().getTime() + milliseconds).toLocaleString();
 };

@@ -3,11 +3,9 @@ import { AsyncStorage } from 'react-native';
 
 export const isUserValid = (authExpiryDate: string): boolean => {
   if (getMinutesTillExpire(authExpiryDate) <= 0) {
-    //   saveCredentialsToStorage("", "", "");
     return false;
-  } else {
-    return true;
   }
+  return true;
 };
 
 export const saveCredentialsToStorage = (

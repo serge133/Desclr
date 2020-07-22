@@ -1,3 +1,4 @@
+// ? Almost Optimized
 import { StyleSheet } from 'react-native';
 
 export const Colors = {
@@ -5,13 +6,13 @@ export const Colors = {
   primary2: '#7168F6',
   primary3: '#A09AF9',
   primary4: '#CFCCFC',
-  accent1: '#BE52F2',
-  accent2: '#CE7DF5',
-  accent3: '#DFA9F9',
-  accent4: '#EED3FB',
-  semanticYellow1: '#FFCF5C',
-  semanticYellow2: '#FFDB85',
-  semanticYellow3: '#FFE7AE',
+  //// accent1: '#BE52F2',
+  //// accent2: '#CE7DF5',
+  //// accent3: '#DFA9F9',
+  //// accent4: '#EED3FB',
+  accent1: '#FFCF5C',
+  accent2: '#FFDB85',
+  accent3: '#FFE7AE',
   semanticBlue1: '#0084F4',
   semanticBlue2: '#40A3F7',
   semanticBlue3: '#80C2FA',

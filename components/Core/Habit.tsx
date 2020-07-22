@@ -5,13 +5,13 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
-import { HabitInterface } from '../types';
-import { Colors } from '../constants/default-styles';
-import * as Text from './Text';
-import CheckBox from './CheckBox';
-import RenderIcon from './RenderIcon';
+import { HabitInterface } from '../../types';
+import { Colors } from '../../constants/default-styles';
+import * as Text from '../UI/Text';
+import CheckBox from '../UI/CheckBox';
+import RenderIcon from '../UI/RenderIcon';
 import { useDispatch } from 'react-redux';
-import { completeHabitTodo } from '../store/actions/habit';
+import { completeHabitTodo } from '../../store/actions/habit';
 // import Fade from '../Animations/Fade';
 
 interface HabitProps extends HabitInterface {
@@ -51,7 +51,7 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
           size={50}
           color='white'
         />
-      {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
+        {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
       </View>
     </TouchableOpacity>
     <TouchableOpacity style={styles.rowBackButtonContainer}>
@@ -78,12 +78,7 @@ export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButto
       style={styles.rowBackButtonContainer}
       onPress={props.onRepost}
     >
-      <View
-        style={[
-          styles.rowBackButton,
-          { backgroundColor: Colors.semanticYellow1 },
-        ]}
-      >
+      <View style={[styles.rowBackButton, { backgroundColor: Colors.accent1 }]}>
         <RenderIcon type='EvilIcons' name='refresh' size={70} color='white' />
       </View>
     </TouchableOpacity>
@@ -91,12 +86,7 @@ export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButto
       style={styles.rowBackButtonContainer}
       onPress={props.onDelete}
     >
-      <View
-        style={[
-          styles.rowBackButton,
-          { backgroundColor: Colors.semanticYellow1 },
-        ]}
-      >
+      <View style={[styles.rowBackButton, { backgroundColor: Colors.accent1 }]}>
         <RenderIcon type='AntDesign' name='delete' size={50} color='white' />
       </View>
     </TouchableOpacity>
@@ -111,9 +101,7 @@ const Habit: React.FC<HabitProps> = props => {
       <View
         style={{
           ...styles.habit,
-          borderColor: props.isActive
-            ? Colors.primary1
-            : Colors.semanticYellow1,
+          borderColor: props.isActive ? Colors.primary1 : Colors.accent1,
         }}
       >
         <View style={styles.habitHeader}>
@@ -153,7 +141,7 @@ const Habit: React.FC<HabitProps> = props => {
                   : `${props.deletionBarProgress}%`,
               backgroundColor: props.isActive
                 ? Colors.primary1
-                : Colors.semanticYellow1,
+                : Colors.accent1,
             }}
           />
         </View>

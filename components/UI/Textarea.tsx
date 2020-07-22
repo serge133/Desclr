@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, TextInputProps } from 'react-native';
 import * as Text from './Text';
-import { Colors } from '../constants/default-styles';
+import { Colors } from '../../constants/default-styles';
 
 interface Props extends TextInputProps {
   label?: string;
   containerStyle?: object;
 }
 
-const Textarea: React.FC<Props> = (props) => {
+const Textarea: React.FC<Props> = props => {
   return (
     <View style={{ ...styles.textareaContainer, ...props.containerStyle }}>
       {props.label ? (

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import Header from '../components/Header';
-import Button from '../components/Button';
-import Input from '../components/Input';
+import Header from '../components/UI/Header';
+import Button from '../components/UI/Button';
+import Input from '../components/UI/Input';
 import { useDispatch } from 'react-redux';
 import { signup } from '../store/actions/auth';
 import {
@@ -10,7 +10,7 @@ import {
   passwordValidityFunction,
   confirmPasswordValidityFunction,
 } from '../functions/validity';
-import Form from '../components/Form';
+import Form from '../components/UI/Form';
 import { defaultStyles } from '../constants/default-styles';
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
   };
 }
 
-const SignUpScreen: React.FC<Props> = (props) => {
+const SignUpScreen: React.FC<Props> = props => {
   const [form, setForm] = useState({
     email: { value: '', isError: false, errorMessage: '' },
     password: { value: '', isError: false, errorMessage: '' },
@@ -44,7 +44,7 @@ const SignUpScreen: React.FC<Props> = (props) => {
     const passwordValidity = passwordValidityFunction(form.password.value);
 
     if (passwordValidity !== 'No Error') {
-      return setForm((prevState) => ({
+      return setForm(prevState => ({
         ...prevState,
         password: {
           value: prevState.password.value,
@@ -94,8 +94,8 @@ const SignUpScreen: React.FC<Props> = (props) => {
           errorMessage={form.email.errorMessage}
           autoCapitalize='none'
           value={form.email.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               email: {
                 value: value,
@@ -115,8 +115,8 @@ const SignUpScreen: React.FC<Props> = (props) => {
           errorMessage={form.password.errorMessage}
           secureTextEntry
           value={form.password.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               password: {
                 value: value,
@@ -136,8 +136,8 @@ const SignUpScreen: React.FC<Props> = (props) => {
           errorMessage={form.confirmPassword.errorMessage}
           secureTextEntry
           value={form.confirmPassword.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               confirmPassword: {
                 value: value,

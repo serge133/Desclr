@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import * as Gradients from './Gradient';
 import * as Text from './Text';
-import { Shadow, Colors } from '../constants/default-styles';
+import { Shadow, Colors } from '../../constants/default-styles';
 import RenderIcon, { IconTypes } from './RenderIcon';
 
 export interface Button {
@@ -62,7 +62,7 @@ const Button: React.FC<Props> = props => {
                 type={props.icon?.type}
                 name={props.icon?.name}
                 size={props.icon?.size}
-                color="white"
+                color='white'
               />
             )}
           </View>

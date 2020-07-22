@@ -1,12 +1,8 @@
-import React, { useEffect, useState, useCallback  } from 'react';
-import {
-  View,
-  StyleSheet,
-  RefreshControl,
-} from 'react-native';
-import Header from '../../components/Header';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, StyleSheet, RefreshControl } from 'react-native';
+import Header from '../../components/UI/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
-import Habit, { HabitHiddenRowButtons } from '../../components/Habit';
+import Habit, { HabitHiddenRowButtons } from '../../components/Core/Habit';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/types';
 import {
@@ -47,9 +43,7 @@ const HomeScreen: React.FC<Props> = props => {
   }, []);
 
   // Refresh every minute will cause automatic logout when token expires
-  if (!isUserValid(authExpirationDate)) {
-    dispatch(logout());
-  }
+  if (!isUserValid(authExpirationDate)) dispatch(logout());
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -125,7 +119,9 @@ const HomeScreen: React.FC<Props> = props => {
           renderHiddenItem={(itemData, rowMap) => (
             <HabitHiddenRowButtons
               canComplete={itemData.item.todos.every(todo => todo.completed)}
-              fractionCompleted={`${itemData.item.todos.filter(todo => todo.completed).length}/${itemData.item.todos.length}`}
+              fractionCompleted={`${
+                itemData.item.todos.filter(todo => todo.completed).length
+              }/${itemData.item.todos.length}`}
               onComplete={() =>
                 dispatch(
                   completeHabit(

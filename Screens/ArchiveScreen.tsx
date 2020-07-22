@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
-import Header from '../components/Header';
+import Header from '../components/UI/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
-import Habit, { ArchivedHabitHiddenRowButtons } from '../components/Habit';
+import Habit, { ArchivedHabitHiddenRowButtons } from '../components/Core/Habit';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/types';
 import { getHabits, repostHabit, deleteHabit } from '../store/actions/habit';
-import * as Text from '../components/Text';
+import * as Text from '../components/UI/Text';
 import { SwipeListView } from 'react-native-swipe-list-view';
 
 interface Props {

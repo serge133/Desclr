@@ -38,7 +38,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
           description: action.description,
           interval: action.interval,
           todos: action.todos,
-          expirationDate: action.newExpirationDate,
+          expirationDate: action.expirationDate,
         }),
       };
     case GET_HABITS:
@@ -60,9 +60,9 @@ export default (state: HabitState = initialState, action: HabitActions) => {
       return {
         ...state,
         habits: editHabitById(action.habitId, {
-          streak: action.newStreak,
-          todos: action.newTodos,
-          expirationDate: action.newExpirationDate,
+          streak: action.streak,
+          expirationDate: action.expirationDate,
+          todos: action.todos,
         }),
       };
     case ARCHIVE_HABIT:
@@ -77,7 +77,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
         ...state,
         habits: editHabitById(action.habitId, {
           isActive: true,
-          expirationDate: action.newExpirationDate,
+          expirationDate: action.expirationDate,
           streak: 0,
         }),
       };

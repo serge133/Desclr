@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { Colors } from '../constants/default-styles';
+import { Colors } from '../../constants/default-styles';
 
 interface Props {
   children: string;
   style?: {};
 }
 
-export const H1: React.FC<Props> = (props) => {
+export const H1: React.FC<Props> = props => {
   return (
     <Text
       style={{
@@ -22,7 +22,7 @@ export const H1: React.FC<Props> = (props) => {
   );
 };
 
-export const H2: React.FC<Props> = (props) => {
+export const H2: React.FC<Props> = props => {
   return (
     <Text
       style={{
@@ -37,7 +37,7 @@ export const H2: React.FC<Props> = (props) => {
   );
 };
 
-export const H3: React.FC<Props> = (props) => {
+export const H3: React.FC<Props> = props => {
   return (
     <Text
       style={{
@@ -52,7 +52,7 @@ export const H3: React.FC<Props> = (props) => {
   );
 };
 
-export const H4: React.FC<Props> = (props) => {
+export const H4: React.FC<Props> = props => {
   return (
     <Text
       style={{
@@ -67,7 +67,7 @@ export const H4: React.FC<Props> = (props) => {
   );
 };
 
-export const Body1: React.FC<Props> = (props) => {
+export const Body1: React.FC<Props> = props => {
   return (
     <Text
       style={{
@@ -82,7 +82,7 @@ export const Body1: React.FC<Props> = (props) => {
   );
 };
 
-export const Body2: React.FC<Props> = (props) => {
+export const Body2: React.FC<Props> = props => {
   return (
     <Text
       style={{
@@ -97,7 +97,7 @@ export const Body2: React.FC<Props> = (props) => {
   );
 };
 
-export const Body3: React.FC<Props> = (props) => {
+export const Body3: React.FC<Props> = props => {
   return (
     <Text
       style={{
@@ -112,7 +112,7 @@ export const Body3: React.FC<Props> = (props) => {
   );
 };
 
-export const Error: React.FC<Props> = (props) => {
+export const Error: React.FC<Props> = props => {
   return (
     <Text
       style={{

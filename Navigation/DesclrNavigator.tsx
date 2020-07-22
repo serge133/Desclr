@@ -1,21 +1,30 @@
+// * Optimized
 import React from 'react';
+
+// React Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+
+// Screens/Stacks/Tabs
 import StartupScreen from '../Screens/StartupScreen';
 import WelcomeScreen from '../Screens/WelcomeScreen';
 import LoginScreen from '../Screens/LoginScreen';
 import SignUpScreen from '../Screens/SignUpScreen';
+import SettingsScreen from '../Screens/SettingsScreen';
+import ArchiveScreen from '../Screens/ArchiveScreen';
+import HomeStack from './Stacks/HomeStack';
+import StreakTabs from './Tabs/StreakTabs';
+
+// Redux
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/types';
-import { Colors } from '../constants/default-styles';
-import SettingsScreen from '../Screens/SettingsScreen';
-import HomeStack from './HomeStack';
-import ArchiveScreen from '../Screens/ArchiveScreen';
-import StreakTabs from './StreakTabs';
 
-const Stack = createStackNavigator();
+// Style
+import { Colors } from '../constants/default-styles';
+
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const DesclrNavigator: React.FC = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -25,9 +34,6 @@ const DesclrNavigator: React.FC = () => {
         <Drawer.Navigator
           drawerType='back'
           overlayColor='transparent'
-          // sceneContainerStyle={{
-          //   backgroundColor: 'white',
-          // }}
           drawerStyle={{
             width: 150,
             backgroundColor: '#efefef',

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import Header from '../components/Header';
+import Header from '../components/UI/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
-import Streak from '../components/Streak';
+import Streak from '../components/Core/Streak';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/types';
 import { getHabits } from '../store/actions/habit';
@@ -75,7 +75,7 @@ const InactiveStreaksScreen: React.FC<Props> = props => {
           }
           renderItem={itemData => (
             <Streak
-              type="inactive"
+              type='inactive'
               value={itemData.item.value}
               streak={itemData.item.streak}
               onPress={() => {}}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ActiveStreaksScreen from '../Screens/ActiveStreaksScreen';
-import InactiveStreaksScreen from '../Screens/InactiveStreaksScreen';
-import { Colors } from '../constants/default-styles';
-import RenderIcon from '../components/RenderIcon';
+import ActiveStreaksScreen from '../../Screens/ActiveStreaksScreen';
+import InactiveStreaksScreen from '../../Screens/InactiveStreaksScreen';
+import { Colors } from '../../constants/default-styles';
+import RenderIcon from '../../components/UI/RenderIcon';
 
 const Tab = createBottomTabNavigator();
 

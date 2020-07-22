@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import * as Text from './Text';
-import { Colors } from '../constants/default-styles';
+import { Colors } from '../../constants/default-styles';
 
 interface Props {
   label: string;

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import Header from '../../components/Header';
-import CustomInput from '../../components/Input';
-import Form from '../../components/Form';
-import Textarea from '../../components/Textarea';
-import CustomSlider from '../../components/Slider';
-import CheckBox from '../../components/CheckBox';
+import Header from '../../components/UI/Header';
+import CustomInput from '../../components/UI/Input';
+import Form from '../../components/UI/Form';
+import Textarea from '../../components/UI/Textarea';
+import CustomSlider from '../../components/UI/Slider';
+import CheckBox from '../../components/UI/CheckBox';
 import { defaultStyles } from '../../constants/default-styles';
 import { useDispatch } from 'react-redux';
 import { editHabit, archiveHabit } from '../../store/actions/habit';
 import { TodoInterface } from '../../types';
-import Button from '../../components/Button';
+import Button from '../../components/UI/Button';
 
 interface Props {
   navigation: {
@@ -29,7 +29,7 @@ interface Props {
   };
 }
 
-const EditingHabitScreen: React.FC<Props> = (props) => {
+const EditingHabitScreen: React.FC<Props> = props => {
   const [form, setForm] = useState({
     value: props.route.params.habit.value,
     description: props.route.params.habit.description,
@@ -62,8 +62,8 @@ const EditingHabitScreen: React.FC<Props> = (props) => {
   };
 
   const handleTodo = (id: string, value: string) => {
-    const editIndex = form.todos.findIndex((todo) => todo.id === id);
-    setForm((prevState) => {
+    const editIndex = form.todos.findIndex(todo => todo.id === id);
+    setForm(prevState => {
       const copyTodos = [...prevState.todos];
       copyTodos[editIndex].value = value;
       // If last element is not empty than add a new empty todo
@@ -134,8 +134,8 @@ const EditingHabitScreen: React.FC<Props> = (props) => {
           label='Name'
           placeholder='Habit Name'
           value={form.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({ ...prevState, value: value }))
+          onChangeText={value =>
+            setForm(prevState => ({ ...prevState, value: value }))
           }
         />
         <Textarea
@@ -143,8 +143,8 @@ const EditingHabitScreen: React.FC<Props> = (props) => {
           label='Description'
           placeholder='Habit Description'
           value={form.description}
-          onChangeText={(value) =>
-            setForm((prevState) => ({ ...prevState, description: value }))
+          onChangeText={value =>
+            setForm(prevState => ({ ...prevState, description: value }))
           }
         />
         <CustomSlider
@@ -156,8 +156,8 @@ const EditingHabitScreen: React.FC<Props> = (props) => {
           minimumValue={1}
           maximumValue={7}
           step={1}
-          onValueChange={(value) =>
-            setForm((prevState) => ({ ...prevState, interval: value }))
+          onValueChange={value =>
+            setForm(prevState => ({ ...prevState, interval: value }))
           }
         />
         {form.todos.map((todo: Todo) => (
@@ -175,7 +175,7 @@ const EditingHabitScreen: React.FC<Props> = (props) => {
                 }}
                 placeholder='Your to-do action'
                 value={todo.value}
-                onChangeText={(value) => handleTodo(todo.id, value)}
+                onChangeText={value => handleTodo(todo.id, value)}
               />
             </View>
           </View>

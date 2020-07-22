@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import Header from '../components/Header';
-import Button from '../components/Button';
+import Header from '../components/UI/Header';
+import Button from '../components/UI/Button';
 
 interface Props {
   navigation: {
@@ -9,7 +9,7 @@ interface Props {
   };
 }
 
-const WelcomeScreen: React.FC<Props> = (props) => {
+const WelcomeScreen: React.FC<Props> = props => {
   const handleGetIn = () => {
     return props.navigation.navigate('LoginScreen');
   };

@@ -6,7 +6,7 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import * as Text from './Text';
-import { Colors } from '../constants/default-styles';
+import { Colors } from '../../constants/default-styles';
 import RenderIcon, { IconTypes } from './RenderIcon';
 
 interface Props {

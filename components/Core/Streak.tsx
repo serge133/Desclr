@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Colors } from '../constants/default-styles';
-import * as Text from './Text';
-import Button from './Button';
+import { Colors } from '../../constants/default-styles';
+import * as Text from '../UI/Text';
+import Button from '../UI/Button';
 
 interface Props {
   onPress: () => void;
@@ -26,9 +26,7 @@ const Streak = (props: Props) => {
             style={{
               ...styles.counter,
               backgroundColor:
-                props.type === 'active'
-                  ? Colors.primary1
-                  : Colors.semanticYellow1,
+                props.type === 'active' ? Colors.primary1 : Colors.accent1,
             }}
           >
             <Text.H3 style={styles.counterText}>

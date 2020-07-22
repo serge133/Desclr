@@ -1,3 +1,4 @@
+// * Optimized
 import { HabitInterface, TodoInterface } from '../../types';
 import { HabitActions, RootState, AuthActions } from '../types';
 import Axios from 'axios';
@@ -14,50 +15,45 @@ export const REPOST_HABIT = 'REPOST_HABIT';
 export const DELETE_HABIT = 'DELETE_HABIT';
 
 /**
- * All of these check the expiration date for the token
- * If token is expired then it logs out
- * If token is not expired then it writes to database and state
+ * Authentication is not a problem because the app checks every minute if the
+ * user is valid.
  */
 
 export const addHabit = (
   value: string,
   description: string,
   interval: number,
-  // expirationDate: string,
   todos: TodoInterface[]
 ) => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    // The form always brings one empty todo value so this function deletes the empty valued todo (last element)
+    // This function deletes the empty valued todo (last element)
     todos.pop();
-    const auth = getState().auth;
+    const { auth } = getState();
+
+    const newHabit = {
+      value: value,
+      description: description,
+      streak: 0,
+      isActive: true,
+      interval: interval,
+      expirationDate: addDaysToTodaysDate(interval),
+      todos: todos,
+    };
+
     const response = await Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits.json?auth=${auth.token}`,
       method: 'POST',
-      data: {
-        value: value,
-        description: description,
-        streak: 0,
-        isActive: true,
-        interval: interval,
-        expirationDate: addDaysToTodaysDate(interval),
-        todos: todos,
-      },
+      data: newHabit,
     });
 
     dispatch({
       type: ADD_HABIT,
       habit: {
         id: response.data.name,
-        value: value,
-        description: description,
-        streak: 0,
-        isActive: true,
-        interval: interval,
-        expirationDate: addDaysToTodaysDate(interval),
-        todos: todos,
+        ...newHabit,
       },
     });
   };
@@ -71,72 +67,58 @@ export const editHabit = (
   todos: TodoInterface[]
 ) => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    // The form always brings one empty todo value so this function deletes the empty valued todo (last element)
+    // This function deletes the empty valued todo (last element)
     todos.pop();
-    const auth = getState().auth;
-    const newExpirationDate = addDaysToTodaysDate(interval);
+    const { auth } = getState();
+
+    const editedHabit = {
+      value: value,
+      description: description,
+      interval: interval,
+      todos: todos,
+      expirationDate: addDaysToTodaysDate(interval),
+    };
 
     await Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${id}.json?auth=${auth.token}`,
       method: 'PATCH',
-      data: {
-        value: value,
-        description: description,
-        interval: interval,
-        todos: todos,
-        expirationDate: newExpirationDate,
-      },
+      data: editedHabit,
     });
 
     dispatch({
       type: EDIT_HABIT,
       id: id,
-      value: value,
-      description: description,
-      interval: interval,
-      todos: todos,
-      newExpirationDate: newExpirationDate,
+      ...editedHabit,
     });
   };
 };
 
 export const getHabits = () => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    const auth = getState().auth;
-    try {
-      const response = await Axios({
-        url: `https://desclr.firebaseio.com/${auth.userId}/habits.json?auth=${auth.token}`,
-        method: 'GET',
-      });
-
-      if (response.data) {
-        const formatedHabits = (): HabitInterface[] => {
-          const keys: string[] = Object.keys(response.data);
-          const habits: HabitInterface[] = Object.values(response.data);
-          for (const i in keys) {
-            habits[i].id = keys[i];
-          }
-          return habits;
-        };
-        dispatch({
-          type: GET_HABITS,
-          habits: formatedHabits(),
-        });
-      } else {
-        dispatch({
-          type: GET_HABITS,
-          habits: [],
-        });
+    const { auth } = getState();
+    const response = await Axios({
+      url: `https://desclr.firebaseio.com/${auth.userId}/habits.json?auth=${auth.token}`,
+      method: 'GET',
+    });
+    // formatedHabits adds the id from keys to values
+    const formatedHabits = (data: Object): HabitInterface[] => {
+      const keys: string[] = Object.keys(data);
+      const habits: HabitInterface[] = Object.values(data);
+      for (const i in keys) {
+        habits[i].id = keys[i];
       }
-    } catch (err) {
-      console.log(err);
-    }
+      return habits;
+    };
+    dispatch({
+      type: GET_HABITS,
+      habits: response.data ? formatedHabits(response.data) : [],
+    });
   };
 };
 
@@ -146,10 +128,10 @@ export const completeHabitTodo = (
   value: boolean
 ) => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    const auth = getState().auth;
+    const { auth } = getState();
     await Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}/todos/${todoIndex}.json?auth=${auth.token}`,
       method: 'PATCH',
@@ -171,20 +153,20 @@ export const completeHabit = (
   habitId: string,
   streak: number,
   interval: number,
-  todos: { id: string; value: string; completed: boolean }[]
+  todos: TodoInterface[]
 ) => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    const auth = getState().auth;
+    const { auth } = getState();
 
     const newStreak = streak + 1;
-    console.log(newStreak);
-    // Creates a new expiration date by adding todays date with the day interval for the next expiration date
-    const newExpirationDate = addDaysToTodaysDate(interval);
-    const newTodos = [];
 
+    const newExpirationDate = addDaysToTodaysDate(interval);
+
+    // Resets Todos
+    const newTodos = [];
     for (const todo of todos) {
       newTodos.push({
         ...todo,
@@ -192,23 +174,23 @@ export const completeHabit = (
       });
     }
 
+    const completedHabit = {
+      streak: streak + 1,
+      expirationDate: addDaysToTodaysDate(interval),
+      todos: newTodos,
+    };
+
     const response = await Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
       method: 'PATCH',
-      data: {
-        streak: newStreak,
-        expirationDate: newExpirationDate,
-        todos: newTodos,
-      },
+      data: completedHabit,
     });
 
     if (response.status === 200) {
       dispatch({
         type: COMPLETE_HABIT,
         habitId: habitId,
-        newStreak: newStreak,
-        newExpirationDate: newExpirationDate,
-        newTodos: newTodos,
+        ...completedHabit,
       });
     }
   };
@@ -216,10 +198,10 @@ export const completeHabit = (
 
 export const archiveHabit = (habitId: string) => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    const auth = getState().auth;
+    const { auth } = getState();
     const response = await Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
       method: 'PATCH',
@@ -227,51 +209,50 @@ export const archiveHabit = (habitId: string) => {
         isActive: false,
       },
     });
-    if (response.status === 200) {
-      dispatch({
-        type: ARCHIVE_HABIT,
-        habitId: habitId,
-      });
-    }
+    // if (response.status === 200) {
+    dispatch({
+      type: ARCHIVE_HABIT,
+      habitId: habitId,
+    });
+    // }
   };
 };
 
 export const repostHabit = (habitId: string, interval: number) => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    const auth = getState().auth;
-    const newExpirationDate = addDaysToTodaysDate(interval);
+    const { auth } = getState();
+    const expirationDate = addDaysToTodaysDate(interval);
     const response = await Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
       method: 'PATCH',
       data: {
         isActive: true,
-        expirationDate: newExpirationDate,
         streak: 0,
+        expirationDate: expirationDate,
       },
     });
-    if (response.status === 200) {
-      dispatch({
-        type: REPOST_HABIT,
-        habitId: habitId,
-        newExpirationDate: newExpirationDate,
-      });
-    }
+    // if (response.status === 200) {
+    dispatch({
+      type: REPOST_HABIT,
+      habitId: habitId,
+      expirationDate: expirationDate,
+    });
+    // }
   };
 };
 
 export const deleteHabit = (habitId: string) => {
   return async (
-    dispatch: (action: HabitActions | AuthActions) => void,
+    dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    const auth = getState().auth;
-    Axios({
-      url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
-      method: 'DELETE',
-    });
+    const { auth } = getState();
+    Axios.delete(
+      `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`
+    );
     dispatch({
       type: DELETE_HABIT,
       habitId: habitId,

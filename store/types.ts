@@ -48,7 +48,7 @@ export type HabitActions =
       description: string;
       interval: number;
       todos: TodoInterface[];
-      newExpirationDate: string;
+      expirationDate: string;
     }
   | {
       type: typeof GET_HABITS;
@@ -63,9 +63,9 @@ export type HabitActions =
   | {
       type: typeof COMPLETE_HABIT;
       habitId: string;
-      newStreak: number;
-      newExpirationDate: string;
-      newTodos: TodoInterface[];
+      streak: number;
+      expirationDate: string;
+      todos: TodoInterface[];
     }
   | {
       type: typeof ARCHIVE_HABIT;
@@ -74,7 +74,7 @@ export type HabitActions =
   | {
       type: typeof REPOST_HABIT;
       habitId: string;
-      newExpirationDate: string;
+      expirationDate: string;
     }
   | {
       type: typeof DELETE_HABIT;

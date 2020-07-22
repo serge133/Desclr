@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
-import { Colors } from '../constants/default-styles';
-import * as Text from '../components/Text';
+import { Colors } from '../../constants/default-styles';
+import * as Text from './Text';
 import RenderIcon, { IconTypes } from './RenderIcon';
 
 interface Props extends TextInputProps {
@@ -23,7 +23,7 @@ interface Props extends TextInputProps {
   containerStyle?: object;
 }
 
-const CustomInput: React.FC<Props> = (props) => {
+const CustomInput: React.FC<Props> = props => {
   return (
     <View style={{ ...styles.inputContainer, ...props.containerStyle }}>
       {props.label && (
