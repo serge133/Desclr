@@ -95,6 +95,7 @@ const HomeScreen: React.FC<Props> = props => {
               <Habit
                 id={itemData.item.id}
                 value={itemData.item.value}
+                type={itemData.item.type}
                 description={itemData.item.description}
                 streak={itemData.item.streak}
                 interval={itemData.item.interval}
@@ -106,6 +107,7 @@ const HomeScreen: React.FC<Props> = props => {
                     habit: {
                       id: itemData.item.id,
                       value: itemData.item.value,
+                      type: itemData.item.type,
                       description: itemData.item.description,
                       interval: itemData.item.interval,
                       todos: itemData.item.todos,
@@ -132,6 +134,7 @@ const HomeScreen: React.FC<Props> = props => {
                   )
                 )
               }
+              onArchive={() => dispatch(archiveHabit(itemData.item.id))}
             />
           )}
           rightOpenValue={-100}

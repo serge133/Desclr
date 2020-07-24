@@ -1,9 +1,8 @@
 // * Optimized
-import { HabitInterface, TodoInterface } from '../../types';
-import { HabitActions, RootState, AuthActions } from '../types';
+import { HabitInterface, TodoInterface, HabitTypes } from '../../types';
+import { HabitActions, RootState } from '../types';
 import Axios from 'axios';
 import { addDaysToTodaysDate } from '../../functions/date';
-import { logout } from './auth';
 
 export const ADD_HABIT = 'ADD_HABIT';
 export const EDIT_HABIT = 'EDIT_HABIT';
@@ -21,6 +20,7 @@ export const DELETE_HABIT = 'DELETE_HABIT';
 
 export const addHabit = (
   value: string,
+  type: HabitTypes,
   description: string,
   interval: number,
   todos: TodoInterface[]
@@ -35,6 +35,7 @@ export const addHabit = (
 
     const newHabit = {
       value: value,
+      type: type,
       description: description,
       streak: 0,
       isActive: true,
@@ -62,6 +63,7 @@ export const addHabit = (
 export const editHabit = (
   id: string,
   value: string,
+  type: HabitTypes,
   description: string,
   interval: number,
   todos: TodoInterface[]
@@ -76,6 +78,7 @@ export const editHabit = (
 
     const editedHabit = {
       value: value,
+      type: type,
       description: description,
       interval: interval,
       todos: todos,
@@ -90,8 +93,10 @@ export const editHabit = (
 
     dispatch({
       type: EDIT_HABIT,
-      id: id,
-      ...editedHabit,
+      editedHabit: {
+        id: id,
+        ...editedHabit,
+      },
     });
   };
 };

@@ -9,8 +9,9 @@ import CheckBox from '../../components/UI/CheckBox';
 import { defaultStyles } from '../../constants/default-styles';
 import { useDispatch } from 'react-redux';
 import { editHabit, archiveHabit } from '../../store/actions/habit';
-import { TodoInterface } from '../../types';
+import { TodoInterface, HabitTypes } from '../../types';
 import Button from '../../components/UI/Button';
+import Dropdown from '../../components/UI/Dropdown';
 
 interface Props {
   navigation: {
@@ -21,6 +22,7 @@ interface Props {
       habit: {
         id: string;
         value: string;
+        type: HabitTypes;
         description: string;
         interval: number;
         todos: TodoInterface[];
@@ -30,8 +32,9 @@ interface Props {
 }
 
 const EditingHabitScreen: React.FC<Props> = props => {
-  const [form, setForm] = useState({
+  const initialForm = {
     value: props.route.params.habit.value,
+    habitType: props.route.params.habit.type,
     description: props.route.params.habit.description,
     interval: props.route.params.habit.interval,
     todos: props.route.params.habit.todos.concat({
@@ -39,7 +42,9 @@ const EditingHabitScreen: React.FC<Props> = props => {
       value: '',
       completed: false,
     }),
-  });
+  };
+
+  const [form, setForm] = useState(initialForm);
 
   const dispatch = useDispatch();
 
@@ -48,6 +53,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
       editHabit(
         props.route.params.habit.id,
         form.value,
+        form.habitType,
         form.description,
         form.interval,
         form.todos
@@ -90,6 +96,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
     const clearFormAndGoBack = () => {
       setForm({
         value: '',
+        habitType: 'Default',
         description: '',
         interval: 1,
         todos: [],
@@ -111,6 +118,12 @@ const EditingHabitScreen: React.FC<Props> = props => {
     value: string;
     completed: boolean;
   }
+
+  const dropdownIndexHabitTypes: HabitTypes[] = [
+    'Default',
+    'Exercise',
+    'Knowledge',
+  ];
 
   return (
     <View style={styles.screen}>
@@ -146,6 +159,21 @@ const EditingHabitScreen: React.FC<Props> = props => {
           onChangeText={value =>
             setForm(prevState => ({ ...prevState, description: value }))
           }
+        />
+        <Dropdown
+          label='Habit Type'
+          entries={[
+            { index: 0, label: 'Default' },
+            { index: 1, label: 'Exercise' },
+            { index: 2, label: 'Knowledge' },
+          ]}
+          onEntryPress={index =>
+            setForm(prevState => ({
+              ...prevState,
+              habitType: dropdownIndexHabitTypes[index],
+            }))
+          }
+          chosenEntry={form.habitType}
         />
         <CustomSlider
           label='Interval'

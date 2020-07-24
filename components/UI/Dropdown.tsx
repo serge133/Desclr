@@ -10,7 +10,7 @@ interface Props {
     label: string;
   }[];
   chosenEntry: string;
-  onEntryPress: (label: string) => void;
+  onEntryPress: (index: number) => void;
 }
 
 const Dropdown: React.FC<Props> = props => {
@@ -18,8 +18,8 @@ const Dropdown: React.FC<Props> = props => {
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
-  const entryPress = (label: string) => {
-    props.onEntryPress(label);
+  const entryPress = (index: number) => {
+    props.onEntryPress(index);
     setIsDropdownOpen(false);
   };
 
@@ -38,7 +38,7 @@ const Dropdown: React.FC<Props> = props => {
           {props.entries.map(entry => (
             <TouchableOpacity
               key={entry.index}
-              onPress={() => entryPress(entry.label)}
+              onPress={() => entryPress(entry.index)}
             >
               <View style={styles.dropdownEntry}>
                 <Text.Body1

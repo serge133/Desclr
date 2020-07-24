@@ -11,17 +11,23 @@ import { useDispatch } from 'react-redux';
 import { addHabit } from '../../store/actions/habit';
 import * as Text from '../../components/UI/Text';
 import Dropdown from '../../components/UI/Dropdown';
+import { HabitTypes, TodoInterface } from '../../types';
 
 interface Props {
   navigation: {
     goBack: Function;
   };
 }
+const dropdownIndexHabitTypes: HabitTypes[] = [
+  'Default',
+  'Exercise',
+  'Knowledge',
+];
 
 const initialForm = {
   value: { value: '', isError: false, errorMessage: '' },
   description: { value: '', isError: false, errorMessage: '' },
-  habitType: 'Default',
+  habitType: dropdownIndexHabitTypes[0],
   interval: { value: 1, displayedVal: 1, isError: false, errorMessage: '' },
   todos: [{ id: '3434q2', value: '', completed: false }],
 };
@@ -56,6 +62,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
       dispatch(
         addHabit(
           form.value.value,
+          form.habitType,
           form.description.value,
           form.interval.value,
           form.todos
@@ -168,8 +175,11 @@ const AddingHabitScreen: React.FC<Props> = props => {
             { index: 1, label: 'Exercise' },
             { index: 2, label: 'Knowledge' },
           ]}
-          onEntryPress={label =>
-            setForm(prevState => ({ ...prevState, habitType: label }))
+          onEntryPress={index =>
+            setForm(prevState => ({
+              ...prevState,
+              habitType: dropdownIndexHabitTypes[index],
+            }))
           }
           chosenEntry={form.habitType}
         />

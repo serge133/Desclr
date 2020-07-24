@@ -64,6 +64,7 @@ const HomeScreen: React.FC<Props> = props => {
             <Habit
               id={itemData.item.id}
               value={itemData.item.value}
+              type={itemData.item.type}
               description={itemData.item.description}
               streak={itemData.item.streak}
               interval={itemData.item.interval}

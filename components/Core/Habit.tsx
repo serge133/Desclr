@@ -22,6 +22,7 @@ interface HabitProps extends HabitInterface {
 interface HabitHiddenRowButtonProps {
   canComplete: boolean;
   onComplete: (event: GestureResponderEvent) => void;
+  onArchive: (event: GestureResponderEvent) => void;
   fractionCompleted: string;
 }
 
@@ -54,7 +55,10 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
         {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
       </View>
     </TouchableOpacity>
-    <TouchableOpacity style={styles.rowBackButtonContainer}>
+    <TouchableOpacity
+      style={styles.rowBackButtonContainer}
+      onPress={props.onArchive}
+    >
       <View
         style={[
           styles.rowBackButton,
@@ -119,6 +123,7 @@ const Habit: React.FC<HabitProps> = props => {
             </TouchableOpacity>
           )}
         </View>
+        <Text.Body1>{props.type}</Text.Body1>
         <Text.Body3 style={styles.description}>{props.description}</Text.Body3>
         {props.todos.map((todo, index) => (
           <View style={styles.todo} key={todo.id}>

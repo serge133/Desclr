@@ -1,4 +1,4 @@
-import { HabitInterface, TodoInterface } from '../types';
+import { HabitInterface, TodoInterface, HabitTypes } from '../types';
 import { SIGNUP, LOGIN, AUTHENTICATE, LOGOUT } from './actions/auth';
 import {
   ADD_HABIT,
@@ -43,12 +43,15 @@ export type HabitActions =
     }
   | {
       type: typeof EDIT_HABIT;
-      id: string;
-      value: string;
-      description: string;
-      interval: number;
-      todos: TodoInterface[];
-      expirationDate: string;
+      editedHabit: {
+        id: string;
+        value: string;
+        type: HabitTypes;
+        description: string;
+        interval: number;
+        todos: TodoInterface[];
+        expirationDate: string;
+      };
     }
   | {
       type: typeof GET_HABITS;

@@ -33,12 +33,13 @@ export default (state: HabitState = initialState, action: HabitActions) => {
     case EDIT_HABIT:
       return {
         ...state,
-        habits: editHabitById(action.id, {
-          value: action.value,
-          description: action.description,
-          interval: action.interval,
-          todos: action.todos,
-          expirationDate: action.expirationDate,
+        habits: editHabitById(action.editedHabit.id, {
+          value: action.editedHabit.value,
+          type: action.editedHabit.type,
+          description: action.editedHabit.description,
+          interval: action.editedHabit.interval,
+          todos: action.editedHabit.todos,
+          expirationDate: action.editedHabit.expirationDate,
         }),
       };
     case GET_HABITS:
