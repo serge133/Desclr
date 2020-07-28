@@ -9,6 +9,7 @@ import {
   REPOST_HABIT,
   EDIT_HABIT,
   DELETE_HABIT,
+  SAVE_EXERCISE_TIMER,
 } from './actions/habit';
 
 // * Actions
@@ -48,6 +49,7 @@ export type HabitActions =
         value: string;
         type: HabitTypes;
         description: string;
+        exerciseMinutes: number;
         interval: number;
         todos: TodoInterface[];
         expirationDate: string;
@@ -82,6 +84,11 @@ export type HabitActions =
   | {
       type: typeof DELETE_HABIT;
       habitId: string;
+    }
+  | {
+      type: typeof SAVE_EXERCISE_TIMER;
+      habitId: string;
+      exerciseMinutesLeft: number;
     };
 // -------------------------------------------------------------------------------
 

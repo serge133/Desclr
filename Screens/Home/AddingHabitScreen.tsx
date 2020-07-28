@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { addHabit } from '../../store/actions/habit';
 import * as Text from '../../components/UI/Text';
 import Dropdown from '../../components/UI/Dropdown';
-import { HabitTypes, TodoInterface } from '../../types';
+import { HabitTypes } from '../../types';
 
 interface Props {
   navigation: {
@@ -24,15 +24,20 @@ const dropdownIndexHabitTypes: HabitTypes[] = [
   'Knowledge',
 ];
 
-const initialForm = {
-  value: { value: '', isError: false, errorMessage: '' },
-  description: { value: '', isError: false, errorMessage: '' },
-  habitType: dropdownIndexHabitTypes[0],
-  interval: { value: 1, displayedVal: 1, isError: false, errorMessage: '' },
-  todos: [{ id: '3434q2', value: '', completed: false }],
-};
-
 const AddingHabitScreen: React.FC<Props> = props => {
+  const initialForm = {
+    value: { value: '', isError: false, errorMessage: '' },
+    description: { value: '', isError: false, errorMessage: '' },
+    habitType: dropdownIndexHabitTypes[0],
+    exerciseMinutes: {
+      value: 20,
+      displayedVal: 20,
+      isError: false,
+      errorMessage: '',
+    },
+    interval: { value: 1, displayedVal: 1, isError: false, errorMessage: '' },
+    todos: [{ id: '3434q2', value: '', completed: false }],
+  };
   const [form, setForm] = useState(initialForm);
 
   const [error, setError] = useState({
@@ -64,6 +69,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
           form.value.value,
           form.habitType,
           form.description.value,
+          form.exerciseMinutes.value,
           form.interval.value,
           form.todos
         )
@@ -183,6 +189,26 @@ const AddingHabitScreen: React.FC<Props> = props => {
           }
           chosenEntry={form.habitType}
         />
+        {form.habitType === 'Exercise' && (
+          <CustomSlider
+            label='Exercise Time'
+            value={form.exerciseMinutes.displayedVal}
+            visibleSliderInformation={`${form.exerciseMinutes.value} Minutes`}
+            minimumValue={1}
+            maximumValue={180}
+            // step={1}
+            onValueChange={value =>
+              setForm(prevState => ({
+                ...prevState,
+                exerciseMinutes: {
+                  ...prevState.interval,
+                  value: +value.toFixed(0),
+                  displayedVal: value,
+                },
+              }))
+            }
+          />
+        )}
         <CustomSlider
           label='Interval'
           value={form.interval.displayedVal}

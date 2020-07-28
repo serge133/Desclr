@@ -12,6 +12,8 @@ export const COMPLETE_HABIT = 'COMPLETE_HABIT';
 export const ARCHIVE_HABIT = 'ARCHIVE_HABIT';
 export const REPOST_HABIT = 'REPOST_HABIT';
 export const DELETE_HABIT = 'DELETE_HABIT';
+// ! Not being used for now
+export const SAVE_EXERCISE_TIMER = 'SAVE_EXERCISE_TIMER';
 
 /**
  * Authentication is not a problem because the app checks every minute if the
@@ -22,6 +24,7 @@ export const addHabit = (
   value: string,
   type: HabitTypes,
   description: string,
+  exerciseMinutes: number,
   interval: number,
   todos: TodoInterface[]
 ) => {
@@ -39,6 +42,9 @@ export const addHabit = (
       description: description,
       streak: 0,
       isActive: true,
+      exerciseMinutes: exerciseMinutes,
+      // Same as above because initially timer is full
+      exerciseMinutesLeft: exerciseMinutes,
       interval: interval,
       expirationDate: addDaysToTodaysDate(interval),
       todos: todos,
@@ -65,6 +71,7 @@ export const editHabit = (
   value: string,
   type: HabitTypes,
   description: string,
+  exerciseMinutes: number,
   interval: number,
   todos: TodoInterface[]
 ) => {
@@ -80,6 +87,7 @@ export const editHabit = (
       value: value,
       type: type,
       description: description,
+      exerciseMinutes: exerciseMinutes,
       interval: interval,
       todos: todos,
       expirationDate: addDaysToTodaysDate(interval),
@@ -154,49 +162,43 @@ export const completeHabitTodo = (
   };
 };
 
-export const completeHabit = (
-  habitId: string,
-  streak: number,
-  interval: number,
-  todos: TodoInterface[]
-) => {
+export const completeHabit = (habitId: string) => {
   return async (
     dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
-    const { auth } = getState();
+    const { auth, habit } = getState();
 
-    const newStreak = streak + 1;
+    const currentHabit = habit.habits.find(h => h.id === habitId);
 
-    const newExpirationDate = addDaysToTodaysDate(interval);
+    if (currentHabit) {
+      // Resets Todos
+      const newTodos = [];
+      for (const todo of currentHabit.todos) {
+        newTodos.push({
+          ...todo,
+          completed: false,
+        });
+      }
+      const completedHabit = {
+        streak: currentHabit.streak + 1,
+        expirationDate: addDaysToTodaysDate(currentHabit.interval),
+        todos: newTodos,
+      };
 
-    // Resets Todos
-    const newTodos = [];
-    for (const todo of todos) {
-      newTodos.push({
-        ...todo,
-        completed: false,
+      const response = await Axios({
+        url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
+        method: 'PATCH',
+        data: completedHabit,
       });
-    }
 
-    const completedHabit = {
-      streak: streak + 1,
-      expirationDate: addDaysToTodaysDate(interval),
-      todos: newTodos,
-    };
-
-    const response = await Axios({
-      url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
-      method: 'PATCH',
-      data: completedHabit,
-    });
-
-    if (response.status === 200) {
-      dispatch({
-        type: COMPLETE_HABIT,
-        habitId: habitId,
-        ...completedHabit,
-      });
+      if (response.status === 200) {
+        dispatch({
+          type: COMPLETE_HABIT,
+          habitId: habitId,
+          ...completedHabit,
+        });
+      }
     }
   };
 };
@@ -261,6 +263,30 @@ export const deleteHabit = (habitId: string) => {
     dispatch({
       type: DELETE_HABIT,
       habitId: habitId,
+    });
+  };
+};
+
+export const saveHabitTimer = (
+  habitId: string,
+  exerciseMinutesLeft: number
+) => {
+  return async (
+    dispatch: (action: HabitActions) => void,
+    getState: () => RootState
+  ) => {
+    const { auth } = getState();
+    Axios({
+      url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
+      method: 'PATCH',
+      data: {
+        exerciseMinutesLeft: exerciseMinutesLeft,
+      },
+    });
+    dispatch({
+      type: SAVE_EXERCISE_TIMER,
+      habitId: habitId,
+      exerciseMinutesLeft: exerciseMinutesLeft,
     });
   };
 };

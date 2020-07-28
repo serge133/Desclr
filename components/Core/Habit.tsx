@@ -5,14 +5,13 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
-import { HabitInterface } from '../../types';
+import { HabitInterface, HabitTypes } from '../../types';
 import { Colors } from '../../constants/default-styles';
 import * as Text from '../UI/Text';
 import CheckBox from '../UI/CheckBox';
 import RenderIcon from '../UI/RenderIcon';
 import { useDispatch } from 'react-redux';
 import { completeHabitTodo } from '../../store/actions/habit';
-// import Fade from '../Animations/Fade';
 
 interface HabitProps extends HabitInterface {
   onEdit: () => void;
@@ -24,6 +23,8 @@ interface HabitHiddenRowButtonProps {
   onComplete: (event: GestureResponderEvent) => void;
   onArchive: (event: GestureResponderEvent) => void;
   fractionCompleted: string;
+  habitType: HabitTypes;
+  activateTimer: Function;
 }
 
 interface ArchivedHabitHiddenRowButtonsProps {
@@ -31,9 +32,61 @@ interface ArchivedHabitHiddenRowButtonsProps {
   onRepost: (event: GestureResponderEvent) => void;
 }
 
-export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props => (
-  <View style={styles.rowBack}>
-    <TouchableOpacity
+export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props => {
+  let LeftRowButton: React.ReactNode;
+
+  switch (props.habitType) {
+    case 'Exercise':
+      LeftRowButton = (
+        <TouchableOpacity
+          style={styles.rowBackButtonContainer}
+          // @ts-ignore
+          onPress={props.activateTimer}
+        >
+          <View
+            style={[styles.rowBackButton, { backgroundColor: Colors.primary1 }]}
+          >
+            <RenderIcon
+              type='Ionicons'
+              name='ios-timer'
+              size={50}
+              color='white'
+            />
+          </View>
+        </TouchableOpacity>
+      );
+      break;
+    default:
+      LeftRowButton = (
+        <TouchableOpacity
+          style={styles.rowBackButtonContainer}
+          disabled={!props.canComplete}
+          onPress={props.onComplete}
+        >
+          <View
+            style={[
+              styles.rowBackButton,
+              props.canComplete
+                ? { backgroundColor: Colors.primary1 }
+                : { backgroundColor: Colors.grey4 },
+            ]}
+          >
+            <RenderIcon
+              type='Ionicons'
+              name='ios-checkmark'
+              size={50}
+              color='white'
+            />
+            {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
+          </View>
+        </TouchableOpacity>
+      );
+      break;
+  }
+
+  return (
+    <View style={styles.rowBack}>
+      {/* <TouchableOpacity
       style={styles.rowBackButtonContainer}
       disabled={!props.canComplete}
       onPress={props.onComplete}
@@ -54,27 +107,29 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
         />
         {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
       </View>
-    </TouchableOpacity>
-    <TouchableOpacity
-      style={styles.rowBackButtonContainer}
-      onPress={props.onArchive}
-    >
-      <View
-        style={[
-          styles.rowBackButton,
-          { backgroundColor: Colors.primary1, borderRadius: 20 },
-        ]}
+    </TouchableOpacity> */}
+      {LeftRowButton}
+      <TouchableOpacity
+        style={styles.rowBackButtonContainer}
+        onPress={props.onArchive}
       >
-        <RenderIcon
-          type='AntDesign'
-          name='closecircleo'
-          size={50}
-          color='white'
-        />
-      </View>
-    </TouchableOpacity>
-  </View>
-);
+        <View
+          style={[
+            styles.rowBackButton,
+            { backgroundColor: Colors.primary1, borderRadius: 20 },
+          ]}
+        >
+          <RenderIcon
+            type='AntDesign'
+            name='closecircleo'
+            size={50}
+            color='white'
+          />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButtonsProps> = props => (
   <View style={styles.rowBack}>

@@ -8,6 +8,7 @@ import {
   REPOST_HABIT,
   EDIT_HABIT,
   DELETE_HABIT,
+  SAVE_EXERCISE_TIMER,
 } from '../actions/habit';
 import { HabitInterface } from '../../types';
 
@@ -37,6 +38,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
           value: action.editedHabit.value,
           type: action.editedHabit.type,
           description: action.editedHabit.description,
+          exerciseMinutes: action.editedHabit.exerciseMinutes,
           interval: action.editedHabit.interval,
           todos: action.editedHabit.todos,
           expirationDate: action.editedHabit.expirationDate,
@@ -91,6 +93,13 @@ export default (state: HabitState = initialState, action: HabitActions) => {
       return {
         ...state,
         habits: copyHabits,
+      };
+    case SAVE_EXERCISE_TIMER:
+      return {
+        ...state,
+        habits: editHabitById(action.habitId, {
+          exerciseMinutesLeft: action.exerciseMinutesLeft,
+        }),
       };
     default:
       return state;

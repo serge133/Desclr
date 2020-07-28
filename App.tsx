@@ -21,9 +21,9 @@ const App: React.FC = () => {
 
   /** Stuff to add in this release
    * !:    [x] Code Optimizations (Optimized?)
-   * TODO: [ ] Design improvement to habits (Button Layout)
-   * TODO: [ ] Habit types do something (e.g. iconofgraphy,color)
-   * TODO: [ ] A streak is clickable
+   * TODO: [ ] Make the timer slider in AddingHabitScreen
+   * TODO: [ ] Add Exercise Time to exercise habits
+   * TODO: [ ] Check For Bugs!
    */
 
   return (

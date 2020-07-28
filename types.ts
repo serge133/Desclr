@@ -11,6 +11,8 @@ export interface HabitInterface {
   value: string;
   type: HabitTypes;
   description: string;
+  exerciseMinutes: number;
+  exerciseMinutesLeft: number;
   interval: number;
   expirationDate: string;
   streak: number;

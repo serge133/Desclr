@@ -24,6 +24,7 @@ interface Props {
         value: string;
         type: HabitTypes;
         description: string;
+        exerciseMinutes: number;
         interval: number;
         todos: TodoInterface[];
       };
@@ -36,7 +37,14 @@ const EditingHabitScreen: React.FC<Props> = props => {
     value: props.route.params.habit.value,
     habitType: props.route.params.habit.type,
     description: props.route.params.habit.description,
-    interval: props.route.params.habit.interval,
+    exerciseMinutes: {
+      value: props.route.params.habit.exerciseMinutes,
+      displayedVal: props.route.params.habit.exerciseMinutes,
+    },
+    interval: {
+      value: props.route.params.habit.interval,
+      displayedVal: props.route.params.habit.interval,
+    },
     todos: props.route.params.habit.todos.concat({
       id: Math.random().toString(),
       value: '',
@@ -55,7 +63,8 @@ const EditingHabitScreen: React.FC<Props> = props => {
         form.value,
         form.habitType,
         form.description,
-        form.interval,
+        form.exerciseMinutes.value,
+        form.interval.value,
         form.todos
       )
     );
@@ -98,7 +107,8 @@ const EditingHabitScreen: React.FC<Props> = props => {
         value: '',
         habitType: 'Default',
         description: '',
-        interval: 1,
+        exerciseMinutes: { value: 20, displayedVal: 20 },
+        interval: { value: 1, displayedVal: 1 },
         todos: [],
       });
       props.navigation.goBack();
@@ -175,17 +185,43 @@ const EditingHabitScreen: React.FC<Props> = props => {
           }
           chosenEntry={form.habitType}
         />
+        {form.habitType === 'Exercise' && (
+          <CustomSlider
+            label='Exercise Time'
+            value={form.exerciseMinutes.displayedVal}
+            visibleSliderInformation={`${form.exerciseMinutes.value} Minutes`}
+            minimumValue={1}
+            maximumValue={180}
+            // step={1}
+            onValueChange={value =>
+              setForm(prevState => ({
+                ...prevState,
+                exerciseMinutes: {
+                  ...prevState.interval,
+                  value: +value.toFixed(0),
+                  displayedVal: value,
+                },
+              }))
+            }
+          />
+        )}
         <CustomSlider
           label='Interval'
-          value={form.interval}
-          visibleSliderInformation={`Every ${form.interval} ${
-            form.interval > 1 ? 'days' : 'day'
+          value={form.interval.displayedVal}
+          visibleSliderInformation={`Every ${form.interval.value} ${
+            form.interval.value > 1 ? 'days' : 'day'
           }`}
           minimumValue={1}
           maximumValue={7}
-          step={1}
           onValueChange={value =>
-            setForm(prevState => ({ ...prevState, interval: value }))
+            setForm(prevState => ({
+              ...prevState,
+              interval: {
+                ...prevState.interval,
+                value: +value.toFixed(0),
+                displayedVal: value,
+              },
+            }))
           }
         />
         {form.todos.map((todo: Todo) => (

@@ -98,6 +98,8 @@ const HomeScreen: React.FC<Props> = props => {
                 type={itemData.item.type}
                 description={itemData.item.description}
                 streak={itemData.item.streak}
+                exerciseMinutes={itemData.item.exerciseMinutes}
+                exerciseMinutesLeft={itemData.item.exerciseMinutesLeft}
                 interval={itemData.item.interval}
                 expirationDate={itemData.item.expirationDate}
                 todos={itemData.item.todos}
@@ -109,6 +111,7 @@ const HomeScreen: React.FC<Props> = props => {
                       value: itemData.item.value,
                       type: itemData.item.type,
                       description: itemData.item.description,
+                      exerciseMinutes: itemData.item.exerciseMinutes,
                       interval: itemData.item.interval,
                       todos: itemData.item.todos,
                     },
@@ -124,17 +127,15 @@ const HomeScreen: React.FC<Props> = props => {
               fractionCompleted={`${
                 itemData.item.todos.filter(todo => todo.completed).length
               }/${itemData.item.todos.length}`}
-              onComplete={() =>
-                dispatch(
-                  completeHabit(
-                    itemData.item.id,
-                    itemData.item.streak,
-                    itemData.item.interval,
-                    itemData.item.todos
-                  )
-                )
-              }
+              onComplete={() => dispatch(completeHabit(itemData.item.id))}
               onArchive={() => dispatch(archiveHabit(itemData.item.id))}
+              habitType={itemData.item.type}
+              activateTimer={() =>
+                props.navigation.navigate('TimerScreen', {
+                  milliseconds: itemData.item.exerciseMinutesLeft * 60 * 1000,
+                  habitId: itemData.item.id,
+                })
+              }
             />
           )}
           rightOpenValue={-100}
