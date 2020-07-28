@@ -4,8 +4,14 @@ import Header from '../components/UI/Header';
 import Button from '../components/UI/Button';
 import { Colors } from '../constants/default-styles';
 import * as Text from '../components/UI/Text';
-import { completeHabit, saveHabitTimer } from '../store/actions/habit';
-import { useDispatch } from 'react-redux';
+import {
+  completeHabit,
+  completeHabitTodo,
+  saveHabitTimer,
+} from '../store/actions/habit';
+import { useDispatch, useSelector } from 'react-redux';
+import CheckBox from '../components/UI/CheckBox';
+import { RootState } from '../store/types';
 
 interface Props {
   navigation: {
@@ -19,17 +25,25 @@ interface Props {
   };
 }
 
-// ! Must have functionality to save timer if stopped
+// TODO: [ ] Put the todos here
 
 const TimerScreen: React.FC<Props> = props => {
   // * TIMER IS IN MILLISECONDS
-  const [timer, setTimer] = useState(props.route.params.milliseconds);
+  const { params } = props.route;
+  const [timer, setTimer] = useState(params.milliseconds);
   const [isTimerActive, setIsTimerActive] = useState(false);
+  const todos = useSelector(
+    (state: RootState) =>
+      state.habit.habits.find(h => h.id === params.habitId)?.todos
+  );
   const dispatch = useDispatch();
 
   const onTimerEnd = useCallback(() => {
     setIsTimerActive(false);
-    dispatch(completeHabit(props.route.params.habitId));
+    // If All todos are completed then when timer ends the habit will complete
+    if (todos?.every(t => t.completed)) {
+      dispatch(completeHabit(params.habitId));
+    }
     props.navigation.goBack();
   }, []);
 
@@ -84,7 +98,25 @@ const TimerScreen: React.FC<Props> = props => {
       >
         Timer
       </Header>
-      <Text.H1 style={styles.timer}>{timerFormat()}</Text.H1>
+      <View style={styles.timerContainer}>
+        <Text.H1 style={styles.timer}>{timerFormat()}</Text.H1>
+      </View>
+      <View style={styles.todos}>
+        {todos &&
+          todos.map((todo, index) => (
+            <View style={styles.todo} key={todo.id}>
+              <CheckBox
+                value={todo.completed}
+                onCheck={value =>
+                  dispatch(
+                    completeHabitTodo(props.route.params.habitId, index, value)
+                  )
+                }
+              />
+              <Text.H4 style={styles.todoText}>{todo.value}</Text.H4>
+            </View>
+          ))}
+      </View>
       <View style={styles.buttons}>
         {/* <Button
           onPress={() => {}}
@@ -118,9 +150,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  timerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   timer: {
     color: 'white',
     fontSize: 70,
+  },
+  todos: {
+    // marginHorizontal: 30,
+    flex: 1,
+    width: '100%',
+    paddingHorizontal: 30,
+    // flex: 1,
+  },
+  todo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+  },
+  todoText: {
+    marginLeft: 8,
+    flex: 1,
   },
   button: {
     marginBottom: 24,
