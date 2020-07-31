@@ -54,7 +54,13 @@ const Button: React.FC<Props> = props => {
             }}
           >
             {props.extra && props.extra}
-            <Text.H3 style={styles.colorfulButtonText}>
+            <Text.H3
+              style={
+                props.disabled
+                  ? styles.disabledButtonText
+                  : styles.colorfulButtonText
+              }
+            >
               {props.children}
             </Text.H3>
             {props.icon && (
@@ -73,7 +79,7 @@ const Button: React.FC<Props> = props => {
 
   return (
     <TouchableOpacity
-      style={{ ...styles.buttonContainer, ...props.style }}
+      style={[styles.buttonContainer, props.style]}
       onPress={props.onPress}
       disabled={props.disabled}
     >
@@ -85,12 +91,14 @@ const Button: React.FC<Props> = props => {
       >
         {props.extra && props.extra}
 
-        <Text.H3>{props.children}</Text.H3>
+        <Text.H3 style={props.disabled && styles.disabledButtonText}>
+          {props.children}
+        </Text.H3>
         {props.icon && (
           <RenderIcon
             type={props.icon?.type}
             name={props.icon?.name}
-            size={16}
+            size={props.icon?.size}
             color={Colors.text}
           />
         )}
@@ -129,6 +137,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     // ...Shadow,
+  },
+  disabledButtonText: {
+    color: Colors.grey4,
   },
 });
 

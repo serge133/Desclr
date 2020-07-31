@@ -45,14 +45,14 @@ const HomeScreen: React.FC<Props> = props => {
       >
         Archive
       </Header>
+      {inactiveHabits.length === 0 && (
+        <View style={styles.noHabitsTextContainer}>
+          <Text.Body2 style={styles.noHabitsText}>
+            Habits that you did not complete consistently will appear here
+          </Text.Body2>
+        </View>
+      )}
       <View style={styles.habitListContainer}>
-        {inactiveHabits.length === 0 && (
-          <View>
-            <Text.Body2>
-              Habits that you did not complete consistently will appear here
-            </Text.Body2>
-          </View>
-        )}
         <SwipeListView
           style={styles.habitList}
           data={inactiveHabits}
@@ -62,17 +62,19 @@ const HomeScreen: React.FC<Props> = props => {
           }
           renderItem={itemData => (
             <Habit
-              id={itemData.item.id}
-              value={itemData.item.value}
-              type={itemData.item.type}
-              description={itemData.item.description}
-              streak={itemData.item.streak}
-              interval={itemData.item.interval}
-              expirationDate={itemData.item.expirationDate}
-              todos={itemData.item.todos}
+              // id={itemData.item.id}
+              // value={itemData.item.value}
+              // type={itemData.item.type}
+              // description={itemData.item.description}
+              // streak={itemData.item.streak}
+              // exerciseMinutes={itemData.item.exerciseMinutes}
+              // exerciseMinutesLeft={itemData}
+              // interval={itemData.item.interval}
+              // expirationDate={itemData.item.expirationDate}
+              // todos={itemData.item.todos}
               deletionBarProgress={100}
               onEdit={() => {}}
-              isActive={false}
+              {...itemData.item}
             />
           )}
           renderHiddenItem={(itemData, rowMap) => (
@@ -105,6 +107,13 @@ const styles = StyleSheet.create({
   },
   habitList: {
     width: '100%',
+  },
+  noHabitsTextContainer: {
+    marginTop: 30,
+    width: '90%',
+  },
+  noHabitsText: {
+    textAlign: 'center',
   },
 });
 

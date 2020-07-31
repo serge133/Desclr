@@ -38,7 +38,7 @@ const TimerScreen: React.FC<Props> = props => {
   );
   const dispatch = useDispatch();
 
-  const onTimerEnd = useCallback(() => {
+  const onFinish = useCallback(() => {
     setIsTimerActive(false);
     // If All todos are completed then when timer ends the habit will complete
     if (todos?.every(t => t.completed)) {
@@ -52,18 +52,18 @@ const TimerScreen: React.FC<Props> = props => {
       const interval = setInterval(() => {
         setTimer(prevState => {
           const newState = prevState - 1000;
-          if (newState <= 0) onTimerEnd();
+          if (newState <= 0) onFinish();
 
           return newState;
         });
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [timer, setTimer, isTimerActive, onTimerEnd]);
+  }, [timer, setTimer, isTimerActive, onFinish]);
 
   // * saveHabitTimer only accepts minutes
   const saveTimer = () =>
-    dispatch(saveHabitTimer(props.route.params.habitId, timer / 60000));
+    dispatch(saveHabitTimer(params.habitId, timer / 60000));
 
   const toggleTimer = () => {
     setIsTimerActive(prevState => !prevState);
@@ -108,9 +108,7 @@ const TimerScreen: React.FC<Props> = props => {
               <CheckBox
                 value={todo.completed}
                 onCheck={value =>
-                  dispatch(
-                    completeHabitTodo(props.route.params.habitId, index, value)
-                  )
+                  dispatch(completeHabitTodo(params.habitId, index, value))
                 }
               />
               <Text.H4 style={styles.todoText}>{todo.value}</Text.H4>
@@ -118,13 +116,14 @@ const TimerScreen: React.FC<Props> = props => {
           ))}
       </View>
       <View style={styles.buttons}>
-        {/* <Button
-          onPress={() => {}}
+        <Button
+          onPress={onFinish}
           style={styles.button}
-          icon={{ type: 'AntDesign', name: 'arrowright', size: 16 }}
+          icon={{ type: 'Ionicons', name: 'ios-checkmark', size: 24 }}
+          disabled={todos?.every(t => t.completed) ? false : true}
         >
-          Test
-        </Button> */}
+          Complete
+        </Button>
         <Button
           onPress={toggleTimer}
           // style={styles.button}

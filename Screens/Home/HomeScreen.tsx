@@ -93,16 +93,6 @@ const HomeScreen: React.FC<Props> = props => {
 
             return (
               <Habit
-                id={itemData.item.id}
-                value={itemData.item.value}
-                type={itemData.item.type}
-                description={itemData.item.description}
-                streak={itemData.item.streak}
-                exerciseMinutes={itemData.item.exerciseMinutes}
-                exerciseMinutesLeft={itemData.item.exerciseMinutesLeft}
-                interval={itemData.item.interval}
-                expirationDate={itemData.item.expirationDate}
-                todos={itemData.item.todos}
                 deletionBarProgress={deletionBarProgress}
                 onEdit={() =>
                   props.navigation.navigate('EditingHabitScreen', {
@@ -117,7 +107,7 @@ const HomeScreen: React.FC<Props> = props => {
                     },
                   })
                 }
-                isActive
+                {...itemData.item}
               />
             );
           }}
