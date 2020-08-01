@@ -29,7 +29,8 @@ const AddingHabitScreen: React.FC<Props> = props => {
     value: { value: '', isError: false, errorMessage: '' },
     description: { value: '', isError: false, errorMessage: '' },
     habitType: dropdownIndexHabitTypes[0],
-    exerciseMinutes: {
+    requireTimer: false,
+    minutes: {
       value: 20,
       displayedVal: 20,
       isError: false,
@@ -69,7 +70,8 @@ const AddingHabitScreen: React.FC<Props> = props => {
           form.value.value,
           form.habitType,
           form.description.value,
-          form.exerciseMinutes.value,
+          form.requireTimer ? "Timer" : "Button",
+          form.minutes.value,
           form.interval.value,
           form.todos
         )
@@ -189,18 +191,33 @@ const AddingHabitScreen: React.FC<Props> = props => {
           }
           chosenEntry={form.habitType}
         />
-        {form.habitType === 'Exercise' && (
+
+        <View style={styles.requireTimer}>
+          <CheckBox
+            value={form.requireTimer}
+            onCheck={() =>
+              setForm(prevState => ({
+                ...prevState,
+                requireTimer: !prevState.requireTimer,
+              }))
+            }
+          />
+          <Text.Body1 style={styles.requireTimerText}>
+            Require Timer?
+          </Text.Body1>
+        </View>
+        {form.requireTimer && (
           <CustomSlider
-            label='Exercise Time'
-            value={form.exerciseMinutes.displayedVal}
-            visibleSliderInformation={`${form.exerciseMinutes.value} Minutes`}
+            label='Set Timer'
+            value={form.minutes.displayedVal}
+            visibleSliderInformation={`${form.minutes.value} Minutes`}
             minimumValue={1}
             maximumValue={180}
             // step={1}
             onValueChange={value =>
               setForm(prevState => ({
                 ...prevState,
-                exerciseMinutes: {
+                minutes: {
                   ...prevState.interval,
                   value: +value.toFixed(0),
                   displayedVal: value,
@@ -282,6 +299,15 @@ const styles = StyleSheet.create({
   formError: {
     alignItems: 'center',
     marginBottom: 10,
+  },
+  requireTimer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+  },
+  requireTimerText: {
+    marginLeft: 8,
+    flex: 1,
   },
 });
 

@@ -19,13 +19,6 @@ const App: React.FC = () => {
 
   const store = createStore(rootReducer, applyMiddleware(Thunk));
 
-  /** Stuff to add in this release
-   * !:    [x] Code Optimizations (Optimized?)
-   * TODO: [ ] Make the timer slider in AddingHabitScreen
-   * TODO: [ ] Add Exercise Time to exercise habits
-   * TODO: [ ] Check For Bugs!
-   */
-
   return (
     <Provider store={store}>
       <DesclrNavigator />

@@ -1,5 +1,10 @@
 // * Optimized
-import { HabitInterface, TodoInterface, HabitTypes } from '../../types';
+import {
+  HabitInterface,
+  TodoInterface,
+  HabitTypes,
+  CompleteTypes,
+} from '../../types';
 import { HabitActions, RootState } from '../types';
 import Axios from 'axios';
 import { addDaysToTodaysDate } from '../../functions/date';
@@ -24,7 +29,8 @@ export const addHabit = (
   value: string,
   type: HabitTypes,
   description: string,
-  exerciseMinutes: number,
+  completeType: CompleteTypes,
+  minutes: number,
   interval: number,
   todos: TodoInterface[]
 ) => {
@@ -42,9 +48,10 @@ export const addHabit = (
       description: description,
       streak: 0,
       isActive: true,
-      exerciseMinutes: exerciseMinutes,
+      completeType: completeType,
+      minutes: minutes,
       // Same as above because initially timer is full
-      exerciseMinutesLeft: exerciseMinutes,
+      minutesLeft: minutes,
       interval: interval,
       expirationDate: addDaysToTodaysDate(interval),
       todos: todos,
@@ -71,7 +78,8 @@ export const editHabit = (
   value: string,
   type: HabitTypes,
   description: string,
-  exerciseMinutes: number,
+  completeType: CompleteTypes,
+  minutes: number,
   interval: number,
   todos: TodoInterface[]
 ) => {
@@ -87,7 +95,9 @@ export const editHabit = (
       value: value,
       type: type,
       description: description,
-      exerciseMinutes: exerciseMinutes,
+      completeType: completeType,
+      minutes: minutes,
+      minutesLeft: minutes,
       interval: interval,
       todos: todos,
       expirationDate: addDaysToTodaysDate(interval),
@@ -180,8 +190,11 @@ export const completeHabit = (habitId: string) => {
           completed: false,
         });
       }
+      console.log(currentHabit.minutes);
       const completedHabit = {
         streak: currentHabit.streak + 1,
+        // Resets the minutes when habit is completed
+        minutesLeft: currentHabit.minutes,
         expirationDate: addDaysToTodaysDate(currentHabit.interval),
         todos: newTodos,
       };
@@ -267,10 +280,7 @@ export const deleteHabit = (habitId: string) => {
   };
 };
 
-export const saveHabitTimer = (
-  habitId: string,
-  exerciseMinutesLeft: number
-) => {
+export const saveHabitTimer = (habitId: string, minutesLeft: number) => {
   return async (
     dispatch: (action: HabitActions) => void,
     getState: () => RootState
@@ -280,13 +290,13 @@ export const saveHabitTimer = (
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
       method: 'PATCH',
       data: {
-        exerciseMinutesLeft: exerciseMinutesLeft,
+        minutesLeft: minutesLeft,
       },
     });
     dispatch({
       type: SAVE_EXERCISE_TIMER,
       habitId: habitId,
-      exerciseMinutesLeft: exerciseMinutesLeft,
+      minutesLeft: minutesLeft,
     });
   };
 };

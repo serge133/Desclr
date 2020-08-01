@@ -12,6 +12,7 @@ import { editHabit, archiveHabit } from '../../store/actions/habit';
 import { TodoInterface, HabitTypes } from '../../types';
 import Button from '../../components/UI/Button';
 import Dropdown from '../../components/UI/Dropdown';
+import * as Text from '../../components/UI/Text';
 
 interface Props {
   navigation: {
@@ -24,7 +25,8 @@ interface Props {
         value: string;
         type: HabitTypes;
         description: string;
-        exerciseMinutes: number;
+        requireTimer: boolean;
+        minutes: number;
         interval: number;
         todos: TodoInterface[];
       };
@@ -37,9 +39,10 @@ const EditingHabitScreen: React.FC<Props> = props => {
     value: props.route.params.habit.value,
     habitType: props.route.params.habit.type,
     description: props.route.params.habit.description,
-    exerciseMinutes: {
-      value: props.route.params.habit.exerciseMinutes,
-      displayedVal: props.route.params.habit.exerciseMinutes,
+    requireTimer: props.route.params.habit.requireTimer,
+    minutes: {
+      value: props.route.params.habit.minutes,
+      displayedVal: props.route.params.habit.minutes,
     },
     interval: {
       value: props.route.params.habit.interval,
@@ -63,7 +66,8 @@ const EditingHabitScreen: React.FC<Props> = props => {
         form.value,
         form.habitType,
         form.description,
-        form.exerciseMinutes.value,
+        form.requireTimer ? 'Timer' : 'Button',
+        form.minutes.value,
         form.interval.value,
         form.todos
       )
@@ -107,7 +111,8 @@ const EditingHabitScreen: React.FC<Props> = props => {
         value: '',
         habitType: 'Default',
         description: '',
-        exerciseMinutes: { value: 20, displayedVal: 20 },
+        requireTimer: false,
+        minutes: { value: 20, displayedVal: 20 },
         interval: { value: 1, displayedVal: 1 },
         todos: [],
       });
@@ -185,18 +190,32 @@ const EditingHabitScreen: React.FC<Props> = props => {
           }
           chosenEntry={form.habitType}
         />
-        {form.habitType === 'Exercise' && (
+        <View style={styles.requireTimer}>
+          <CheckBox
+            value={form.requireTimer}
+            onCheck={() =>
+              setForm(prevState => ({
+                ...prevState,
+                requireTimer: !prevState.requireTimer,
+              }))
+            }
+          />
+          <Text.Body1 style={styles.requireTimerText}>
+            Require Timer?
+          </Text.Body1>
+        </View>
+        {form.requireTimer && (
           <CustomSlider
             label='Exercise Time'
-            value={form.exerciseMinutes.displayedVal}
-            visibleSliderInformation={`${form.exerciseMinutes.value} Minutes`}
+            value={form.minutes.displayedVal}
+            visibleSliderInformation={`${form.minutes.value} Minutes`}
             minimumValue={1}
             maximumValue={180}
             // step={1}
             onValueChange={value =>
               setForm(prevState => ({
                 ...prevState,
-                exerciseMinutes: {
+                minutes: {
                   ...prevState.interval,
                   value: +value.toFixed(0),
                   displayedVal: value,
@@ -270,6 +289,15 @@ const styles = StyleSheet.create({
   },
   todoInputSpacer: {
     width: 8,
+  },
+  requireTimer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 14,
+  },
+  requireTimerText: {
+    marginLeft: 8,
+    flex: 1,
   },
 });
 

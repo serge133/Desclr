@@ -1,4 +1,9 @@
-import { HabitInterface, TodoInterface, HabitTypes } from '../types';
+import {
+  HabitInterface,
+  TodoInterface,
+  HabitTypes,
+  CompleteTypes,
+} from '../types';
 import { SIGNUP, LOGIN, AUTHENTICATE, LOGOUT } from './actions/auth';
 import {
   ADD_HABIT,
@@ -49,7 +54,9 @@ export type HabitActions =
         value: string;
         type: HabitTypes;
         description: string;
-        exerciseMinutes: number;
+        completeType: CompleteTypes;
+        minutes: number;
+        minutesLeft: number;
         interval: number;
         todos: TodoInterface[];
         expirationDate: string;
@@ -68,6 +75,7 @@ export type HabitActions =
   | {
       type: typeof COMPLETE_HABIT;
       habitId: string;
+      minutesLeft: number;
       streak: number;
       expirationDate: string;
       todos: TodoInterface[];
@@ -88,7 +96,7 @@ export type HabitActions =
   | {
       type: typeof SAVE_EXERCISE_TIMER;
       habitId: string;
-      exerciseMinutesLeft: number;
+      minutesLeft: number;
     };
 // -------------------------------------------------------------------------------
 

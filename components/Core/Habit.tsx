@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
-import { HabitInterface, HabitTypes } from '../../types';
+import { HabitInterface, CompleteTypes } from '../../types';
 import { Colors } from '../../constants/default-styles';
 import * as Text from '../UI/Text';
 import CheckBox from '../UI/CheckBox';
@@ -23,7 +23,7 @@ interface HabitHiddenRowButtonProps {
   onComplete: (event: GestureResponderEvent) => void;
   onArchive: (event: GestureResponderEvent) => void;
   fractionCompleted: string;
-  habitType: HabitTypes;
+  completeType: CompleteTypes;
   activateTimer: Function;
 }
 
@@ -35,8 +35,8 @@ interface ArchivedHabitHiddenRowButtonsProps {
 export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props => {
   let LeftRowButton: React.ReactNode;
 
-  switch (props.habitType) {
-    case 'Exercise':
+  switch (props.completeType) {
+    case 'Timer':
       LeftRowButton = (
         <TouchableOpacity
           style={styles.rowBackButtonContainer}
@@ -242,6 +242,7 @@ const styles = StyleSheet.create({
   },
   todo: {
     flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 14,
   },
   todoText: {

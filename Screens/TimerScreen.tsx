@@ -25,8 +25,6 @@ interface Props {
   };
 }
 
-// TODO: [ ] Put the todos here
-
 const TimerScreen: React.FC<Props> = props => {
   // * TIMER IS IN MILLISECONDS
   const { params } = props.route;
@@ -40,7 +38,7 @@ const TimerScreen: React.FC<Props> = props => {
 
   const onFinish = useCallback(() => {
     setIsTimerActive(false);
-    // If All todos are completed then when timer ends the habit will complete
+    // If all todos are completed then when timer ends the habit will complete
     if (todos?.every(t => t.completed)) {
       dispatch(completeHabit(params.habitId));
     }

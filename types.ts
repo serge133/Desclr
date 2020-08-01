@@ -5,14 +5,16 @@ export interface TodoInterface {
 }
 
 export type HabitTypes = 'Default' | 'Exercise' | 'Knowledge';
+export type CompleteTypes = 'Timer' | 'Button';
 
 export interface HabitInterface {
   id: string;
   value: string;
   type: HabitTypes;
   description: string;
-  exerciseMinutes: number;
-  exerciseMinutesLeft: number;
+  completeType: CompleteTypes;
+  minutes: number;
+  minutesLeft: number;
   interval: number;
   expirationDate: string;
   streak: number;
