@@ -15,7 +15,7 @@ const HomeStack: React.FC = () => {
         name='TimerScreen'
         component={Timer}
         // One Hour
-        initialParams={{ milliseconds: 7260000 }}
+        // initialParams={{ milliseconds: 7260000 }}
       />
       <Stack.Screen name='AddingHabitScreen' component={AddingHabitScreen} />
       <Stack.Screen name='EditingHabitScreen' component={EditingHabitScreen} />

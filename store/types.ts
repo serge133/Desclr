@@ -15,6 +15,7 @@ import {
   EDIT_HABIT,
   DELETE_HABIT,
   SAVE_EXERCISE_TIMER,
+  RESET_HABIT_TIMER,
 } from './actions/habit';
 
 // * Actions
@@ -95,6 +96,11 @@ export type HabitActions =
     }
   | {
       type: typeof SAVE_EXERCISE_TIMER;
+      habitId: string;
+      minutesLeft: number;
+    }
+  | {
+      type: typeof RESET_HABIT_TIMER;
       habitId: string;
       minutesLeft: number;
     };

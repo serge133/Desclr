@@ -124,7 +124,7 @@ const HomeScreen: React.FC<Props> = props => {
               completeType={itemData.item.completeType}
               activateTimer={() =>
                 props.navigation.navigate('TimerScreen', {
-                  milliseconds: itemData.item.minutesLeft * 60 * 1000,
+                  minutes: itemData.item.minutesLeft,
                   habitId: itemData.item.id,
                 })
               }

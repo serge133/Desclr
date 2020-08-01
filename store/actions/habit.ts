@@ -17,9 +17,8 @@ export const COMPLETE_HABIT = 'COMPLETE_HABIT';
 export const ARCHIVE_HABIT = 'ARCHIVE_HABIT';
 export const REPOST_HABIT = 'REPOST_HABIT';
 export const DELETE_HABIT = 'DELETE_HABIT';
-// ! Not being used for now
 export const SAVE_EXERCISE_TIMER = 'SAVE_EXERCISE_TIMER';
-
+export const RESET_HABIT_TIMER = 'RESET_HABIT_TIMER';
 /**
  * Authentication is not a problem because the app checks every minute if the
  * user is valid.
@@ -298,5 +297,29 @@ export const saveHabitTimer = (habitId: string, minutesLeft: number) => {
       habitId: habitId,
       minutesLeft: minutesLeft,
     });
+  };
+};
+
+export const resetHabitTimer = (habitId: string) => {
+  return async (
+    dispatch: (action: HabitActions) => void,
+    getState: () => RootState
+  ) => {
+    const { auth, habit } = getState();
+    const currentHabit = habit.habits.find(h => h.id === habitId);
+    if (currentHabit) {
+      Axios({
+        url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
+        method: 'PATCH',
+        data: {
+          minutesLeft: currentHabit.minutes,
+        },
+      });
+      dispatch({
+        type: RESET_HABIT_TIMER,
+        habitId: habitId,
+        minutesLeft: currentHabit.minutes,
+      });
+    }
   };
 };

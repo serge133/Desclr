@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
 import Header from '../components/UI/Header';
 import Button from '../components/UI/Button';
 import { Colors } from '../constants/default-styles';
@@ -8,6 +8,7 @@ import {
   completeHabit,
   completeHabitTodo,
   saveHabitTimer,
+  resetHabitTimer,
 } from '../store/actions/habit';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckBox from '../components/UI/CheckBox';
@@ -19,16 +20,32 @@ interface Props {
   };
   route: {
     params: {
-      milliseconds: number;
+      minutes: number;
       habitId: string;
     };
   };
 }
 
+/**
+ * This timer doesnt just decrease a value every second or minute
+ * this timer uses absolute values (exact dates in ms) and then updates every five seconds checking those values
+ * every update triggers a math equation in which the time set by the user plus todays date in ms (doesnt change) is
+ * subtracted by todays date that updates every five seconds (does change)
+ * the result is a value in which even if you leave the app will still be super accurate
+ */
+
 const TimerScreen: React.FC<Props> = props => {
-  // * TIMER IS IN MILLISECONDS
+  // * TIMER IS IN MILLISECONDS AND ABSOLUTE
+  // * User can close the app and the timer will function because of absolute values
   const { params } = props.route;
-  const [timer, setTimer] = useState(params.milliseconds);
+  // Set absolute date when timer will expire by adding todays date in minutes (milliseconds)
+  console.log(params.minutes);
+  const [time, setTime] = useState(
+    (new Date().getTime() + params.minutes * 60000) / 60000
+  );
+  const [timer, setTimer] = useState(
+    Math.ceil(time - new Date().getTime() / 60000)
+  );
   const [isTimerActive, setIsTimerActive] = useState(false);
   const todos = useSelector(
     (state: RootState) =>
@@ -41,43 +58,65 @@ const TimerScreen: React.FC<Props> = props => {
     // If all todos are completed then when timer ends the habit will complete
     if (todos?.every(t => t.completed)) {
       dispatch(completeHabit(params.habitId));
+      props.navigation.goBack();
+    } else {
+      dispatch(resetHabitTimer(params.habitId));
+      Alert.alert('Not Finish Habit', 'You did not finish this habit', [
+        {
+          text: 'Go Back',
+          style: 'default',
+          onPress: () => props.navigation.goBack(),
+        },
+      ]);
     }
-    props.navigation.goBack();
-  }, []);
-
+  }, [todos]);
+  // * Math.ceil rounds up e.g. 4.01 will be 5
   useEffect(() => {
     if (isTimerActive) {
+      // Every five seconds the timer will update
       const interval = setInterval(() => {
-        setTimer(prevState => {
-          const newState = prevState - 1000;
-          if (newState <= 0) onFinish();
+        const newTime = Math.ceil(time - new Date().getTime() / 60000);
+        setTimer(newTime);
+        if (newTime <= 0) onFinish();
+      }, 5000);
 
-          return newState;
-        });
-      }, 1000);
       return () => clearInterval(interval);
     }
-  }, [timer, setTimer, isTimerActive, onFinish]);
+  }, [setTimer, time, isTimerActive, onFinish]);
 
-  // * saveHabitTimer only accepts minutes
-  const saveTimer = () =>
-    dispatch(saveHabitTimer(params.habitId, timer / 60000));
+  // useEffect(() => {
+  //   if (isTimerActive) {
+  //     const interval = setInterval(() => {
+  //       setTimer(prevState => {
+  //         const newState = prevState - 1000;
+  //         if (newState <= 0) onFinish();
+
+  //         return newState;
+  //       });
+  //     }, 1000);
+  //     return () => clearInterval(interval);
+  //   }
+  // }, [timer, setTimer, isTimerActive, onFinish]);
+
+  // saveHabitTimer only accepts minutes
+  const saveTimer = () => dispatch(saveHabitTimer(params.habitId, +timer));
 
   const toggleTimer = () => {
     setIsTimerActive(prevState => !prevState);
+    setTime((new Date().getTime() + +timer * 60000) / 60000);
     saveTimer();
   };
 
   // const resetTimer = () => {};
 
-  const timerFormat = (): string => {
-    const seconds = Math.floor(timer / 1000) % 60;
-    const minutes = Math.floor(timer / 60000) % 60;
-    const hours = Math.floor(timer / 3600000);
-    return `${hours < 10 ? '0' + hours : hours}:${
-      minutes < 10 ? '0' + minutes : minutes
-    }:${seconds < 10 ? '0' + seconds : seconds}`;
-  };
+  // const timerFormat = (): string => {
+  //   const seconds = Math.floor(timer / 1000) % 60;
+  //   const minutes = Math.floor(timer / 60000) % 60;
+  //   const hours = Math.floor(timer / 3600000);
+  //   return `${hours < 10 ? '0' + hours : hours}:${
+  //     minutes < 10 ? '0' + minutes : minutes
+  //   }:${seconds < 10 ? '0' + seconds : seconds}`;
+  // };
 
   const saveTimerAndLeave = () => {
     setIsTimerActive(false);
@@ -97,7 +136,7 @@ const TimerScreen: React.FC<Props> = props => {
         Timer
       </Header>
       <View style={styles.timerContainer}>
-        <Text.H1 style={styles.timer}>{timerFormat()}</Text.H1>
+        <Text.H1 style={styles.timer}>{`${timer} Minutes`}</Text.H1>
       </View>
       <View style={styles.todos}>
         {todos &&
