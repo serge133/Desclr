@@ -206,7 +206,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
         </View>
         {form.requireTimer && (
           <CustomSlider
-            label='Maximum time'
+            label='Maximum Time'
             value={form.maxMinutes.displayedVal}
             visibleSliderInformation={`${form.maxMinutes.value} Minutes`}
             minimumValue={1}

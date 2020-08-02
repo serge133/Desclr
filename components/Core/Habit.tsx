@@ -8,10 +8,10 @@ import {
 import { HabitInterface, CompleteTypes } from '../../types';
 import { Colors } from '../../constants/default-styles';
 import * as Text from '../UI/Text';
-import CheckBox from '../UI/CheckBox';
 import RenderIcon from '../UI/RenderIcon';
 import { useDispatch } from 'react-redux';
 import { completeHabitTodo } from '../../store/actions/habit';
+import Todo from '../UI/Todo';
 
 interface HabitProps extends HabitInterface {
   onEdit: () => void;
@@ -181,15 +181,13 @@ const Habit: React.FC<HabitProps> = props => {
         <Text.Body1>{props.type}</Text.Body1>
         <Text.Body3 style={styles.description}>{props.description}</Text.Body3>
         {props.todos.map((todo, index) => (
-          <View style={styles.todo} key={todo.id}>
-            <CheckBox
-              value={todo.completed}
-              onCheck={value =>
-                dispatch(completeHabitTodo(props.id, index, value))
-              }
-            />
-            <Text.Body1 style={styles.todoText}>{todo.value}</Text.Body1>
-          </View>
+          <Todo
+            key={todo.id}
+            id={todo.id}
+            value={todo.value}
+            completed={todo.completed}
+            toggleComplete={value => dispatch(completeHabitTodo(props.id, index, value))}
+          />
         ))}
         <View style={styles.expirationBar}>
           <View

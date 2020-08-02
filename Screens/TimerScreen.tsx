@@ -1,19 +1,17 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, StyleSheet } from 'react-native';
 import Header from '../components/UI/Header';
 import Button from '../components/UI/Button';
 import { Colors } from '../constants/default-styles';
 import * as Text from '../components/UI/Text';
 import {
-  completeHabit,
   completeHabitTodo,
   saveHabitTimer,
-  resetHabitTimer,
 } from '../store/actions/habit';
 import { useDispatch, useSelector } from 'react-redux';
-import CheckBox from '../components/UI/CheckBox';
 import { RootState } from '../store/types';
 import Breath from '../Animations/Breath';
+import Todo from '../components/UI/Todo';
 
 interface Props {
   navigation: {
@@ -29,11 +27,11 @@ interface Props {
 }
 
 /**
- * This timer doesnt just decrease a value every second or minute
+ * This timer doesnt just increment a value every second or minute
  * this timer uses absolute values (exact dates in ms) and then updates every five seconds checking those values
- * every update triggers a math equation in which the time set by the user plus todays date in ms (doesnt change) is
- * subtracted by todays date that updates every five seconds (does change)
- * the result is a value in which even if you leave the app will still be super accurate
+ * every five second update triggers a math equation in which todays date subtracted by the minutes passed already (doesn't change)
+ * is subtracted by todays date that updates every five seconds (does change)
+ * the result is a value in which even if you leave the app will be exact
  */
 
 // Increments up (Stopwatch)
@@ -48,32 +46,34 @@ const TimerScreen: React.FC<Props> = props => {
   // Timer is in minutes
   const [timer, setTimer] = useState(params.minutesPassed);
   const [isTimerActive, setIsTimerActive] = useState(false);
+  const [isTimerAboveMax, setIsTimerAboveMax] = useState(false);
+
   const todos = useSelector(
     (state: RootState) =>
       state.habit.habits.find(h => h.id === params.habitId)?.todos
   );
   const dispatch = useDispatch();
 
-  const onFinish = useCallback(() => {
+  // saveHabitTimer only accepts maxMinutes
+  const saveTimer = () => dispatch(saveHabitTimer(params.habitId, +timer));
+
+  const toggleTimer = () => {
+    setIsTimerActive(prevState => !prevState);
+    setTimeStarted(new Date().getTime() - +timer * 60000);
+    saveTimer();
+  };
+
+  const saveTimerAndLeave = () => {
     setIsTimerActive(false);
-    // If all todos are completed then when timer ends the habit will complete
-    if (todos?.every(t => t.completed)) {
-      dispatch(completeHabit(params.habitId));
-      props.navigation.goBack();
-    } else {
-      dispatch(resetHabitTimer(params.habitId));
-      Alert.alert(
-        'Not Finish Habit',
-        'You hit your maximum time limit and did not complete your habit',
-        [
-          {
-            text: 'Go Back',
-            style: 'default',
-            onPress: () => props.navigation.goBack(),
-          },
-        ]
-      );
-    }
+    saveTimer();
+    props.navigation.goBack();
+  };
+
+  const onTimerReachMax = useCallback(() => {
+    // setIsTimerActive(false);
+    // Stops the timer
+    toggleTimer();
+    setIsTimerAboveMax(true);
   }, [todos]);
   // * Math.floor rounds down e.g. 4.99 will be 4
   const { maxMinutes } = params;
@@ -85,52 +85,12 @@ const TimerScreen: React.FC<Props> = props => {
           (new Date().getTime() - timeStarted) / 60000
         );
         setTimer(newTime);
-        if (newTime >= maxMinutes) onFinish();
+        if (newTime >= maxMinutes && !isTimerAboveMax) onTimerReachMax();
       }, 5000);
 
       return () => clearInterval(interval);
     }
-  }, [setTimer, timeStarted, isTimerActive, onFinish, maxMinutes]);
-
-  // useEffect(() => {
-  //   if (isTimerActive) {
-  //     const interval = setInterval(() => {
-  //       setTimer(prevState => {
-  //         const newState = prevState - 1000;
-  //         if (newState <= 0) onFinish();
-
-  //         return newState;
-  //       });
-  //     }, 1000);
-  //     return () => clearInterval(interval);
-  //   }
-  // }, [timer, setTimer, isTimerActive, onFinish]);
-
-  // saveHabitTimer only accepts maxMinutes
-  const saveTimer = () => dispatch(saveHabitTimer(params.habitId, +timer));
-
-  const toggleTimer = () => {
-    setIsTimerActive(prevState => !prevState);
-    setTimeStarted(new Date().getTime() - +timer * 60000);
-    saveTimer();
-  };
-
-  // const resetTimer = () => {};
-
-  // const timerFormat = (): string => {
-  //   const seconds = Math.floor(timer / 1000) % 60;
-  //   const maxMinutes = Math.floor(timer / 60000) % 60;
-  //   const hours = Math.floor(timer / 3600000);
-  //   return `${hours < 10 ? '0' + hours : hours}:${
-  //     maxMinutes < 10 ? '0' + maxMinutes : maxMinutes
-  //   }:${seconds < 10 ? '0' + seconds : seconds}`;
-  // };
-
-  const saveTimerAndLeave = () => {
-    setIsTimerActive(false);
-    saveTimer();
-    props.navigation.goBack();
-  };
+  }, [setTimer, timeStarted, isTimerActive, onTimerReachMax, maxMinutes, isTimerAboveMax]);
 
   return (
     <View style={styles.screen}>
@@ -144,7 +104,7 @@ const TimerScreen: React.FC<Props> = props => {
         Timer
       </Header>
       <View style={styles.timerContainer}>
-        <Text.H1 style={styles.maxMinutes}>{timer.toString()}</Text.H1>
+        <Text.H1 style={isTimerAboveMax ? styles.minutesReachedMax : styles.minutes}>{timer.toString()}</Text.H1>
         {isTimerActive ? (
           <Breath durationFadeIn={1000} durationFadeOut={1000}>
             <Text.H3 style={styles.minutesLabel}>Minutes</Text.H3>
@@ -156,20 +116,18 @@ const TimerScreen: React.FC<Props> = props => {
       <View style={styles.todos}>
         {todos &&
           todos.map((todo, index) => (
-            <View style={styles.todo} key={todo.id}>
-              <CheckBox
-                value={todo.completed}
-                onCheck={value =>
-                  dispatch(completeHabitTodo(params.habitId, index, value))
-                }
-              />
-              <Text.H4 style={styles.todoText}>{todo.value}</Text.H4>
-            </View>
+            <Todo
+              key={todo.id}
+              id={todo.id}
+              value={todo.value}
+              completed={todo.completed}
+              toggleComplete={value => dispatch(completeHabitTodo(params.habitId, index, value))}
+            />
           ))}
       </View>
       <View style={styles.buttons}>
         <Button
-          onPress={onFinish}
+          onPress={onTimerReachMax}
           style={styles.button}
           icon={{ type: 'Ionicons', name: 'ios-checkmark', size: 24 }}
           disabled={todos?.every(t => t.completed) ? false : true}
@@ -182,7 +140,7 @@ const TimerScreen: React.FC<Props> = props => {
           type='colorful'
           // icon={{ type: 'AntDesign', name: 'arrowright', size: 16 }}
         >
-          {isTimerActive ? 'Stop' : 'Start'}
+          {isTimerActive ? 'Stop' : isTimerAboveMax ? 'Continue?' : 'Start'}
         </Button>
       </View>
     </View>
@@ -207,9 +165,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  maxMinutes: {
+  minutes: {
     fontSize: 60,
     color: 'white',
+  },
+  minutesReachedMax: {
+    fontSize: 60,
+    color: "#FF6961"
   },
   minutesLabel: {
     color: 'white',
@@ -221,15 +183,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     // flex: 1,
   },
-  todo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 14,
-  },
-  todoText: {
-    marginLeft: 8,
-    flex: 1,
-  },
+  // todo: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   marginTop: 14,
+  // },
+  // todoText: {
+  //   marginLeft: 8,
+  //   flex: 1,
+  // },
   button: {
     marginBottom: 24,
   },
