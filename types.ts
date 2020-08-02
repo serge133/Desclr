@@ -13,8 +13,8 @@ export interface HabitInterface {
   type: HabitTypes;
   description: string;
   completeType: CompleteTypes;
-  minutes: number;
-  minutesLeft: number;
+  maxMinutes: number;
+  minutesPassed: number;
   interval: number;
   expirationDate: string;
   streak: number;

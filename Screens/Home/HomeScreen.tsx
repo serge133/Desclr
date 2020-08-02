@@ -103,7 +103,7 @@ const HomeScreen: React.FC<Props> = props => {
                       description: itemData.item.description,
                       requireTimer:
                         itemData.item.completeType === 'Timer' ? true : false,
-                      minutes: itemData.item.minutes,
+                      maxMinutes: itemData.item.maxMinutes,
                       interval: itemData.item.interval,
                       todos: itemData.item.todos,
                     },
@@ -124,7 +124,8 @@ const HomeScreen: React.FC<Props> = props => {
               completeType={itemData.item.completeType}
               activateTimer={() =>
                 props.navigation.navigate('TimerScreen', {
-                  minutes: itemData.item.minutesLeft,
+                  minutesPassed: itemData.item.minutesPassed,
+                  maxMinutes: itemData.item.maxMinutes,
                   habitId: itemData.item.id,
                 })
               }

@@ -40,8 +40,8 @@ export default (state: HabitState = initialState, action: HabitActions) => {
           type: action.editedHabit.type,
           description: action.editedHabit.description,
           completeType: action.editedHabit.completeType,
-          minutes: action.editedHabit.minutes,
-          minutesLeft: action.editedHabit.minutesLeft,
+          maxMinutes: action.editedHabit.maxMinutes,
+          minutesPassed: action.editedHabit.minutesPassed,
           interval: action.editedHabit.interval,
           todos: action.editedHabit.todos,
           expirationDate: action.editedHabit.expirationDate,
@@ -66,7 +66,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
       return {
         ...state,
         habits: editHabitById(action.habitId, {
-          minutesLeft: action.minutesLeft,
+          minutesPassed: action.minutesPassed,
           streak: action.streak,
           expirationDate: action.expirationDate,
           todos: action.todos,
@@ -102,14 +102,14 @@ export default (state: HabitState = initialState, action: HabitActions) => {
       return {
         ...state,
         habits: editHabitById(action.habitId, {
-          minutesLeft: action.minutesLeft,
+          minutesPassed: action.minutesPassed,
         }),
       };
     case RESET_HABIT_TIMER:
       return {
         ...state,
         habits: editHabitById(action.habitId, {
-          minutesLeft: action.minutesLeft,
+          minutesPassed: action.minutesPassed,
         }),
       };
     default:

@@ -29,7 +29,7 @@ export const addHabit = (
   type: HabitTypes,
   description: string,
   completeType: CompleteTypes,
-  minutes: number,
+  maxMinutes: number,
   interval: number,
   todos: TodoInterface[]
 ) => {
@@ -48,9 +48,9 @@ export const addHabit = (
       streak: 0,
       isActive: true,
       completeType: completeType,
-      minutes: minutes,
+      maxMinutes: maxMinutes,
       // Same as above because initially timer is full
-      minutesLeft: minutes,
+      minutesPassed: 0,
       interval: interval,
       expirationDate: addDaysToTodaysDate(interval),
       todos: todos,
@@ -78,7 +78,7 @@ export const editHabit = (
   type: HabitTypes,
   description: string,
   completeType: CompleteTypes,
-  minutes: number,
+  maxMinutes: number,
   interval: number,
   todos: TodoInterface[]
 ) => {
@@ -95,8 +95,8 @@ export const editHabit = (
       type: type,
       description: description,
       completeType: completeType,
-      minutes: minutes,
-      minutesLeft: minutes,
+      maxMinutes: maxMinutes,
+      minutesPassed: maxMinutes,
       interval: interval,
       todos: todos,
       expirationDate: addDaysToTodaysDate(interval),
@@ -189,11 +189,11 @@ export const completeHabit = (habitId: string) => {
           completed: false,
         });
       }
-      console.log(currentHabit.minutes);
+      console.log(currentHabit.maxMinutes);
       const completedHabit = {
         streak: currentHabit.streak + 1,
-        // Resets the minutes when habit is completed
-        minutesLeft: currentHabit.minutes,
+        // Resets the maxMinutes when habit is completed
+        minutesPassed: 0,
         expirationDate: addDaysToTodaysDate(currentHabit.interval),
         todos: newTodos,
       };
@@ -279,23 +279,24 @@ export const deleteHabit = (habitId: string) => {
   };
 };
 
-export const saveHabitTimer = (habitId: string, minutesLeft: number) => {
+export const saveHabitTimer = (habitId: string, minutesPassed: number) => {
   return async (
     dispatch: (action: HabitActions) => void,
     getState: () => RootState
   ) => {
     const { auth } = getState();
+    console.log('SAVE HABIT TIMER', minutesPassed);
     Axios({
       url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
       method: 'PATCH',
       data: {
-        minutesLeft: minutesLeft,
+        minutesPassed: minutesPassed,
       },
     });
     dispatch({
       type: SAVE_EXERCISE_TIMER,
       habitId: habitId,
-      minutesLeft: minutesLeft,
+      minutesPassed: minutesPassed,
     });
   };
 };
@@ -312,13 +313,13 @@ export const resetHabitTimer = (habitId: string) => {
         url: `https://desclr.firebaseio.com/${auth.userId}/habits/${habitId}.json?auth=${auth.token}`,
         method: 'PATCH',
         data: {
-          minutesLeft: currentHabit.minutes,
+          minutesPassed: 0,
         },
       });
       dispatch({
         type: RESET_HABIT_TIMER,
         habitId: habitId,
-        minutesLeft: currentHabit.minutes,
+        minutesPassed: 0,
       });
     }
   };

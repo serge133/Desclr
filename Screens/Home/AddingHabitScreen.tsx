@@ -30,7 +30,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
     description: { value: '', isError: false, errorMessage: '' },
     habitType: dropdownIndexHabitTypes[0],
     requireTimer: false,
-    minutes: {
+    maxMinutes: {
       value: 20,
       displayedVal: 20,
       isError: false,
@@ -70,8 +70,8 @@ const AddingHabitScreen: React.FC<Props> = props => {
           form.value.value,
           form.habitType,
           form.description.value,
-          form.requireTimer ? "Timer" : "Button",
-          form.minutes.value,
+          form.requireTimer ? 'Timer' : 'Button',
+          form.maxMinutes.value,
           form.interval.value,
           form.todos
         )
@@ -202,22 +202,20 @@ const AddingHabitScreen: React.FC<Props> = props => {
               }))
             }
           />
-          <Text.Body1 style={styles.requireTimerText}>
-            Require Timer?
-          </Text.Body1>
+          <Text.Body1 style={styles.requireTimerText}>Track Time?</Text.Body1>
         </View>
         {form.requireTimer && (
           <CustomSlider
-            label='Set Timer'
-            value={form.minutes.displayedVal}
-            visibleSliderInformation={`${form.minutes.value} Minutes`}
+            label='Maximum time'
+            value={form.maxMinutes.displayedVal}
+            visibleSliderInformation={`${form.maxMinutes.value} Minutes`}
             minimumValue={1}
             maximumValue={180}
             // step={1}
             onValueChange={value =>
               setForm(prevState => ({
                 ...prevState,
-                minutes: {
+                maxMinutes: {
                   ...prevState.interval,
                   value: +value.toFixed(0),
                   displayedVal: value,

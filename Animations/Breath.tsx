@@ -6,11 +6,14 @@ interface Props {
   children: ReactNode;
   durationFadeOut: number;
   durationFadeIn: number;
+  disabled?: boolean;
 }
 
-const Breath: React.FC<Props> = (props) => {
+// Duration is in milliseconds
+
+const Breath: React.FC<Props> = props => {
   const opacity = useRef(new Animated.Value(1)).current;
-  const { durationFadeIn, durationFadeOut } = props;
+  const { durationFadeIn, durationFadeOut, disabled } = props;
 
   const startAnim = useCallback(() => {
     // Infinite loop

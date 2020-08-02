@@ -56,8 +56,8 @@ export type HabitActions =
         type: HabitTypes;
         description: string;
         completeType: CompleteTypes;
-        minutes: number;
-        minutesLeft: number;
+        maxMinutes: number;
+        minutesPassed: number;
         interval: number;
         todos: TodoInterface[];
         expirationDate: string;
@@ -76,7 +76,7 @@ export type HabitActions =
   | {
       type: typeof COMPLETE_HABIT;
       habitId: string;
-      minutesLeft: number;
+      minutesPassed: number;
       streak: number;
       expirationDate: string;
       todos: TodoInterface[];
@@ -97,12 +97,12 @@ export type HabitActions =
   | {
       type: typeof SAVE_EXERCISE_TIMER;
       habitId: string;
-      minutesLeft: number;
+      minutesPassed: number;
     }
   | {
       type: typeof RESET_HABIT_TIMER;
       habitId: string;
-      minutesLeft: number;
+      minutesPassed: number;
     };
 // -------------------------------------------------------------------------------
 

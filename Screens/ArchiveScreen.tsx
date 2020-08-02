@@ -67,8 +67,8 @@ const HomeScreen: React.FC<Props> = props => {
               // type={itemData.item.type}
               // description={itemData.item.description}
               // streak={itemData.item.streak}
-              // minutes={itemData.item.minutes}
-              // minutesLeft={itemData}
+              // maxMinutes={itemData.item.maxMinutes}
+              // minutesPassed={itemData}
               // interval={itemData.item.interval}
               // expirationDate={itemData.item.expirationDate}
               // todos={itemData.item.todos}

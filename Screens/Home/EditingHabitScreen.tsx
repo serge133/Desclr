@@ -26,7 +26,7 @@ interface Props {
         type: HabitTypes;
         description: string;
         requireTimer: boolean;
-        minutes: number;
+        maxMinutes: number;
         interval: number;
         todos: TodoInterface[];
       };
@@ -40,9 +40,9 @@ const EditingHabitScreen: React.FC<Props> = props => {
     habitType: props.route.params.habit.type,
     description: props.route.params.habit.description,
     requireTimer: props.route.params.habit.requireTimer,
-    minutes: {
-      value: props.route.params.habit.minutes,
-      displayedVal: props.route.params.habit.minutes,
+    maxMinutes: {
+      value: props.route.params.habit.maxMinutes,
+      displayedVal: props.route.params.habit.maxMinutes,
     },
     interval: {
       value: props.route.params.habit.interval,
@@ -67,7 +67,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
         form.habitType,
         form.description,
         form.requireTimer ? 'Timer' : 'Button',
-        form.minutes.value,
+        form.maxMinutes.value,
         form.interval.value,
         form.todos
       )
@@ -112,7 +112,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
         habitType: 'Default',
         description: '',
         requireTimer: false,
-        minutes: { value: 20, displayedVal: 20 },
+        maxMinutes: { value: 20, displayedVal: 20 },
         interval: { value: 1, displayedVal: 1 },
         todos: [],
       });
@@ -207,15 +207,15 @@ const EditingHabitScreen: React.FC<Props> = props => {
         {form.requireTimer && (
           <CustomSlider
             label='Exercise Time'
-            value={form.minutes.displayedVal}
-            visibleSliderInformation={`${form.minutes.value} Minutes`}
+            value={form.maxMinutes.displayedVal}
+            visibleSliderInformation={`${form.maxMinutes.value} Minutes`}
             minimumValue={1}
             maximumValue={180}
             // step={1}
             onValueChange={value =>
               setForm(prevState => ({
                 ...prevState,
-                minutes: {
+                maxMinutes: {
                   ...prevState.interval,
                   value: +value.toFixed(0),
                   displayedVal: value,
