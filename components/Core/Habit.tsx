@@ -43,14 +43,12 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
           // @ts-ignore
           onPress={props.activateTimer}
         >
-          <View
-            style={[styles.rowBackButton, { backgroundColor: Colors.primary1 }]}
-          >
+          <View style={styles.rowBackButton}>
             <RenderIcon
               type='Ionicons'
               name='ios-timer'
               size={50}
-              color='white'
+              color={Colors.primary1}
             />
           </View>
         </TouchableOpacity>
@@ -63,19 +61,12 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
           disabled={!props.canComplete}
           onPress={props.onComplete}
         >
-          <View
-            style={[
-              styles.rowBackButton,
-              props.canComplete
-                ? { backgroundColor: Colors.primary1 }
-                : { backgroundColor: Colors.grey4 },
-            ]}
-          >
+          <View style={styles.rowBackButton}>
             <RenderIcon
               type='Ionicons'
               name='ios-checkmark'
               size={50}
-              color='white'
+              color={props.canComplete ? Colors.primary1 : Colors.grey3}
             />
             {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
           </View>
@@ -86,44 +77,17 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
 
   return (
     <View style={styles.rowBack}>
-      {/* <TouchableOpacity
-      style={styles.rowBackButtonContainer}
-      disabled={!props.canComplete}
-      onPress={props.onComplete}
-    >
-      <View
-        style={[
-          styles.rowBackButton,
-          props.canComplete
-            ? { backgroundColor: Colors.primary1 }
-            : { backgroundColor: Colors.grey4 },
-        ]}
-      >
-        <RenderIcon
-          type='Ionicons'
-          name='ios-checkmark'
-          size={50}
-          color='white'
-        />
-        {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
-      </View>
-    </TouchableOpacity> */}
       {LeftRowButton}
       <TouchableOpacity
         style={styles.rowBackButtonContainer}
         onPress={props.onArchive}
       >
-        <View
-          style={[
-            styles.rowBackButton,
-            { backgroundColor: Colors.primary1, borderRadius: 20 },
-          ]}
-        >
+        <View style={styles.rowBackButton}>
           <RenderIcon
-            type='AntDesign'
-            name='closecircleo'
+            type='EvilIcons'
+            name='archive'
             size={50}
-            color='white'
+            color={Colors.primary1}
           />
         </View>
       </TouchableOpacity>
@@ -137,16 +101,26 @@ export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButto
       style={styles.rowBackButtonContainer}
       onPress={props.onRepost}
     >
-      <View style={[styles.rowBackButton, { backgroundColor: Colors.accent1 }]}>
-        <RenderIcon type='EvilIcons' name='refresh' size={70} color='white' />
+      <View style={styles.rowBackButton}>
+        <RenderIcon
+          type='EvilIcons'
+          name='refresh'
+          size={70}
+          color={Colors.accent1}
+        />
       </View>
     </TouchableOpacity>
     <TouchableOpacity
       style={styles.rowBackButtonContainer}
       onPress={props.onDelete}
     >
-      <View style={[styles.rowBackButton, { backgroundColor: Colors.accent1 }]}>
-        <RenderIcon type='AntDesign' name='delete' size={50} color='white' />
+      <View style={styles.rowBackButton}>
+        <RenderIcon
+          type='AntDesign'
+          name='delete'
+          size={50}
+          color={Colors.accent1}
+        />
       </View>
     </TouchableOpacity>
   </View>
@@ -186,7 +160,9 @@ const Habit: React.FC<HabitProps> = props => {
             id={todo.id}
             value={todo.value}
             completed={todo.completed}
-            toggleComplete={value => dispatch(completeHabitTodo(props.id, index, value))}
+            toggleComplete={value =>
+              dispatch(completeHabitTodo(props.id, index, value))
+            }
           />
         ))}
         <View style={styles.expirationBar}>
@@ -283,6 +259,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });
 

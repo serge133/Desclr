@@ -62,16 +62,6 @@ const HomeScreen: React.FC<Props> = props => {
           }
           renderItem={itemData => (
             <Habit
-              // id={itemData.item.id}
-              // value={itemData.item.value}
-              // type={itemData.item.type}
-              // description={itemData.item.description}
-              // streak={itemData.item.streak}
-              // maxMinutes={itemData.item.maxMinutes}
-              // minutesPassed={itemData}
-              // interval={itemData.item.interval}
-              // expirationDate={itemData.item.expirationDate}
-              // todos={itemData.item.todos}
               deletionBarProgress={100}
               onEdit={() => {}}
               {...itemData.item}

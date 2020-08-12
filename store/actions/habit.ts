@@ -96,7 +96,7 @@ export const editHabit = (
       description: description,
       completeType: completeType,
       maxMinutes: maxMinutes,
-      minutesPassed: maxMinutes,
+      minutesPassed: 0,
       interval: interval,
       todos: todos,
       expirationDate: addDaysToTodaysDate(interval),

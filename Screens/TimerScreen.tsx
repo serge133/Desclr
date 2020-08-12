@@ -7,6 +7,7 @@ import * as Text from '../components/UI/Text';
 import {
   completeHabitTodo,
   saveHabitTimer,
+  completeHabit,
 } from '../store/actions/habit';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/types';
@@ -59,6 +60,7 @@ const TimerScreen: React.FC<Props> = props => {
 
   const toggleTimer = () => {
     setIsTimerActive(prevState => !prevState);
+    // This is meant to stop the timer and remember where it stopped
     setTimeStarted(new Date().getTime() - +timer * 60000);
     saveTimer();
   };
@@ -66,6 +68,13 @@ const TimerScreen: React.FC<Props> = props => {
   const saveTimerAndLeave = () => {
     setIsTimerActive(false);
     saveTimer();
+    props.navigation.goBack();
+  };
+
+  const completeHabitAndReset = () => {
+    setIsTimerActive(false);
+    setTimer(0);
+    dispatch(completeHabit(params.habitId));
     props.navigation.goBack();
   };
 
@@ -90,7 +99,14 @@ const TimerScreen: React.FC<Props> = props => {
 
       return () => clearInterval(interval);
     }
-  }, [setTimer, timeStarted, isTimerActive, onTimerReachMax, maxMinutes, isTimerAboveMax]);
+  }, [
+    setTimer,
+    timeStarted,
+    isTimerActive,
+    onTimerReachMax,
+    maxMinutes,
+    isTimerAboveMax,
+  ]);
 
   return (
     <View style={styles.screen}>
@@ -104,7 +120,11 @@ const TimerScreen: React.FC<Props> = props => {
         Timer
       </Header>
       <View style={styles.timerContainer}>
-        <Text.H1 style={isTimerAboveMax ? styles.minutesReachedMax : styles.minutes}>{timer.toString()}</Text.H1>
+        <Text.H1
+          style={isTimerAboveMax ? styles.minutesReachedMax : styles.minutes}
+        >
+          {timer.toString()}
+        </Text.H1>
         {isTimerActive ? (
           <Breath durationFadeIn={1000} durationFadeOut={1000}>
             <Text.H3 style={styles.minutesLabel}>Minutes</Text.H3>
@@ -121,13 +141,15 @@ const TimerScreen: React.FC<Props> = props => {
               id={todo.id}
               value={todo.value}
               completed={todo.completed}
-              toggleComplete={value => dispatch(completeHabitTodo(params.habitId, index, value))}
+              toggleComplete={value =>
+                dispatch(completeHabitTodo(params.habitId, index, value))
+              }
             />
           ))}
       </View>
       <View style={styles.buttons}>
         <Button
-          onPress={onTimerReachMax}
+          onPress={completeHabitAndReset}
           style={styles.button}
           icon={{ type: 'Ionicons', name: 'ios-checkmark', size: 24 }}
           disabled={todos?.every(t => t.completed) ? false : true}
@@ -171,7 +193,7 @@ const styles = StyleSheet.create({
   },
   minutesReachedMax: {
     fontSize: 60,
-    color: "#FF6961"
+    color: '#FF6961',
   },
   minutesLabel: {
     color: 'white',

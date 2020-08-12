@@ -5,7 +5,7 @@ import { TodoInterface } from '../../types';
 import * as Text from './Text';
 
 interface Props extends TodoInterface {
-  toggleComplete: (value: boolean) => {}
+  toggleComplete: (value: boolean) => {};
 }
 
 const Todo: React.FC<Props> = props => {
@@ -13,11 +13,9 @@ const Todo: React.FC<Props> = props => {
     <View style={styles.todo}>
       <CheckBox
         value={props.completed}
-        onCheck={value =>
-          props.toggleComplete(value)
-        }
+        onCheck={value => props.toggleComplete(value)}
       />
-      <Text.H4 style={styles.todoText}>{props.value}</Text.H4>
+      <Text.Body1 style={styles.todoText}>{props.value}</Text.Body1>
     </View>
   );
 };
@@ -32,6 +30,6 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     flex: 1,
   },
-})
+});
 
 export default Todo;
