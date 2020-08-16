@@ -17,7 +17,7 @@ const WelcomeScreen: React.FC<Props> = props => {
     <View style={styles.screen}>
       <Header>Desclr</Header>
       <View style={styles.content}>
-        <Image source={require('../assets/Logo.png')} style={styles.logo} />
+	<Image source={require('../../assets/Logo.png')} style={styles.logo} />
       </View>
       <Button
         onPress={handleGetIn}

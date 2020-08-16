@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
-import Header from '../components/UI/Header';
+import Header from '../../components/UI/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
-import Streak from '../components/Core/Streak';
+import Streak from '../../components/Core/Streak';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../store/types';
-import { getHabits } from '../store/actions/habit';
+import { RootState } from '../../store/types';
+import { getHabits } from '../../store/actions/habit';
 
 interface Props {
   navigation: {
+    navigate: (screen: string) => void;
     dispatch: (action: DrawerActionType) => void;
   };
 }
@@ -78,7 +79,7 @@ const ActiveStreaksScreen: React.FC<Props> = props => {
               type='active'
               value={itemData.item.value}
               streak={itemData.item.streak}
-              onPress={() => {}}
+              onPress={() => props.navigation.navigate("DashboardScreen")}
             />
           )}
         />

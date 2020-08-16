@@ -15,7 +15,7 @@ const Streak = (props: Props) => {
   return (
     <View style={styles.streakContainer}>
       <Button
-        onPress={() => {}}
+        onPress={props.onPress}
         icon={{
           type: 'AntDesign',
           name: 'arrowright',

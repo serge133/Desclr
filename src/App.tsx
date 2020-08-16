@@ -10,9 +10,9 @@ import rootReducer from './store/index';
 
 const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
-    montserrat: require('./assets/Montserrat/Montserrat-Regular.ttf'),
-    'montserrat-bold': require('./assets/Montserrat/Montserrat-Bold.ttf'),
-    'montserrat-light': require('./assets/Montserrat/Montserrat-Light.ttf'),
+    montserrat: require('../assets/Montserrat/Montserrat-Regular.ttf'),
+    'montserrat-bold': require('../assets/Montserrat/Montserrat-Bold.ttf'),
+    'montserrat-light': require('../assets/Montserrat/Montserrat-Light.ttf'),
   });
 
   if (!fontsLoaded) return <AppLoading />;
