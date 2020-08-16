@@ -32,7 +32,6 @@ interface Props {
     name: string;
     size: number;
   };
-  extra?: ReactNode;
 }
 
 const Button: React.FC<Props> = props => {
@@ -53,7 +52,6 @@ const Button: React.FC<Props> = props => {
               justifyContent: props.icon ? 'space-between' : 'center',
             }}
           >
-            {props.extra && props.extra}
             <Text.H3
               style={
                 props.disabled
@@ -89,8 +87,6 @@ const Button: React.FC<Props> = props => {
           justifyContent: props.icon ? 'space-between' : 'center',
         }}
       >
-        {props.extra && props.extra}
-
         <Text.H3 style={props.disabled && styles.disabledButtonText}>
           {props.children}
         </Text.H3>

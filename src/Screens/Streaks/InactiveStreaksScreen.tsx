@@ -79,7 +79,8 @@ const InactiveStreaksScreen: React.FC<Props> = props => {
               type='inactive'
               value={itemData.item.value}
               streak={itemData.item.streak}
-              onPress={() => props.navigation.navigate("DashboardScreen")}
+              onPress={() => props.navigation.navigate('DashboardScreen')}
+              habitType={itemData.item.type}
             />
           )}
         />
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    padding: 8,
   },
 });
 
