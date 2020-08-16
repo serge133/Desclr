@@ -1,10 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ActiveStreaksScreen from '../../Screens/Streaks/ActiveStreaksScreen';
-import InactiveStreaksScreen from '../../Screens/Streaks/InactiveStreaksScreen';
 import { Colors } from '../../constants/default-styles';
 import RenderIcon from '../../components/UI/RenderIcon';
 import ActiveStreakStack from '../Stacks/Streaks/ActiveStreakStack';
+import InactiveStreakStack from '../Stacks/Streaks/InactiveStreakStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +36,7 @@ const StreakTabs = () => {
       />
       <Tab.Screen
         name='InactiveStreaks'
-        component={InactiveStreaksScreen}
+        component={InactiveStreakStack}
         options={{
           title: 'Inactive',
           tabBarIcon: ({ color }) => (

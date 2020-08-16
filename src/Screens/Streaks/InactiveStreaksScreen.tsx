@@ -10,6 +10,7 @@ import { getHabits } from '../../store/actions/habit';
 interface Props {
   navigation: {
     dispatch: (action: DrawerActionType) => void;
+    navigate: (screen: string) => void;
   };
 }
 
@@ -78,7 +79,7 @@ const InactiveStreaksScreen: React.FC<Props> = props => {
               type='inactive'
               value={itemData.item.value}
               streak={itemData.item.streak}
-              onPress={() => {}}
+              onPress={() => props.navigation.navigate("DashboardScreen")}
             />
           )}
         />
