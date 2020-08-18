@@ -190,6 +190,9 @@ const AddingHabitScreen: React.FC<Props> = props => {
             }))
           }
           chosenEntry={form.habitType}
+          style={{
+            marginTop: 24,
+          }}
         />
 
         <View style={styles.requireTimer}>

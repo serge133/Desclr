@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  StyleSheetProperties,
+  ViewStyle,
+} from 'react-native';
 import * as Text from './Text';
 import { Colors } from '../../constants/default-styles';
 
 interface Props {
-  label: string;
+  label?: string;
   entries: {
     index: number;
     label: string;
   }[];
   chosenEntry: string;
   onEntryPress: (index: number) => void;
+  style?: ViewStyle;
 }
 
 const Dropdown: React.FC<Props> = props => {
@@ -24,10 +31,8 @@ const Dropdown: React.FC<Props> = props => {
   };
 
   return (
-    <View style={styles.dropdownContainer}>
-      <View>
-        <Text.H3>{props.label}</Text.H3>
-      </View>
+    <View style={props.style}>
+      {props.label && <Text.H3>{props.label}</Text.H3>}
       <TouchableOpacity onPress={toggleDropdown}>
         <View style={isDropdownOpen ? styles.dropdownOpen : styles.dropdown}>
           <Text.H3>{props.chosenEntry}</Text.H3>
@@ -63,7 +68,7 @@ export default Dropdown;
 
 const styles = StyleSheet.create({
   dropdownContainer: {
-    marginTop: 24,
+    // marginTop: 24,
   },
   dropdown: {
     marginTop: 24,

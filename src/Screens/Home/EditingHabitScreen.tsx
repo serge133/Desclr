@@ -189,6 +189,9 @@ const EditingHabitScreen: React.FC<Props> = props => {
             }))
           }
           chosenEntry={form.habitType}
+          style={{
+            marginTop: 24,
+          }}
         />
         <View style={styles.requireTimer}>
           <CheckBox
