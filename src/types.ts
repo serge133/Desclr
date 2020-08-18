@@ -7,6 +7,9 @@ export interface TodoInterface {
 export type HabitTypes = 'Default' | 'Exercise' | 'Knowledge';
 export type CompleteTypes = 'Timer' | 'Button';
 
+export type HabitTrends = 'Procrastination';
+export type HabitTrendsTimer = 'Minutes Needed/Max Minutes' | HabitTrends;
+
 export interface HabitInterface {
   id: string;
   value: string;
@@ -20,4 +23,7 @@ export interface HabitInterface {
   streak: number;
   isActive: boolean;
   todos: TodoInterface[];
+  trends?: {
+    type: 
+  };
 }

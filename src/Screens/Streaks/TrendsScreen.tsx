@@ -24,16 +24,15 @@ const DashboardScreen: React.FC<Props> = props => {
           onPress: () => props.navigation.goBack(),
         }}
       >
-        Track
+        Trends
       </Header>
       <View style={styles.content}>
-        <BarGraph data={[0.3, 0.4, 0.5, 0.6, 0.7]} />
+        <BarGraph data={[0.3, 0.4, 0.5, 0.6, 5]} />
         <Dropdown
-          chosenEntry='Test'
+          chosenEntry='Minutes Needed/Max Minutes'
           entries={[
-            { index: 0, label: 'Test' },
-            { index: 1, label: 'Test2' },
-            { index: 2, label: 'Test3' },
+            { index: 0, label: 'Minutes Needed/Max Minutes' },
+            { index: 1, label: 'Procrastination' },
           ]}
           onEntryPress={() => {}}
         />

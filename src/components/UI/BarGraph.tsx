@@ -10,16 +10,23 @@ interface Props {
 const graphHeight = 200;
 
 const BarGraph: React.FC<Props> = props => {
-  const Bar = (barProps: { decimal: number }) => (
-    <View
-      style={[
-        styles.bar,
-        {
-          height: Math.floor(barProps.decimal * graphHeight),
-        },
-      ]}
-    />
-  );
+  const Bar = (barProps: { decimal: number }) => {
+    const barHeight = Math.floor(barProps.decimal * graphHeight);
+    return (
+      <View
+        style={[
+          styles.bar,
+          {
+            height: barHeight > 200 ? graphHeight : barHeight,
+          },
+        ]}
+      >
+        <Text.Body1 style={styles.barLabel}>{`${
+          barProps.decimal * 100
+        }%`}</Text.Body1>
+      </View>
+    );
+  };
   return (
     <>
       <View style={styles.barGraphContainer}>
@@ -46,6 +53,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.primary1,
     borderBottomWidth: 0.5,
     marginBottom: 8,
+    overflow: 'hidden',
   },
   bar: {
     width: '10%',
