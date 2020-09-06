@@ -8,9 +8,8 @@ import CustomSlider from '../../components/UI/Slider';
 import CheckBox from '../../components/UI/CheckBox';
 import { defaultStyles } from '../../constants/default-styles';
 import { useDispatch } from 'react-redux';
-import { editHabit, archiveHabit } from '../../store/actions/habit';
+import { editHabit } from '../../store/actions/habit';
 import { TodoInterface, HabitTypes } from '../../types';
-import Button from '../../components/UI/Button';
 import Dropdown from '../../components/UI/Dropdown';
 import * as Text from '../../components/UI/Text';
 
@@ -72,11 +71,6 @@ const EditingHabitScreen: React.FC<Props> = props => {
         form.todos
       )
     );
-    props.navigation.goBack();
-  };
-
-  const handleArchiveHabit = () => {
-    dispatch(archiveHabit(props.route.params.habit.id));
     props.navigation.goBack();
   };
 
@@ -267,9 +261,6 @@ const EditingHabitScreen: React.FC<Props> = props => {
           </View>
         ))}
       </Form>
-      <View style={defaultStyles.buttonContainer}>
-        <Button onPress={handleArchiveHabit}>Archive</Button>
-      </View>
     </View>
   );
 };

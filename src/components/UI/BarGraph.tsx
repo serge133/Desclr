@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../constants/default-styles';
-import * as Text from './Text';
 
 interface Props {
   data: number[];
+  maximum: number;
 }
 
 const graphHeight = 200;
 
 const BarGraph: React.FC<Props> = props => {
-  const Bar = (barProps: { decimal: number }) => {
-    const barHeight = Math.floor(barProps.decimal * graphHeight);
+  const Bar = (barProps: { data: number }) => {
+    const percentage = barProps.data / props.maximum;
+    const barHeight = Math.floor(percentage * graphHeight);
     return (
       <View
         style={[
@@ -20,26 +21,15 @@ const BarGraph: React.FC<Props> = props => {
             height: barHeight > 200 ? graphHeight : barHeight,
           },
         ]}
-      >
-        <Text.Body1 style={styles.barLabel}>{`${
-          barProps.decimal * 100
-        }%`}</Text.Body1>
-      </View>
+      />
     );
   };
   return (
-    <>
-      <View style={styles.barGraphContainer}>
-        {props.data.map((b, index) => (
-          <Bar decimal={b} key={b} />
-        ))}
-      </View>
-      {/* <View style={styles.legend}>
-        {props.data.map((s, index) => (
-          <Text.Body3 key={s.label}>{`${index + 1}. ${s.label}`}</Text.Body3>
-        ))}
-      </View> */}
-    </>
+    <View style={styles.barGraphContainer}>
+      {props.data.map((b, index) => (
+        <Bar data={b} key={index} />
+      ))}
+    </View>
   );
 };
 
@@ -62,6 +52,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    borderTopLeftRadius: 7,
+    borderTopRightRadius: 7,
   },
   barLabel: {
     color: 'white',

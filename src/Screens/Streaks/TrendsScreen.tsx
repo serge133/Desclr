@@ -4,16 +4,27 @@ import Header from '../../components/UI/Header';
 import { DrawerActionType } from '@react-navigation/native';
 import BarGraph from '../../components/UI/BarGraph';
 import Dropdown from '../../components/UI/Dropdown';
+import { HabitInterface } from '../../types';
 
 interface Props {
   navigation: {
     dispatch: (action: DrawerActionType) => void;
     goBack: () => void;
   };
+  route: {
+    params: {
+      habit: HabitInterface;
+    };
+  };
 }
 
 const DashboardScreen: React.FC<Props> = props => {
-  //  const dispatch = useDispatch();
+  const { trends, maxMinutes } = props.route.params.habit;
+
+  const dropdownEntries = [
+    { index: 0, label: 'Minutes Passed', extra: 'minutesPassed' },
+    { index: 1, label: 'Procrastination', extra: 'n/a' },
+  ];
 
   return (
     <View style={styles.screen}>
@@ -27,14 +38,13 @@ const DashboardScreen: React.FC<Props> = props => {
         Trends
       </Header>
       <View style={styles.content}>
-        <BarGraph data={[0.3, 0.4, 0.5, 0.6, 5]} />
+        <BarGraph data={trends.minutesNeeded} maximum={maxMinutes} />
         <Dropdown
-          chosenEntry='Minutes Needed/Max Minutes'
-          entries={[
-            { index: 0, label: 'Minutes Needed/Max Minutes' },
-            { index: 1, label: 'Procrastination' },
-          ]}
-          onEntryPress={() => {}}
+          chosenEntry='Minutes Passed'
+          entries={dropdownEntries}
+          onEntryPress={index => {
+            console.log(dropdownEntries[index]);
+          }}
         />
       </View>
     </View>

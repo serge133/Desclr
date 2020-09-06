@@ -70,6 +70,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
           streak: action.streak,
           expirationDate: action.expirationDate,
           todos: action.todos,
+          trends: action.trends,
         }),
       };
     case ARCHIVE_HABIT:

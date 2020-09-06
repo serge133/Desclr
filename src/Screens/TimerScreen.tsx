@@ -73,6 +73,7 @@ const TimerScreen: React.FC<Props> = props => {
 
   const completeHabitAndReset = () => {
     setIsTimerActive(false);
+    saveTimer();
     setTimer(0);
     dispatch(completeHabit(params.habitId));
     props.navigation.goBack();

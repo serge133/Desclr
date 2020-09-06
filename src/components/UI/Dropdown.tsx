@@ -14,6 +14,7 @@ interface Props {
   entries: {
     index: number;
     label: string;
+    extra?: string | number;
   }[];
   chosenEntry: string;
   onEntryPress: (index: number) => void;

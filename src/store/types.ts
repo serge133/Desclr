@@ -3,6 +3,7 @@ import {
   TodoInterface,
   HabitTypes,
   CompleteTypes,
+  HabitTrends,
 } from '../types';
 import { SIGNUP, LOGIN, AUTHENTICATE, LOGOUT } from './actions/auth';
 import {
@@ -80,6 +81,7 @@ export type HabitActions =
       streak: number;
       expirationDate: string;
       todos: TodoInterface[];
+      trends: HabitTrends;
     }
   | {
       type: typeof ARCHIVE_HABIT;

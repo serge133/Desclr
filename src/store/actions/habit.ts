@@ -4,6 +4,7 @@ import {
   TodoInterface,
   HabitTypes,
   CompleteTypes,
+  HabitTrends,
 } from '../../types';
 import { HabitActions, RootState } from '../types';
 import Axios from 'axios';
@@ -54,6 +55,9 @@ export const addHabit = (
       interval: interval,
       expirationDate: addDaysToTodaysDate(interval),
       todos: todos,
+      trends: {
+        minutesNeeded: [20, 30, 40, 50],
+      },
     };
 
     const response = await Axios({
@@ -189,13 +193,22 @@ export const completeHabit = (habitId: string) => {
           completed: false,
         });
       }
-      console.log(currentHabit.maxMinutes);
+
+      console.log(currentHabit);
+
+      const newTrends: HabitTrends = {
+        minutesNeeded: currentHabit.trends.minutesNeeded.concat(
+          currentHabit.minutesPassed
+        ),
+      };
+
       const completedHabit = {
         streak: currentHabit.streak + 1,
         // Resets the maxMinutes when habit is completed
         minutesPassed: 0,
         expirationDate: addDaysToTodaysDate(currentHabit.interval),
         todos: newTodos,
+        trends: newTrends,
       };
 
       const response = await Axios({

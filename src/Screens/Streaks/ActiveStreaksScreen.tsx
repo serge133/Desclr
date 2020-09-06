@@ -9,7 +9,7 @@ import { getHabits } from '../../store/actions/habit';
 
 interface Props {
   navigation: {
-    navigate: (screen: string) => void;
+    navigate: (screen: string, Object) => void;
     dispatch: (action: DrawerActionType) => void;
   };
 }
@@ -79,7 +79,11 @@ const ActiveStreaksScreen: React.FC<Props> = props => {
               type='active'
               value={itemData.item.value}
               streak={itemData.item.streak}
-              onPress={() => props.navigation.navigate('DashboardScreen')}
+              onPress={() =>
+                props.navigation.navigate('DashboardScreen', {
+                  habit: itemData.item,
+                })
+              }
               habitType={itemData.item.type}
             />
           )}
