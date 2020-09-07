@@ -6,8 +6,8 @@ import {
   CompleteTypes,
   HabitTrends,
 } from '../../types';
-import { HabitActions, RootState } from '../types';
 import Axios from 'axios';
+import { HabitActions, RootState } from '../types';
 import { addDaysToTodaysDate } from '../../functions/date';
 
 export const ADD_HABIT = 'ADD_HABIT';
@@ -21,8 +21,7 @@ export const DELETE_HABIT = 'DELETE_HABIT';
 export const SAVE_EXERCISE_TIMER = 'SAVE_EXERCISE_TIMER';
 export const RESET_HABIT_TIMER = 'RESET_HABIT_TIMER';
 /**
- * Authentication is not a problem because the app checks every minute if the
- * user is valid.
+ * The app checks every minute if the user is valid.
  */
 
 export const addHabit = (
@@ -56,7 +55,7 @@ export const addHabit = (
       expirationDate: addDaysToTodaysDate(interval),
       todos: todos,
       trends: {
-        minutesNeeded: [20, 30, 40, 50],
+        minutesNeeded: [0],
       },
     };
 

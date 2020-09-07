@@ -11,7 +11,8 @@ const graphHeight = 200;
 
 const BarGraph: React.FC<Props> = props => {
   const Bar = (barProps: { data: number }) => {
-    const percentage = barProps.data / props.maximum;
+    const percentage =
+      barProps.data === null ? 0 : barProps.data / props.maximum;
     const barHeight = Math.floor(percentage * graphHeight);
     return (
       <View
@@ -26,9 +27,7 @@ const BarGraph: React.FC<Props> = props => {
   };
   return (
     <View style={styles.barGraphContainer}>
-      {props.data.map((b, index) => (
-        <Bar data={b} key={index} />
-      ))}
+      {props.data.map((b, index) => b > 0 && <Bar data={b} key={index} />)}
     </View>
   );
 };
