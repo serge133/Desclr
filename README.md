@@ -15,9 +15,9 @@ A habit tracking app
 
 ## Focus
 
-1. Add Shorter intervals
-2. Titles on some screens are overflowing
-3. Notifications
+- [ ] Add Shorter intervals
+- [ ] Titles on some screens are overflowing
+- [ ] Notifications
 
 ## Errors
 
