@@ -19,6 +19,11 @@ const Streak = (props: Props) => {
         <View style={styles.streakName}>
           <Text.H3>{props.value}</Text.H3>
         </View>
+        <View style={styles.streakNumber}>
+          <Text.Body1 style={styles.streakNumberText}>
+            {props.streak.toString()}
+          </Text.Body1>
+        </View>
         <View style={styles.habitType}>
           <Text.Body1 style={styles.habitTypeText}>
             {props.habitType}
@@ -52,18 +57,14 @@ const styles = StyleSheet.create({
   habitTypeText: {
     color: Colors.primary1,
   },
-  counter: {
-    width: 30,
-    height: 30,
-    // backgroundColor: Colors.primary1,
-    borderRadius: 15,
+  streakNumber: {
+    padding: 3,
+    borderRadius: 4,
     borderColor: Colors.primary1,
     borderWidth: 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // top: -15,
+    marginRight: 3,
   },
-  counterText: {
+  streakNumberText: {
     color: Colors.primary1,
   },
 });
