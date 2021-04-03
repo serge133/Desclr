@@ -24,7 +24,7 @@ interface Props {
   };
 }
 
-const Header: React.FC<Props> = props => {
+const Header: React.FC<Props> = (props) => {
   const text = props.children;
   const firstLetter = text[0];
 
@@ -44,8 +44,8 @@ const Header: React.FC<Props> = props => {
           )}
         </View>
         <View style={styles.title}>
-          <Text.H1 style={{ color: Colors.primary1 }}>{firstLetter}</Text.H1>
-          <Text.H1>{text.replace(firstLetter, '')}</Text.H1>
+          <Text.H2 style={{ color: Colors.primary1 }}>{firstLetter}</Text.H2>
+          <Text.H2>{text.replace(firstLetter, '')}</Text.H2>
         </View>
         <View style={styles.headerRight}>
           {props.headerRight && (
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     flexDirection: 'row',
-    // borderWidth: 1,
   },
   headerBar: {
     flex: 1,
@@ -86,6 +85,8 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: 'row',
     flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
   },
   headerRight: {
     flex: 1,

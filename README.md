@@ -15,11 +15,9 @@ A habit tracking app
 
 ## Focus
 
-1. Focus is on the trends screen. Make sure habit trends work
-2. Add more trends
-3. Make sure to **clean up the store**
-4. Check for bugs
-5. Test in the real world
+1. Add Shorter intervals
+2. Titles on some screens are overflowing
+3. Notifications
 
 ## Errors
 
