@@ -23,20 +23,20 @@ interface Props {
   };
 }
 
-const HomeScreen: React.FC<Props> = props => {
+const HomeScreen: React.FC<Props> = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const authExpirationDate = useSelector(
     (state: RootState) => state.auth.expirationDate
   );
   const habits = useSelector((state: RootState) => state.habit.habits);
-  const activeHabits = habits.filter(habit => habit.isActive);
+  const activeHabits = habits.filter((habit) => habit.isActive);
   const dispatch = useDispatch();
 
   // Refresh every minute for the update of get hours until expire progress bar
   useEffect(() => {
     const interval = setInterval(() => {
-      setRefresh(prev => !prev);
+      setRefresh((prev) => !prev);
     }, 60000);
 
     return () => clearInterval(interval);
@@ -76,11 +76,11 @@ const HomeScreen: React.FC<Props> = props => {
         <SwipeListView
           style={styles.habitList}
           data={activeHabits}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          renderItem={itemData => {
+          renderItem={(itemData) => {
             const hoursTillExpire = getHoursTillExpire(
               itemData.item.expirationDate
             );
@@ -115,9 +115,9 @@ const HomeScreen: React.FC<Props> = props => {
           }}
           renderHiddenItem={(itemData, rowMap) => (
             <HabitHiddenRowButtons
-              canComplete={itemData.item.todos.every(todo => todo.completed)}
+              canComplete={itemData.item.todos.every((todo) => todo.completed)}
               fractionCompleted={`${
-                itemData.item.todos.filter(todo => todo.completed).length
+                itemData.item.todos.filter((todo) => todo.completed).length
               }/${itemData.item.todos.length}`}
               onComplete={() => dispatch(completeHabit(itemData.item.id))}
               onArchive={() => dispatch(archiveHabit(itemData.item.id))}

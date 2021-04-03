@@ -1,8 +1,7 @@
 import React from 'react';
-import 'react-native-gesture-handler';
 import DesclrNavigator from './Navigation/DesclrNavigator';
 import { useFonts } from '@use-expo/font';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import Thunk from 'redux-thunk';
