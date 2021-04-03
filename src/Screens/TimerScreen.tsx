@@ -37,7 +37,7 @@ interface Props {
 
 // Increments up (Stopwatch)
 
-const TimerScreen: React.FC<Props> = props => {
+const TimerScreen: React.FC<Props> = (props) => {
   // * User can close the app and the timer will function because of absolute values
   const { params } = props.route;
   // Set absolute date when timer will expire by adding todays date in maxMinutes (milliseconds)
@@ -51,7 +51,7 @@ const TimerScreen: React.FC<Props> = props => {
 
   const todos = useSelector(
     (state: RootState) =>
-      state.habit.habits.find(h => h.id === params.habitId)?.todos
+      state.habit.habits.find((h) => h.id === params.habitId)?.todos
   );
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ const TimerScreen: React.FC<Props> = props => {
   const saveTimer = () => dispatch(saveHabitTimer(params.habitId, +timer));
 
   const toggleTimer = () => {
-    setIsTimerActive(prevState => !prevState);
+    setIsTimerActive((prevState) => !prevState);
     // This is meant to stop the timer and remember where it stopped
     setTimeStarted(new Date().getTime() - +timer * 60000);
     saveTimer();
@@ -142,7 +142,7 @@ const TimerScreen: React.FC<Props> = props => {
               id={todo.id}
               value={todo.value}
               completed={todo.completed}
-              toggleComplete={value =>
+              toggleComplete={(value) =>
                 dispatch(completeHabitTodo(params.habitId, index, value))
               }
             />
@@ -153,9 +153,15 @@ const TimerScreen: React.FC<Props> = props => {
           onPress={completeHabitAndReset}
           style={styles.button}
           icon={{ type: 'Ionicons', name: 'ios-checkmark', size: 24 }}
-          disabled={todos?.every(t => t.completed) ? false : true}
+          disabled={
+            todos?.every((t) => t.completed)
+              ? isTimerAboveMax
+                ? false
+                : true
+              : true
+          }
         >
-          Complete
+          {`${maxMinutes} minutes and ${todos?.length} todos`}
         </Button>
         <Button
           onPress={toggleTimer}

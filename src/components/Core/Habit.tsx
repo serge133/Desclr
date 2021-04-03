@@ -32,7 +32,9 @@ interface ArchivedHabitHiddenRowButtonsProps {
   onRepost: (event: GestureResponderEvent) => void;
 }
 
-export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props => {
+export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = (
+  props
+) => {
   let LeftRowButton: React.ReactNode;
 
   switch (props.completeType) {
@@ -95,7 +97,9 @@ export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props 
   );
 };
 
-export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButtonsProps> = props => (
+export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButtonsProps> = (
+  props
+) => (
   <View style={styles.rowBack}>
     <TouchableOpacity
       style={styles.rowBackButtonContainer}
@@ -126,7 +130,7 @@ export const ArchivedHabitHiddenRowButtons: React.FC<ArchivedHabitHiddenRowButto
   </View>
 );
 
-const Habit: React.FC<HabitProps> = props => {
+const Habit: React.FC<HabitProps> = (props) => {
   const dispatch = useDispatch();
 
   return (
@@ -146,7 +150,7 @@ const Habit: React.FC<HabitProps> = props => {
                   type='Entypo'
                   name='edit'
                   color={Colors.primary1}
-                  size={30}
+                  size={24}
                 />
               </View>
             </TouchableOpacity>
@@ -160,7 +164,7 @@ const Habit: React.FC<HabitProps> = props => {
             id={todo.id}
             value={todo.value}
             completed={todo.completed}
-            toggleComplete={value =>
+            toggleComplete={(value) =>
               dispatch(completeHabitTodo(props.id, index, value))
             }
           />
