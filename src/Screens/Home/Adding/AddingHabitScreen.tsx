@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import Header from '../../components/UI/Header';
-import CustomInput from '../../components/UI/Input';
-import Form from '../../components/UI/Form';
-import Textarea from '../../components/UI/Textarea';
-import CustomSlider from '../../components/UI/Slider';
-import CheckBox from '../../components/UI/CheckBox';
-import { defaultStyles } from '../../constants/default-styles';
+import Header from '../../../components/UI/Header';
+import CustomInput from '../../../components/UI/Input';
+import Form from '../../../components/UI/Form';
+import Textarea from '../../../components/UI/Textarea';
+import CustomSlider from '../../../components/UI/Slider';
+import CheckBox from '../../../components/UI/CheckBox';
+import { defaultStyles } from '../../../constants/default-styles';
 import { useDispatch } from 'react-redux';
-import { addHabit } from '../../store/actions/habit';
-import * as Text from '../../components/UI/Text';
-import Dropdown from '../../components/UI/Dropdown';
-import { HabitTypes } from '../../types';
+import { addHabit } from '../../../store/actions/habit';
+import * as Text from '../../../components/UI/Text';
+import Dropdown from '../../../components/UI/Dropdown';
+import { HabitTypes } from '../../../types';
 
 interface Props {
   navigation: {
     goBack: Function;
+    navigate: (screen: string) => void;
   };
 }
 const dropdownIndexHabitTypes: HabitTypes[] = [
@@ -24,7 +25,7 @@ const dropdownIndexHabitTypes: HabitTypes[] = [
   'Knowledge',
 ];
 
-const AddingHabitScreen: React.FC<Props> = (props) => {
+const AddingHabitScreen: React.FC<Props> = props => {
   const initialForm = {
     value: { value: '', isError: false, errorMessage: '' },
     description: { value: '', isError: false, errorMessage: '' },
@@ -76,13 +77,13 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
           form.todos
         )
       );
-      props.navigation.goBack();
+      props.navigation.navigate('HomeScreen');
     }
   };
 
   const handleTodo = (id: string, value: string) => {
-    const editIndex = form.todos.findIndex((todo) => todo.id === id);
-    setForm((prevState) => {
+    const editIndex = form.todos.findIndex(todo => todo.id === id);
+    setForm(prevState => {
       const copyTodos = [...prevState.todos];
       copyTodos[editIndex].value = value;
       // If last element is not empty than add a new empty todo
@@ -150,8 +151,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
           label='Name'
           placeholder='Habit Name'
           value={form.value.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               value: {
                 ...prevState.value,
@@ -166,8 +167,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
           label='Description'
           placeholder='Habit Description'
           value={form.description.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               description: {
                 ...prevState.description,
@@ -183,8 +184,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
             { index: 1, label: 'Exercise' },
             { index: 2, label: 'Knowledge' },
           ]}
-          onEntryPress={(index) =>
-            setForm((prevState) => ({
+          onEntryPress={index =>
+            setForm(prevState => ({
               ...prevState,
               habitType: dropdownIndexHabitTypes[index],
             }))
@@ -199,7 +200,7 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
           <CheckBox
             value={form.requireTimer}
             onCheck={() =>
-              setForm((prevState) => ({
+              setForm(prevState => ({
                 ...prevState,
                 requireTimer: !prevState.requireTimer,
               }))
@@ -215,8 +216,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
             minimumValue={1}
             maximumValue={180}
             // step={1}
-            onValueChange={(value) =>
-              setForm((prevState) => ({
+            onValueChange={value =>
+              setForm(prevState => ({
                 ...prevState,
                 maxMinutes: {
                   ...prevState.interval,
@@ -236,8 +237,8 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
           minimumValue={1}
           maximumValue={7}
           // step={1}
-          onValueChange={(value) =>
-            setForm((prevState) => ({
+          onValueChange={value =>
+            setForm(prevState => ({
               ...prevState,
               interval: {
                 ...prevState.interval,
@@ -262,7 +263,7 @@ const AddingHabitScreen: React.FC<Props> = (props) => {
                 }}
                 placeholder='Your to-do action'
                 value={todo.value}
-                onChangeText={(value) => handleTodo(todo.id, value)}
+                onChangeText={value => handleTodo(todo.id, value)}
               />
             </View>
           </View>
