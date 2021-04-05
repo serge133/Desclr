@@ -101,8 +101,7 @@ const HomeScreen: React.FC<Props> = props => {
                       value: itemData.item.value,
                       type: itemData.item.type,
                       description: itemData.item.description,
-                      requireTimer:
-                        itemData.item.completeType === 'Timer' ? true : false,
+                      timer: itemData.item.timer,
                       maxMinutes: itemData.item.maxMinutes,
                       interval: itemData.item.interval,
                       todos: itemData.item.todos,
@@ -121,7 +120,8 @@ const HomeScreen: React.FC<Props> = props => {
               }/${itemData.item.todos.length}`}
               onComplete={() => dispatch(completeHabit(itemData.item.id))}
               onArchive={() => dispatch(archiveHabit(itemData.item.id))}
-              completeType={itemData.item.completeType}
+              // completeType={itemData.item.completeType}
+              timer={itemData.item.timer}
               activateTimer={() =>
                 props.navigation.navigate('TimerScreen', {
                   minutesPassed: itemData.item.minutesPassed,

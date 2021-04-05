@@ -39,12 +39,13 @@ export default (state: HabitState = initialState, action: HabitActions) => {
           value: action.editedHabit.value,
           type: action.editedHabit.type,
           description: action.editedHabit.description,
-          completeType: action.editedHabit.completeType,
+          timer: action.editedHabit.timer,
           maxMinutes: action.editedHabit.maxMinutes,
           minutesPassed: action.editedHabit.minutesPassed,
           interval: action.editedHabit.interval,
           todos: action.editedHabit.todos,
           expirationDate: action.editedHabit.expirationDate,
+          checklist: action.editedHabit.checklist,
         }),
       };
     case GET_HABITS:

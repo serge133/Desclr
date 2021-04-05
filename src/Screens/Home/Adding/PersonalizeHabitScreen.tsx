@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Button from '../../../components/UI/Button';
 import CheckBox from '../../../components/UI/CheckBox';
@@ -10,11 +10,29 @@ import Todo from '../../../components/UI/Todo';
 interface Props {
   navigation: {
     goBack: () => void;
-    navigate: (screen: string) => void;
+    navigate: (
+      screen: string,
+      params: {
+        timer: boolean;
+        checklist: boolean;
+      }
+    ) => void;
   };
 }
 
 const PersonalizeHabitScreen: React.FC<Props> = props => {
+  const [habitPersonalization, setHabitPersonalization] = useState({
+    timer: false,
+    checklist: false,
+  });
+
+  const onCheck = (value: boolean, which: 'timer' | 'checklist') => {
+    setHabitPersonalization(prevState => ({
+      ...prevState,
+      [which]: value,
+    }));
+  };
+
   return (
     <View style={styles.screen}>
       <Header
@@ -32,14 +50,14 @@ const PersonalizeHabitScreen: React.FC<Props> = props => {
         {/* <CheckBox onCheck={() => {}} value={false} /> */}
         <View style={styles.choice}>
           <Todo
-            toggleComplete={() => false}
+            toggleComplete={value => onCheck(value, 'timer')}
             id='dfad'
             value='Timer'
             textStyle={{
               fontFamily: 'montserrat-bold',
               fontSize: 16,
             }}
-            completed={false}
+            completed={habitPersonalization.timer}
           />
           <Text.Body1 style={styles.description}>
             With a timer you can specify the amount of minutes you need to
@@ -50,14 +68,14 @@ const PersonalizeHabitScreen: React.FC<Props> = props => {
         </View>
         <View style={styles.choice}>
           <Todo
-            toggleComplete={() => false}
+            toggleComplete={value => onCheck(value, 'checklist')}
             id='a'
             value='Checklist'
             textStyle={{
               fontFamily: 'montserrat-bold',
               fontSize: 16,
             }}
-            completed={true}
+            completed={habitPersonalization.checklist}
           />
           <Text.Body1 style={styles.description}>
             With a checklist, the habit will need to have a todo list. To
@@ -69,7 +87,9 @@ const PersonalizeHabitScreen: React.FC<Props> = props => {
       </View>
       <Button
         type='colorful'
-        onPress={() => props.navigation.navigate('AddingHabitScreen')}
+        onPress={() =>
+          props.navigation.navigate('AddingHabitScreen', habitPersonalization)
+        }
         style={styles.button}
       >
         Start

@@ -4,8 +4,8 @@ export interface TodoInterface {
   completed: boolean;
 }
 
-export type HabitTypes = 'Default' | 'Exercise' | 'Knowledge';
-export type CompleteTypes = 'Timer' | 'Button';
+export type HabitTypes = 'Default' | 'Exercise' | 'Knowledge' | 'Chore';
+// export type CompleteTypes = 'Timer' | 'Button';
 
 export type HabitTrendsTimer = 'Minutes Needed/Max Minutes' | HabitTrends;
 
@@ -18,7 +18,7 @@ export interface HabitInterface {
   value: string;
   type: HabitTypes;
   description: string;
-  completeType: CompleteTypes;
+  timer: boolean;
   maxMinutes: number;
   minutesPassed: number;
   interval: number;
@@ -27,4 +27,5 @@ export interface HabitInterface {
   isActive: boolean;
   todos: TodoInterface[];
   trends: HabitTrends;
+  checklist: boolean;
 }

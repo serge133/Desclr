@@ -18,11 +18,18 @@ interface Props {
     goBack: Function;
     navigate: (screen: string) => void;
   };
+  route: {
+    params: {
+      timer: boolean;
+      checklist: boolean;
+    };
+  };
 }
 const dropdownIndexHabitTypes: HabitTypes[] = [
   'Default',
   'Exercise',
   'Knowledge',
+  'Chore',
 ];
 
 const AddingHabitScreen: React.FC<Props> = props => {
@@ -30,7 +37,6 @@ const AddingHabitScreen: React.FC<Props> = props => {
     value: { value: '', isError: false, errorMessage: '' },
     description: { value: '', isError: false, errorMessage: '' },
     habitType: dropdownIndexHabitTypes[0],
-    requireTimer: false,
     maxMinutes: {
       value: 20,
       displayedVal: 20,
@@ -60,7 +66,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
           errorMessage: 'You need a name',
         },
       });
-    } else if (form.todos.length === 1) {
+    } else if (form.todos.length === 1 && props.route.params.checklist) {
       setError({
         isError: true,
         errorMessage: 'You have to have at least one to-do',
@@ -71,10 +77,11 @@ const AddingHabitScreen: React.FC<Props> = props => {
           form.value.value,
           form.habitType,
           form.description.value,
-          form.requireTimer ? 'Timer' : 'Button',
+          props.route.params.timer,
           form.maxMinutes.value,
           form.interval.value,
-          form.todos
+          form.todos,
+          props.route.params.checklist
         )
       );
       props.navigation.navigate('HomeScreen');
@@ -168,6 +175,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
             { index: 0, label: 'Default' },
             { index: 1, label: 'Exercise' },
             { index: 2, label: 'Knowledge' },
+            { index: 3, label: 'Chore' },
           ]}
           onEntryPress={index =>
             setForm(prevState => ({
@@ -180,20 +188,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
             marginTop: 24,
           }}
         />
-
-        <View style={styles.requireTimer}>
-          <CheckBox
-            value={form.requireTimer}
-            onCheck={() =>
-              setForm(prevState => ({
-                ...prevState,
-                requireTimer: !prevState.requireTimer,
-              }))
-            }
-          />
-          <Text.Body1 style={styles.requireTimerText}>Track Time?</Text.Body1>
-        </View>
-        {form.requireTimer && (
+        {props.route.params.timer && (
           <CustomSlider
             label='Timer'
             value={form.maxMinutes.displayedVal}
@@ -233,26 +228,27 @@ const AddingHabitScreen: React.FC<Props> = props => {
             }))
           }
         />
-        {form.todos.map((todo: Todo) => (
-          <View
-            style={{ ...styles.todo, ...defaultStyles.inputContainer }}
-            key={todo.id}
-          >
-            <CheckBox value={todo.completed} onCheck={() => {}} />
-            <View style={styles.todoInputSpacer} />
-            <View style={styles.todoInput}>
-              <CustomInput
-                containerStyle={{
-                  marginTop: 8,
-                  // marginLeft: 8,
-                }}
-                placeholder='Your to-do action'
-                value={todo.value}
-                onChangeText={value => handleTodo(todo.id, value)}
-              />
+        {props.route.params.checklist &&
+          form.todos.map((todo: Todo) => (
+            <View
+              style={{ ...styles.todo, ...defaultStyles.inputContainer }}
+              key={todo.id}
+            >
+              <CheckBox value={todo.completed} onCheck={() => {}} />
+              <View style={styles.todoInputSpacer} />
+              <View style={styles.todoInput}>
+                <CustomInput
+                  containerStyle={{
+                    marginTop: 8,
+                    // marginLeft: 8,
+                  }}
+                  placeholder='Your to-do action'
+                  value={todo.value}
+                  onChangeText={value => handleTodo(todo.id, value)}
+                />
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
 
         {error.isError && (
           <View style={styles.formError}>
@@ -286,15 +282,6 @@ const styles = StyleSheet.create({
   formError: {
     alignItems: 'center',
     marginBottom: 10,
-  },
-  requireTimer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 14,
-  },
-  requireTimerText: {
-    marginLeft: 8,
-    flex: 1,
   },
 });
 

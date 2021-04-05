@@ -5,7 +5,7 @@ import { TodoInterface } from '../../types';
 import * as Text from './Text';
 
 interface Props extends TodoInterface {
-  toggleComplete: (value: boolean) => {};
+  toggleComplete: (value: boolean) => void;
   textStyle?: TextStyle;
 }
 

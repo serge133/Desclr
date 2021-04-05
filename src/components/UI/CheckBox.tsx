@@ -20,7 +20,7 @@ const CheckBox: React.FC<Props> = props => {
           <RenderIcon
             type='Ionicons'
             name='ios-checkmark'
-            size={30}
+            size={25}
             color={Colors.primary1}
           />
         )}

@@ -3,7 +3,6 @@ import {
   HabitInterface,
   TodoInterface,
   HabitTypes,
-  CompleteTypes,
   HabitTrends,
 } from '../../types';
 import Axios from 'axios';
@@ -28,10 +27,11 @@ export const addHabit = (
   value: string,
   type: HabitTypes,
   description: string,
-  completeType: CompleteTypes,
+  timer: boolean,
   maxMinutes: number,
   interval: number,
-  todos: TodoInterface[]
+  todos: TodoInterface[],
+  checklist: boolean
 ) => {
   return async (
     dispatch: (action: HabitActions) => void,
@@ -47,7 +47,7 @@ export const addHabit = (
       description: description,
       streak: 0,
       isActive: true,
-      completeType: completeType,
+      timer: timer,
       maxMinutes: maxMinutes,
       // Same as above because initially timer is full
       minutesPassed: 0,
@@ -57,6 +57,7 @@ export const addHabit = (
       trends: {
         minutesNeeded: [0],
       },
+      checklist: checklist,
     };
 
     const response = await Axios({
@@ -80,10 +81,11 @@ export const editHabit = (
   value: string,
   type: HabitTypes,
   description: string,
-  completeType: CompleteTypes,
+  timer: boolean,
   maxMinutes: number,
   interval: number,
-  todos: TodoInterface[]
+  todos: TodoInterface[],
+  checklist: boolean
 ) => {
   return async (
     dispatch: (action: HabitActions) => void,
@@ -97,12 +99,13 @@ export const editHabit = (
       value: value,
       type: type,
       description: description,
-      completeType: completeType,
+      timer: timer,
       maxMinutes: maxMinutes,
       minutesPassed: 0,
       interval: interval,
       todos: todos,
       expirationDate: addDaysToTodaysDate(interval),
+      checklist: checklist,
     };
 
     await Axios({

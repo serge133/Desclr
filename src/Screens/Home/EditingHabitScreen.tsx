@@ -24,7 +24,8 @@ interface Props {
         value: string;
         type: HabitTypes;
         description: string;
-        requireTimer: boolean;
+        // requireTimer: boolean;
+        timer: boolean;
         maxMinutes: number;
         interval: number;
         todos: TodoInterface[];
@@ -38,7 +39,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
     value: props.route.params.habit.value,
     habitType: props.route.params.habit.type,
     description: props.route.params.habit.description,
-    requireTimer: props.route.params.habit.requireTimer,
+    requireTimer: props.route.params.habit.timer,
     maxMinutes: {
       value: props.route.params.habit.maxMinutes,
       displayedVal: props.route.params.habit.maxMinutes,
@@ -65,10 +66,12 @@ const EditingHabitScreen: React.FC<Props> = props => {
         form.value,
         form.habitType,
         form.description,
-        form.requireTimer ? 'Timer' : 'Button',
+        form.requireTimer,
         form.maxMinutes.value,
         form.interval.value,
-        form.todos
+        form.todos,
+        // * Make sure to make this editable like timer
+        true
       )
     );
     props.navigation.goBack();
@@ -197,9 +200,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
               }))
             }
           />
-          <Text.Body1 style={styles.requireTimerText}>
-            Require Timer?
-          </Text.Body1>
+          <Text.Body1 style={styles.requireTimerText}>Timer</Text.Body1>
         </View>
         {form.requireTimer && (
           <CustomSlider

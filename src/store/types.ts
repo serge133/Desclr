@@ -2,7 +2,6 @@ import {
   HabitInterface,
   TodoInterface,
   HabitTypes,
-  CompleteTypes,
   HabitTrends,
 } from '../types';
 import { SIGNUP, LOGIN, AUTHENTICATE, LOGOUT } from './actions/auth';
@@ -56,12 +55,14 @@ export type HabitActions =
         value: string;
         type: HabitTypes;
         description: string;
-        completeType: CompleteTypes;
+        // completeType: CompleteTypes;
+        timer: boolean;
         maxMinutes: number;
         minutesPassed: number;
         interval: number;
         todos: TodoInterface[];
         expirationDate: string;
+        checklist: boolean;
       };
     }
   | {

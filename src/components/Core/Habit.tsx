@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   GestureResponderEvent,
 } from 'react-native';
-import { HabitInterface, CompleteTypes } from '../../types';
+import { HabitInterface } from '../../types';
 import { Colors } from '../../constants/default-styles';
 import * as Text from '../UI/Text';
 import RenderIcon from '../UI/RenderIcon';
@@ -23,7 +23,8 @@ interface HabitHiddenRowButtonProps {
   onComplete: (event: GestureResponderEvent) => void;
   onArchive: (event: GestureResponderEvent) => void;
   fractionCompleted: string;
-  completeType: CompleteTypes;
+  // completeType: CompleteTypes;
+  timer: boolean;
   activateTimer: Function;
 }
 
@@ -33,51 +34,44 @@ interface ArchivedHabitHiddenRowButtonsProps {
 }
 
 export const HabitHiddenRowButtons: React.FC<HabitHiddenRowButtonProps> = props => {
-  let LeftRowButton: React.ReactNode;
+  const CompleteButton = (
+    <TouchableOpacity
+      style={styles.rowBackButtonContainer}
+      disabled={!props.canComplete}
+      onPress={props.onComplete}
+    >
+      <View style={styles.rowBackButton}>
+        <RenderIcon
+          type='Ionicons'
+          name='ios-checkmark'
+          size={50}
+          color={props.canComplete ? Colors.primary1 : Colors.grey3}
+        />
+        {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
+      </View>
+    </TouchableOpacity>
+  );
 
-  switch (props.completeType) {
-    case 'Timer':
-      LeftRowButton = (
-        <TouchableOpacity
-          style={styles.rowBackButtonContainer}
-          // @ts-ignore
-          onPress={props.activateTimer}
-        >
-          <View style={styles.rowBackButton}>
-            <RenderIcon
-              type='Ionicons'
-              name='timer-outline'
-              size={50}
-              color={Colors.primary1}
-            />
-          </View>
-        </TouchableOpacity>
-      );
-      break;
-    default:
-      LeftRowButton = (
-        <TouchableOpacity
-          style={styles.rowBackButtonContainer}
-          disabled={!props.canComplete}
-          onPress={props.onComplete}
-        >
-          <View style={styles.rowBackButton}>
-            <RenderIcon
-              type='Ionicons'
-              name='ios-checkmark'
-              size={50}
-              color={props.canComplete ? Colors.primary1 : Colors.grey3}
-            />
-            {!props.canComplete && <Text.H3>{props.fractionCompleted}</Text.H3>}
-          </View>
-        </TouchableOpacity>
-      );
-      break;
-  }
+  const TimerButton = (
+    <TouchableOpacity
+      style={styles.rowBackButtonContainer}
+      // @ts-ignore
+      onPress={props.activateTimer}
+    >
+      <View style={styles.rowBackButton}>
+        <RenderIcon
+          type='Ionicons'
+          name='timer-outline'
+          size={50}
+          color={Colors.primary1}
+        />
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.rowBack}>
-      {LeftRowButton}
+      {!props.timer ? CompleteButton : TimerButton}
       <TouchableOpacity
         style={styles.rowBackButtonContainer}
         onPress={props.onArchive}
@@ -154,17 +148,18 @@ const Habit: React.FC<HabitProps> = props => {
         </View>
         <Text.Body1>{props.type}</Text.Body1>
         <Text.Body3 style={styles.description}>{props.description}</Text.Body3>
-        {props.todos.map((todo, index) => (
-          <Todo
-            key={todo.id}
-            id={todo.id}
-            value={todo.value}
-            completed={todo.completed}
-            toggleComplete={value =>
-              dispatch(completeHabitTodo(props.id, index, value))
-            }
-          />
-        ))}
+        {props.checklist &&
+          props.todos.map((todo, index) => (
+            <Todo
+              key={todo.id}
+              id={todo.id}
+              value={todo.value}
+              completed={todo.completed}
+              toggleComplete={value =>
+                dispatch(completeHabitTodo(props.id, index, value))
+              }
+            />
+          ))}
         <View style={styles.expirationBar}>
           <View
             style={{
