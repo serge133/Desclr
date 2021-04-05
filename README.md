@@ -1,4 +1,5 @@
 - [Desclr](#desclr)
+  - [Make sure to logout when unhandled rejection](#make-sure-to-logout-when-unhandled-rejection)
   - [Successes](#successes)
   - [Focus](#focus)
   - [Errors](#errors)
@@ -6,6 +7,8 @@
 # Desclr
 
 A habit tracking app
+
+## Make sure to logout when unhandled rejection
 
 ## Successes
 

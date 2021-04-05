@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TextStyle } from 'react-native';
 import CheckBox from './CheckBox';
 import { TodoInterface } from '../../types';
 import * as Text from './Text';
 
 interface Props extends TodoInterface {
   toggleComplete: (value: boolean) => {};
+  textStyle?: TextStyle;
 }
 
 const Todo: React.FC<Props> = props => {
@@ -15,7 +16,9 @@ const Todo: React.FC<Props> = props => {
         value={props.completed}
         onCheck={value => props.toggleComplete(value)}
       />
-      <Text.Body1 style={styles.todoText}>{props.value}</Text.Body1>
+      <Text.Body1 style={{ ...styles.todoText, ...props.textStyle }}>
+        {props.value}
+      </Text.Body1>
     </View>
   );
 };

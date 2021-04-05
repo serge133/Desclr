@@ -106,21 +106,6 @@ const AddingHabitScreen: React.FC<Props> = props => {
     });
   };
 
-  const handleCancel = () => {
-    const clearFormAndGoBack = () => {
-      setForm(initialForm);
-      props.navigation.goBack();
-    };
-    Alert.alert('Cancel', "Are you sure you don't want to save your habit?", [
-      { text: 'Cancel', onPress: () => {}, style: 'cancel' },
-      {
-        text: 'Yes',
-        onPress: clearFormAndGoBack,
-        style: 'default',
-      },
-    ]);
-  };
-
   interface Todo {
     id: string;
     value: string;
@@ -133,7 +118,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
         headerLeft={{
           type: 'AntDesign',
           name: 'arrowleft',
-          onPress: handleCancel,
+          onPress: () => props.navigation.goBack(),
         }}
         headerRight={{
           type: 'AntDesign',

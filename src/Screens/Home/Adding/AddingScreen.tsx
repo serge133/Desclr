@@ -42,15 +42,15 @@ const AddingScreen: React.FC<Props> = props => {
       </Header>
       <View style={styles.grid}>
         <BoxButton
-          backgroundColor={Colors.primary1}
+          backgroundColor='#ce6a6b'
           iconName='dingding'
           iconType='AntDesign'
-          onPress={() => props.navigation.navigate('AddingHabitScreen')}
+          onPress={() => props.navigation.navigate('PersonalizeHabitScreen')}
         >
           Habit
         </BoxButton>
         <BoxButton
-          backgroundColor={Colors.semanticBlue1}
+          backgroundColor='#ebaca2'
           iconName='alarm-outline'
           iconType='Ionicons'
           onPress={() => console.log('Going to Adding Reminder Screen')}
@@ -58,7 +58,7 @@ const AddingScreen: React.FC<Props> = props => {
           Reminder
         </BoxButton>
         <BoxButton
-          backgroundColor={Colors.grey1}
+          backgroundColor='#4a919e'
           iconName='flag-o'
           iconType='FontAwesome'
           onPress={() => {}}
@@ -66,7 +66,7 @@ const AddingScreen: React.FC<Props> = props => {
           Goal
         </BoxButton>
         <BoxButton
-          backgroundColor={Colors.accent1}
+          backgroundColor='#212e53'
           iconName='setting'
           iconType='AntDesign'
           onPress={() => {}}
