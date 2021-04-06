@@ -140,9 +140,11 @@ const ViewHabitScreen: React.FC<Props> = props => {
     // ? No checklist and timer; default
     case 'checklist: false timer: false':
       CompleteControl = (
-        <Button style={styles.button} onPress={onComplete} type='colorful'>
-          Complete
-        </Button>
+        <View style={styles.buttonContainer}>
+          <Button style={styles.button} onPress={onComplete} type='colorful'>
+            Complete
+          </Button>
+        </View>
       );
       break;
     // ? No timer but there's a checklist
