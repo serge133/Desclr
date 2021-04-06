@@ -40,7 +40,7 @@ export default (state: HabitState = initialState, action: HabitActions) => {
           type: action.editedHabit.type,
           description: action.editedHabit.description,
           timer: action.editedHabit.timer,
-          maxMinutes: action.editedHabit.maxMinutes,
+          targetTime: action.editedHabit.targetTime,
           minutesPassed: action.editedHabit.minutesPassed,
           interval: action.editedHabit.interval,
           todos: action.editedHabit.todos,

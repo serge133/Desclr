@@ -40,7 +40,7 @@ let error: HabitInterface = {
   interval: 0,
   checklist: false,
   timer: false,
-  maxMinutes: 0,
+  targetTime: 0,
   minutesPassed: 0,
   id: '',
   isActive: true,
@@ -52,7 +52,7 @@ let error: HabitInterface = {
 
 const ViewHabitScreen: React.FC<Props> = props => {
   // * User can close the app and the timer will function because of absolute values
-  // Set absolute date when timer will expire by adding todays date in maxMinutes (milliseconds)
+  // Set absolute date when timer will expire by adding todays date in targetTime (milliseconds)
 
   const dispatch = useDispatch();
 
@@ -69,7 +69,7 @@ const ViewHabitScreen: React.FC<Props> = props => {
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [isTimerAboveMax, setIsTimerAboveMax] = useState(false);
 
-  // saveHabitTimer only accepts maxMinutes
+  // saveHabitTimer only accepts targetTime
   const saveTimer = () =>
     dispatch(saveHabitTimer(props.route.params.habitId, +timer));
 
@@ -102,7 +102,7 @@ const ViewHabitScreen: React.FC<Props> = props => {
     setIsTimerAboveMax(true);
   }, []); // todos
   // * Math.floor rounds down e.g. 4.99 will be 4
-  const { maxMinutes } = habit;
+  const { targetTime } = habit;
   useEffect(() => {
     if (isTimerActive) {
       // Every five seconds the timer will update
@@ -111,7 +111,7 @@ const ViewHabitScreen: React.FC<Props> = props => {
           (new Date().getTime() - timeStarted) / 60000
         );
         setTimer(newTime);
-        if (newTime >= maxMinutes && !isTimerAboveMax) onTimerReachMax();
+        if (newTime >= targetTime && !isTimerAboveMax) onTimerReachMax();
       }, 5000);
 
       return () => clearInterval(interval);
@@ -121,7 +121,7 @@ const ViewHabitScreen: React.FC<Props> = props => {
     timeStarted,
     isTimerActive,
     onTimerReachMax,
-    maxMinutes,
+    targetTime,
     isTimerAboveMax,
   ]);
 
@@ -174,7 +174,7 @@ const ViewHabitScreen: React.FC<Props> = props => {
             onPress={completeHabitAndResetTimer}
             type='colorful'
           >
-            {`Complete ${timer}/${habit.maxMinutes} minutes`}
+            {`Complete ${timer}/${habit.targetTime} minutes`}
           </Button>
         </View>
       );
@@ -194,7 +194,7 @@ const ViewHabitScreen: React.FC<Props> = props => {
           >
             {`Complete ${habit.todos.filter(t => t.completed).length}/${
               habit.todos.length
-            } and ${timer}/${habit.maxMinutes} minutes`}
+            } and ${timer}/${habit.targetTime} minutes`}
           </Button>
         </View>
       );

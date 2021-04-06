@@ -57,7 +57,7 @@ export type HabitActions =
         description: string;
         // completeType: CompleteTypes;
         timer: boolean;
-        maxMinutes: number;
+        targetTime: number;
         minutesPassed: number;
         interval: number;
         todos: TodoInterface[];

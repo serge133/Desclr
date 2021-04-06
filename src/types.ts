@@ -19,7 +19,7 @@ export interface HabitInterface {
   type: HabitTypes;
   description: string;
   timer: boolean;
-  maxMinutes: number;
+  targetTime: number;
   minutesPassed: number;
   interval: number;
   expirationDate: string;

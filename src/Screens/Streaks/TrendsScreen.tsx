@@ -19,7 +19,7 @@ interface Props {
 }
 
 const DashboardScreen: React.FC<Props> = props => {
-  const { trends, maxMinutes } = props.route.params.habit;
+  const { trends, targetTime } = props.route.params.habit;
 
   const dropdownEntries = [
     { index: 0, label: 'Minutes Passed', extra: 'minutesPassed' },
@@ -38,7 +38,7 @@ const DashboardScreen: React.FC<Props> = props => {
         Trends
       </Header>
       <View style={styles.content}>
-        <BarGraph data={trends.minutesNeeded} maximum={maxMinutes} />
+        <BarGraph data={trends.minutesNeeded} maximum={targetTime} />
         <Dropdown
           chosenEntry='Minutes Passed'
           entries={dropdownEntries}

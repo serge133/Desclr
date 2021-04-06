@@ -21,7 +21,7 @@ interface Props {
   route: {
     params: {
       minutesPassed: number;
-      maxMinutes: number;
+      targetTime: number;
       habitId: string;
     };
   };
@@ -37,10 +37,10 @@ interface Props {
 
 // Increments up (Stopwatch)
 
-const TimerScreen: React.FC<Props> = (props) => {
+const TimerScreen: React.FC<Props> = props => {
   // * User can close the app and the timer will function because of absolute values
   const { params } = props.route;
-  // Set absolute date when timer will expire by adding todays date in maxMinutes (milliseconds)
+  // Set absolute date when timer will expire by adding todays date in targetTime (milliseconds)
   const [timeStarted, setTimeStarted] = useState(
     new Date().getTime() - params.minutesPassed * 60000
   );
@@ -51,15 +51,15 @@ const TimerScreen: React.FC<Props> = (props) => {
 
   const todos = useSelector(
     (state: RootState) =>
-      state.habit.habits.find((h) => h.id === params.habitId)?.todos
+      state.habit.habits.find(h => h.id === params.habitId)?.todos
   );
   const dispatch = useDispatch();
 
-  // saveHabitTimer only accepts maxMinutes
+  // saveHabitTimer only accepts targetTime
   const saveTimer = () => dispatch(saveHabitTimer(params.habitId, +timer));
 
   const toggleTimer = () => {
-    setIsTimerActive((prevState) => !prevState);
+    setIsTimerActive(prevState => !prevState);
     // This is meant to stop the timer and remember where it stopped
     setTimeStarted(new Date().getTime() - +timer * 60000);
     saveTimer();
@@ -86,7 +86,7 @@ const TimerScreen: React.FC<Props> = (props) => {
     setIsTimerAboveMax(true);
   }, [todos]);
   // * Math.floor rounds down e.g. 4.99 will be 4
-  const { maxMinutes } = params;
+  const { targetTime } = params;
   useEffect(() => {
     if (isTimerActive) {
       // Every five seconds the timer will update
@@ -95,7 +95,7 @@ const TimerScreen: React.FC<Props> = (props) => {
           (new Date().getTime() - timeStarted) / 60000
         );
         setTimer(newTime);
-        if (newTime >= maxMinutes && !isTimerAboveMax) onTimerReachMax();
+        if (newTime >= targetTime && !isTimerAboveMax) onTimerReachMax();
       }, 5000);
 
       return () => clearInterval(interval);
@@ -105,7 +105,7 @@ const TimerScreen: React.FC<Props> = (props) => {
     timeStarted,
     isTimerActive,
     onTimerReachMax,
-    maxMinutes,
+    targetTime,
     isTimerAboveMax,
   ]);
 
@@ -142,7 +142,7 @@ const TimerScreen: React.FC<Props> = (props) => {
               id={todo.id}
               value={todo.value}
               completed={todo.completed}
-              toggleComplete={(value) =>
+              toggleComplete={value =>
                 dispatch(completeHabitTodo(params.habitId, index, value))
               }
             />
@@ -154,14 +154,14 @@ const TimerScreen: React.FC<Props> = (props) => {
           style={styles.button}
           icon={{ type: 'Ionicons', name: 'ios-checkmark', size: 24 }}
           disabled={
-            todos?.every((t) => t.completed)
+            todos?.every(t => t.completed)
               ? isTimerAboveMax
                 ? false
                 : true
               : true
           }
         >
-          {`${maxMinutes} minutes and ${todos?.length} todos`}
+          {`${targetTime} minutes and ${todos?.length} todos`}
         </Button>
         <Button
           onPress={toggleTimer}

@@ -21,7 +21,7 @@ interface Props {
 
 const HabitSettingsScreen: React.FC<Props> = props => {
   // * User can close the app and the timer will function because of absolute values
-  // Set absolute date when timer will expire by adding todays date in maxMinutes (milliseconds)
+  // Set absolute date when timer will expire by adding todays date in targetTime (milliseconds)
 
   const dispatch = useDispatch();
 

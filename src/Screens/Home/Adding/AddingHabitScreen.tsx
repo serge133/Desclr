@@ -37,7 +37,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
     value: { value: '', isError: false, errorMessage: '' },
     description: { value: '', isError: false, errorMessage: '' },
     habitType: dropdownIndexHabitTypes[0],
-    maxMinutes: {
+    targetTime: {
       value: 20,
       displayedVal: 20,
       isError: false,
@@ -78,7 +78,7 @@ const AddingHabitScreen: React.FC<Props> = props => {
           form.habitType,
           form.description.value,
           props.route.params.timer,
-          form.maxMinutes.value,
+          form.targetTime.value,
           form.interval.value,
           form.todos,
           props.route.params.checklist
@@ -190,16 +190,16 @@ const AddingHabitScreen: React.FC<Props> = props => {
         />
         {props.route.params.timer && (
           <CustomSlider
-            label='Timer'
-            value={form.maxMinutes.displayedVal}
-            visibleSliderInformation={`${form.maxMinutes.value} Minutes`}
+            label='Target Time'
+            value={form.targetTime.displayedVal}
+            visibleSliderInformation={`${form.targetTime.value} Minutes`}
             minimumValue={1}
             maximumValue={180}
             // step={1}
             onValueChange={value =>
               setForm(prevState => ({
                 ...prevState,
-                maxMinutes: {
+                targetTime: {
                   ...prevState.interval,
                   value: +value.toFixed(0),
                   displayedVal: value,

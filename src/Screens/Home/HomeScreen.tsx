@@ -116,7 +116,7 @@ const HomeScreen: React.FC<Props> = props => {
                       type: itemData.item.type,
                       description: itemData.item.description,
                       timer: itemData.item.timer,
-                      maxMinutes: itemData.item.maxMinutes,
+                      targetTime: itemData.item.targetTime,
                       interval: itemData.item.interval,
                       todos: itemData.item.todos,
                     },

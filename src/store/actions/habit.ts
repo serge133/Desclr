@@ -28,7 +28,7 @@ export const addHabit = (
   type: HabitTypes,
   description: string,
   timer: boolean,
-  maxMinutes: number,
+  targetTime: number,
   interval: number,
   todos: TodoInterface[],
   checklist: boolean
@@ -48,7 +48,7 @@ export const addHabit = (
       streak: 0,
       isActive: true,
       timer: timer,
-      maxMinutes: maxMinutes,
+      targetTime: targetTime,
       // Same as above because initially timer is full
       minutesPassed: 0,
       interval: interval,
@@ -82,7 +82,7 @@ export const editHabit = (
   type: HabitTypes,
   description: string,
   timer: boolean,
-  maxMinutes: number,
+  targetTime: number,
   interval: number,
   todos: TodoInterface[],
   checklist: boolean
@@ -100,7 +100,7 @@ export const editHabit = (
       type: type,
       description: description,
       timer: timer,
-      maxMinutes: maxMinutes,
+      targetTime: targetTime,
       minutesPassed: 0,
       interval: interval,
       todos: todos,
@@ -206,7 +206,7 @@ export const completeHabit = (habitId: string) => {
 
       const completedHabit = {
         streak: currentHabit.streak + 1,
-        // Resets the maxMinutes when habit is completed
+        // Resets the targetTime when habit is completed
         minutesPassed: 0,
         expirationDate: addDaysToTodaysDate(currentHabit.interval),
         todos: newTodos,
