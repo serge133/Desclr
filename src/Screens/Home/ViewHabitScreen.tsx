@@ -61,7 +61,6 @@ const ViewHabitScreen: React.FC<Props> = props => {
 
   if (!habit) habit = error;
 
-  // ! ----
   const [timeStarted, setTimeStarted] = useState(
     new Date().getTime() - habit.minutesPassed * 60000
   );
@@ -125,7 +124,6 @@ const ViewHabitScreen: React.FC<Props> = props => {
     maxMinutes,
     isTimerAboveMax,
   ]);
-  // ! ----
 
   const onComplete = () => {
     dispatch(completeHabit(props.route.params.habitId));
@@ -174,7 +172,6 @@ const ViewHabitScreen: React.FC<Props> = props => {
           <Button
             style={styles.button}
             onPress={completeHabitAndResetTimer}
-            disabled={!isTimerAboveMax}
             type='colorful'
           >
             {`Complete ${timer}/${habit.maxMinutes} minutes`}
@@ -192,13 +189,7 @@ const ViewHabitScreen: React.FC<Props> = props => {
           <Button
             style={styles.button}
             onPress={onComplete}
-            disabled={
-              habit.todos.every(t => t.completed)
-                ? isTimerAboveMax
-                  ? false
-                  : true
-                : true
-            }
+            disabled={!habit.todos.every(t => t.completed)}
             type='colorful'
           >
             {`Complete ${habit.todos.filter(t => t.completed).length}/${
