@@ -8,6 +8,7 @@ import Timer from '../../Screens/TimerScreen';
 // ! ----- Experimental ------
 import AddingOneScreen from '../../Screens/Home/Adding/AddingScreen';
 import AddingStack from './Home/AddingStack';
+import ViewHabitScreen from '../../Screens/Home/ViewHabitScreen';
 // This is a test
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const HomeStack: React.FC = () => {
   return (
     <Stack.Navigator headerMode='none'>
       <Stack.Screen name='HomeScreen' component={HomeScreen} />
+      <Stack.Screen name='ViewHabitScreen' component={ViewHabitScreen} />
       <Stack.Screen name='TimerScreen' component={Timer} />
       <Stack.Screen name='AddingScreen' component={AddingStack} />
       <Stack.Screen name='EditingHabitScreen' component={EditingHabitScreen} />

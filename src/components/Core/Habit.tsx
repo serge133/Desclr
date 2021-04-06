@@ -16,6 +16,7 @@ import Todo from '../UI/Todo';
 interface HabitProps extends HabitInterface {
   onEdit: () => void;
   deletionBarProgress: number;
+  onPress: () => void;
 }
 
 interface HabitHiddenRowButtonProps {
@@ -124,7 +125,7 @@ const Habit: React.FC<HabitProps> = props => {
   const dispatch = useDispatch();
 
   return (
-    <View style={styles.habitContainer}>
+    <TouchableOpacity onPress={props.onPress} style={styles.habitContainer}>
       <View
         style={{
           ...styles.habit,
@@ -175,7 +176,7 @@ const Habit: React.FC<HabitProps> = props => {
           />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
   habitHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    // borderWidth: 1,
   },
   habitTitle: {
     flex: 1,

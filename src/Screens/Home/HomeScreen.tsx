@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, RefreshControl } from 'react-native';
+import { View, StyleSheet, RefreshControl, FlatList } from 'react-native';
 import Header from '../../components/UI/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
 import Habit, { HabitHiddenRowButtons } from '../../components/Core/Habit';
@@ -25,7 +25,7 @@ interface Props {
 
 const HomeScreen: React.FC<Props> = props => {
   const [refreshing, setRefreshing] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const [_refresh, setRefresh] = useState(false);
   const authExpirationDate = useSelector(
     (state: RootState) => state.auth.expirationDate
   );
@@ -55,6 +55,17 @@ const HomeScreen: React.FC<Props> = props => {
     dispatch(getHabits());
   }, [dispatch]);
 
+  /**
+   * const hoursTillExpire = getHoursTillExpire(
+              itemData.item.expirationDate
+            );
+            const deletionBarProgress =
+              (1 - hoursTillExpire / (itemData.item.interval * 24)) * 100;
+
+            if (hoursTillExpire <= 0) {
+              dispatch(archiveHabit(itemData.item.id));
+            }
+   */
   return (
     <View style={styles.screen}>
       <Header
@@ -73,13 +84,12 @@ const HomeScreen: React.FC<Props> = props => {
         Desclr
       </Header>
       <View style={styles.habitListContainer}>
-        <SwipeListView
+        <FlatList
           style={styles.habitList}
-          data={activeHabits}
-          keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          data={activeHabits}
           renderItem={itemData => {
             const hoursTillExpire = getHoursTillExpire(
               itemData.item.expirationDate
@@ -90,7 +100,6 @@ const HomeScreen: React.FC<Props> = props => {
             if (hoursTillExpire <= 0) {
               dispatch(archiveHabit(itemData.item.id));
             }
-
             return (
               <Habit
                 deletionBarProgress={deletionBarProgress}
@@ -108,31 +117,15 @@ const HomeScreen: React.FC<Props> = props => {
                     },
                   })
                 }
+                onPress={() =>
+                  props.navigation.navigate('ViewHabitScreen', {
+                    habitId: itemData.item.id,
+                  })
+                }
                 {...itemData.item}
               />
             );
           }}
-          renderHiddenItem={(itemData, rowMap) => (
-            <HabitHiddenRowButtons
-              canComplete={itemData.item.todos.every(todo => todo.completed)}
-              fractionCompleted={`${
-                itemData.item.todos.filter(todo => todo.completed).length
-              }/${itemData.item.todos.length}`}
-              onComplete={() => dispatch(completeHabit(itemData.item.id))}
-              onArchive={() => dispatch(archiveHabit(itemData.item.id))}
-              // completeType={itemData.item.completeType}
-              timer={itemData.item.timer}
-              activateTimer={() =>
-                props.navigation.navigate('TimerScreen', {
-                  minutesPassed: itemData.item.minutesPassed,
-                  maxMinutes: itemData.item.maxMinutes,
-                  habitId: itemData.item.id,
-                })
-              }
-            />
-          )}
-          rightOpenValue={-100}
-          leftOpenValue={100}
         />
       </View>
     </View>

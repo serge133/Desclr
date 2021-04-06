@@ -189,14 +189,14 @@ export const completeHabit = (habitId: string) => {
     if (currentHabit) {
       // Resets Todos
       const newTodos = [];
-      for (const todo of currentHabit.todos) {
-        newTodos.push({
-          ...todo,
-          completed: false,
-        });
+      if (currentHabit.checklist) {
+        for (const todo of currentHabit.todos) {
+          newTodos.push({
+            ...todo,
+            completed: false,
+          });
+        }
       }
-
-      console.log(currentHabit);
 
       const newTrends: HabitTrends = {
         minutesNeeded: currentHabit.trends.minutesNeeded.concat(

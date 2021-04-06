@@ -17,11 +17,11 @@ import { defaultStyles } from '../constants/default-styles';
 interface Props {
   navigation: {
     navigate: (screen: string) => void;
-    goBack: Function;
+    goBack: () => void;
   };
 }
 
-const SignInScreen: React.FC<Props> = (props) => {
+const SignInScreen: React.FC<Props> = props => {
   const [form, setForm] = useState({
     email: { value: '', isError: false, errorMessage: '' },
     password: { value: '', isError: false, errorMessage: '' },
@@ -49,7 +49,7 @@ const SignInScreen: React.FC<Props> = (props) => {
     const passwordValidity = passwordValidityFunction(form.password.value);
 
     if (passwordValidity !== 'No Error') {
-      return setForm((prevState) => ({
+      return setForm(prevState => ({
         ...prevState,
         password: {
           value: prevState.password.value,
@@ -68,7 +68,7 @@ const SignInScreen: React.FC<Props> = (props) => {
           headerLeft={{
             type: 'AntDesign',
             name: 'arrowleft',
-            onPress: () => props.navigation.goBack(),
+            onPress: props.navigation.goBack,
           }}
         >
           Desclr
@@ -83,8 +83,8 @@ const SignInScreen: React.FC<Props> = (props) => {
           isError={form.email.isError}
           errorMessage={form.email.errorMessage}
           value={form.email.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               email: {
                 value: value,
@@ -104,8 +104,8 @@ const SignInScreen: React.FC<Props> = (props) => {
           errorMessage={form.password.errorMessage}
           secureTextEntry={isPasswordHidden}
           value={form.password.value}
-          onChangeText={(value) =>
-            setForm((prevState) => ({
+          onChangeText={value =>
+            setForm(prevState => ({
               ...prevState,
               password: {
                 value: value,

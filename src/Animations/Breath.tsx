@@ -6,14 +6,13 @@ interface Props {
   children: ReactNode;
   durationFadeOut: number;
   durationFadeIn: number;
-  disabled?: boolean;
 }
 
 // Duration is in milliseconds
 
 const Breath: React.FC<Props> = props => {
   const opacity = useRef(new Animated.Value(1)).current;
-  const { durationFadeIn, durationFadeOut, disabled } = props;
+  const { durationFadeIn, durationFadeOut } = props;
 
   const startAnim = useCallback(() => {
     // Infinite loop
@@ -21,10 +20,12 @@ const Breath: React.FC<Props> = props => {
       Animated.timing(opacity, {
         toValue: 0.2,
         duration: durationFadeOut,
+        useNativeDriver: false,
       }),
       Animated.timing(opacity, {
         toValue: 1,
         duration: durationFadeIn,
+        useNativeDriver: false,
       }),
     ]).start(startAnim);
   }, [durationFadeIn, durationFadeOut]);
