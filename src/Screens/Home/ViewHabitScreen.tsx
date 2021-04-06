@@ -14,10 +14,16 @@ import Todo from '../../components/UI/Todo';
 import { RootState } from '../../store/types';
 import { Colors } from '../../constants/default-styles';
 import Breath from '../../Animations/Breath';
-import RenderIcon from '../../components/UI/RenderIcon';
 
 interface Props {
   navigation: {
+    navigate: (
+      screen: string,
+      params: {
+        habitId: string;
+        habitName: string | undefined;
+      }
+    ) => void;
     goBack: () => void;
   };
   route: {
@@ -212,6 +218,15 @@ const ViewHabitScreen: React.FC<Props> = props => {
           type: 'AntDesign',
           name: 'arrowleft',
           onPress: saveTimerAndLeave,
+        }}
+        headerRight={{
+          type: 'AntDesign',
+          name: 'setting',
+          onPress: () =>
+            props.navigation.navigate('HabitSettingsScreen', {
+              habitId: props.route.params.habitId,
+              habitName: habit?.value,
+            }),
         }}
       >
         Habit

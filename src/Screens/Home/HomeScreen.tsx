@@ -2,18 +2,15 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, RefreshControl, FlatList } from 'react-native';
 import Header from '../../components/UI/Header';
 import { DrawerActions, DrawerActionType } from '@react-navigation/native';
-import Habit, { HabitHiddenRowButtons } from '../../components/Core/Habit';
+import Habit from '../../components/Core/Habit';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/types';
-import {
-  getHabits,
-  archiveHabit,
-  completeHabit,
-} from '../../store/actions/habit';
+import * as Text from '../../components/UI/Text';
+
+import { getHabits, archiveHabit } from '../../store/actions/habit';
 import { getHoursTillExpire } from '../../functions/date';
 import { isUserValid } from '../../store/utility';
 import { logout } from '../../store/actions/auth';
-import { SwipeListView } from 'react-native-swipe-list-view';
 
 interface Props {
   navigation: {
@@ -83,6 +80,14 @@ const HomeScreen: React.FC<Props> = props => {
       >
         Desclr
       </Header>
+      {activeHabits.length === 0 && (
+        <View style={styles.noHabitsTextContainer}>
+          <Text.Body2 style={styles.noHabitsText}>
+            All your data is gone because Desclr just went through a massive
+            update. Sorry for the inconvenience.
+          </Text.Body2>
+        </View>
+      )}
       <View style={styles.habitListContainer}>
         <FlatList
           style={styles.habitList}
@@ -137,6 +142,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+  noHabitsTextContainer: {
+    marginTop: 30,
+    width: '90%',
+  },
+  noHabitsText: {
+    textAlign: 'center',
   },
   habitListContainer: {
     width: '100%',

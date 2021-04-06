@@ -17,10 +17,10 @@ interface Props {
   };
 }
 
-const ArchiveScreen: React.FC<Props> = (props) => {
+const ArchiveScreen: React.FC<Props> = props => {
   const [refreshing, setRefreshing] = useState(false);
   const habits = useSelector((state: RootState) => state.habit.habits);
-  const inactiveHabits = habits.filter((habit) => !habit.isActive);
+  const inactiveHabits = habits.filter(habit => !habit.isActive);
   const dispatch = useDispatch();
 
   const onRefresh = useCallback(async () => {
@@ -56,14 +56,15 @@ const ArchiveScreen: React.FC<Props> = (props) => {
         <SwipeListView
           style={styles.habitList}
           data={inactiveHabits}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-          renderItem={(itemData) => (
+          renderItem={itemData => (
             <Habit
               deletionBarProgress={100}
               onEdit={() => {}}
+              // On Press does not work yet in archive
               {...itemData.item}
             />
           )}
