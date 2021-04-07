@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../constants/default-styles';
+import * as Text from '../UI/Text';
 
 interface Props {
   data: number[];
@@ -22,7 +23,9 @@ const BarGraph: React.FC<Props> = props => {
             height: barHeight > 200 ? graphHeight : barHeight,
           },
         ]}
-      />
+      >
+        <Text.H3 style={styles.barLabel}>{barProps.data.toString()}</Text.H3>
+      </View>
     );
   };
   return (
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
     width: '10%',
     backgroundColor: Colors.primary1,
     position: 'relative',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
     borderTopLeftRadius: 7,

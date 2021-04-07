@@ -187,8 +187,8 @@ export const completeHabit = (habitId: string) => {
     const currentHabit = habit.habits.find(h => h.id === habitId);
 
     if (currentHabit) {
-      // Resets Todos
       const newTodos = [];
+      // Resets Todos
       if (currentHabit.checklist) {
         for (const todo of currentHabit.todos) {
           newTodos.push({

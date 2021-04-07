@@ -94,13 +94,6 @@ const ViewHabitScreen: React.FC<Props> = props => {
     props.navigation.goBack();
   };
 
-  //// const { todos } = habit;
-
-  const onTimerReachMax = useCallback(() => {
-    // Stops the timer
-    toggleTimer();
-    setIsTimerAboveMax(true);
-  }, []); // todos
   // * Math.floor rounds down e.g. 4.99 will be 4
   const { targetTime } = habit;
   useEffect(() => {
@@ -111,19 +104,11 @@ const ViewHabitScreen: React.FC<Props> = props => {
           (new Date().getTime() - timeStarted) / 60000
         );
         setTimer(newTime);
-        if (newTime >= targetTime && !isTimerAboveMax) onTimerReachMax();
       }, 5000);
 
       return () => clearInterval(interval);
     }
-  }, [
-    setTimer,
-    timeStarted,
-    isTimerActive,
-    onTimerReachMax,
-    targetTime,
-    isTimerAboveMax,
-  ]);
+  }, [setTimer, timeStarted, isTimerActive, targetTime, isTimerAboveMax]);
 
   const onComplete = () => {
     dispatch(completeHabit(props.route.params.habitId));
