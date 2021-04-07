@@ -25,16 +25,21 @@ const StartupScreen: React.FC<Props> = (props) => {
         props.navigation.navigate('WelcomeScreen');
         return;
       }
+
       const transformedData = JSON.parse(userData);
       const { token, userId, expirationDate } = transformedData;
       const formattedExpirationDate = new Date(expirationDate);
+      const todaysDate = new Date();
 
-      if (formattedExpirationDate <= new Date() || !token || !userId) {
+      if (formattedExpirationDate <= todaysDate || !token || !userId) {
         props.navigation.navigate('WelcomeScreen');
         return;
       }
 
-      dispatch(authenticate(token, userId));
+      const expiresIn =
+        formattedExpirationDate.getTime() - todaysDate.getTime();
+
+      dispatch(authenticate(token, userId, +expiresIn));
     };
 
     tryLogin();

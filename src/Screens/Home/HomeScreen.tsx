@@ -20,27 +20,27 @@ interface Props {
   };
 }
 
-const HomeScreen: React.FC<Props> = props => {
+const HomeScreen: React.FC<Props> = (props) => {
   const [refreshing, setRefreshing] = useState(false);
   const [_refresh, setRefresh] = useState(false);
-  const authExpirationDate = useSelector(
-    (state: RootState) => state.auth.expirationDate
-  );
+  // const authExpirationDate = useSelector(
+  //   (state: RootState) => state.auth.expirationDate
+  // );
   const habits = useSelector((state: RootState) => state.habit.habits);
-  const activeHabits = habits.filter(habit => habit.isActive);
+  const activeHabits = habits.filter((habit) => habit.isActive);
   const dispatch = useDispatch();
 
   // Refresh every minute for the update of get hours until expire progress bar
   useEffect(() => {
     const interval = setInterval(() => {
-      setRefresh(prev => !prev);
+      setRefresh((prev) => !prev);
     }, 60000);
 
     return () => clearInterval(interval);
   }, []);
 
   // Refresh every minute will cause automatic logout when token expires
-  if (!isUserValid(authExpirationDate)) dispatch(logout());
+  // if (!isUserValid(authExpirationDate)) dispatch(logout());
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -95,7 +95,7 @@ const HomeScreen: React.FC<Props> = props => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
           data={activeHabits}
-          renderItem={itemData => {
+          renderItem={(itemData) => {
             const hoursTillExpire = getHoursTillExpire(
               itemData.item.expirationDate
             );
