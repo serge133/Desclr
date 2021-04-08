@@ -25,12 +25,12 @@ export type AuthActions =
       token: string;
       userId: string;
     }
-  | {
-      type: typeof SIGNUP;
-      token: string;
-      userId: string;
-      expirationDate: string;
-    }
+  // | {
+  //     type: typeof SIGNUP;
+  //     token: string;
+  //     userId: string;
+  //     expirationDate: string;
+  //   }
   | {
       type: typeof LOGIN;
       token: string;

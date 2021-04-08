@@ -6,11 +6,21 @@ export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
-export const authenticate = (token: string, userId: string): AuthActions => {
-  return {
-    type: AUTHENTICATE,
-    token: token,
-    userId: userId,
+let timer: NodeJS.Timeout;
+
+export const authenticate = (
+  token: string,
+  userId: string,
+  expiryTime: number
+) => {
+  return async (dispatch: (action: AuthActions) => void) => {
+    // expire time is in ms
+    dispatch(setLogoutTimer(expiryTime));
+    dispatch({
+      type: AUTHENTICATE,
+      token: token,
+      userId: userId,
+    });
   };
 };
 
@@ -41,12 +51,13 @@ export const signup = (email: string, password: string) => {
         new Date().getTime() + +expiresIn * 1000
       ).toISOString();
       saveCredentialsToStorage(token, userId, expirationDate);
-      dispatch({
-        type: SIGNUP,
-        token: token,
-        userId: userId,
-        expirationDate: expirationDate,
-      });
+      // dispatch({
+      //   type: SIGNUP,
+      //   token: token,
+      //   userId: userId,
+      //   expirationDate: expirationDate,
+      // });
+      dispatch(authenticate(token, userId, +expiresIn * 1000));
     } catch (err) {
       console.log(err);
     }
@@ -70,14 +81,17 @@ export const login = (email: string, password: string) => {
       const expirationDate = new Date(
         new Date().getTime() + +expiresIn * 1000
       ).toISOString();
-      dispatch({
-        type: LOGIN,
-        token: token,
-        userId: userId,
-        expirationDate: expirationDate,
-        error: false,
-        errorMessage: '',
-      });
+
+      // dispatch({
+      //   type: LOGIN,
+      //   token: token,
+      //   userId: userId,
+      //   expirationDate: expirationDate,
+      //   error: false,
+      //   errorMessage: '',
+      // });
+      // * EXPIRES IN is in SECONDS
+      dispatch(authenticate(token, userId, +expiresIn * 1000));
       saveCredentialsToStorage(token, userId, expirationDate);
     } catch (err) {
       dispatch({
@@ -93,7 +107,22 @@ export const login = (email: string, password: string) => {
 };
 
 export const logout = (): AuthActions => {
+  clearLogoutTimer();
   // Wipe token data
   saveCredentialsToStorage('', '', '');
   return { type: LOGOUT };
+};
+
+const clearLogoutTimer = () => {
+  if (timer) {
+    clearTimeout(timer);
+  }
+};
+
+const setLogoutTimer = (expirationTime: number) => {
+  return async (dispatch: (action: AuthActions) => void) => {
+    timer = setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime);
+  };
 };
