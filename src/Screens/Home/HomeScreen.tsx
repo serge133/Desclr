@@ -119,6 +119,7 @@ const HomeScreen: React.FC<Props> = props => {
                       targetTime: itemData.item.targetTime,
                       interval: itemData.item.interval,
                       todos: itemData.item.todos,
+                      checklist: itemData.item.checklist,
                     },
                   })
                 }

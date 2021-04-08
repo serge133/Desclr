@@ -29,12 +29,14 @@ interface Props {
         targetTime: number;
         interval: number;
         todos: TodoInterface[];
+        checklist: boolean;
       };
     };
   };
 }
 
 const EditingHabitScreen: React.FC<Props> = props => {
+  const habitParams = props.route.params.habit;
   const initialForm = {
     value: props.route.params.habit.value,
     habitType: props.route.params.habit.type,
@@ -48,11 +50,14 @@ const EditingHabitScreen: React.FC<Props> = props => {
       value: props.route.params.habit.interval,
       displayedVal: props.route.params.habit.interval,
     },
-    todos: props.route.params.habit.todos.concat({
-      id: Math.random().toString(),
-      value: '',
-      completed: false,
-    }),
+    todos: habitParams.checklist
+      ? habitParams.todos.concat({
+          id: Math.random().toString(),
+          value: '',
+          completed: false,
+        })
+      : [],
+    checklist: habitParams.checklist,
   };
 
   const [form, setForm] = useState(initialForm);
@@ -71,7 +76,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
         form.interval.value,
         form.todos,
         // * Make sure to make this editable like timer
-        true
+        form.checklist
       )
     );
     props.navigation.goBack();
@@ -104,6 +109,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
 
   const handleCancel = () => {
     const clearFormAndGoBack = () => {
+      // * Cleared Form
       setForm({
         value: '',
         habitType: 'Default',
@@ -112,6 +118,7 @@ const EditingHabitScreen: React.FC<Props> = props => {
         targetTime: { value: 20, displayedVal: 20 },
         interval: { value: 1, displayedVal: 1 },
         todos: [],
+        checklist: false,
       });
       props.navigation.goBack();
     };
@@ -241,26 +248,27 @@ const EditingHabitScreen: React.FC<Props> = props => {
             }))
           }
         />
-        {form.todos.map((todo: Todo) => (
-          <View
-            style={{ ...styles.todo, ...defaultStyles.inputContainer }}
-            key={todo.id}
-          >
-            <CheckBox value={todo.completed} onCheck={() => {}} />
-            <View style={styles.todoInputSpacer} />
-            <View style={styles.todoInput}>
-              <CustomInput
-                containerStyle={{
-                  marginTop: 8,
-                  // marginLeft: 8,
-                }}
-                placeholder='Your to-do action'
-                value={todo.value}
-                onChangeText={value => handleTodo(todo.id, value)}
-              />
+        {form.checklist &&
+          form.todos.map((todo: Todo) => (
+            <View
+              style={{ ...styles.todo, ...defaultStyles.inputContainer }}
+              key={todo.id}
+            >
+              <CheckBox value={todo.completed} onCheck={() => {}} />
+              <View style={styles.todoInputSpacer} />
+              <View style={styles.todoInput}>
+                <CustomInput
+                  containerStyle={{
+                    marginTop: 8,
+                    // marginLeft: 8,
+                  }}
+                  placeholder='Your to-do action'
+                  value={todo.value}
+                  onChangeText={value => handleTodo(todo.id, value)}
+                />
+              </View>
             </View>
-          </View>
-        ))}
+          ))}
       </Form>
     </View>
   );
